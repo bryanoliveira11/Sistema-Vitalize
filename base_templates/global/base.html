@@ -1,0 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    {% include "global/partials/head.html" %}
+</head>
+<body>
+<main class="main-content-container">
+    {% block content %}{% endblock content %}
+</main>
+
+{% comment %} <a class="back-to-top" href="#" title="Voltar ao Topo">➤</a> {% endcomment %}
+<script src="{% static 'global/js/build/scripts.js' %}"></script>
+</body>
+</html>
