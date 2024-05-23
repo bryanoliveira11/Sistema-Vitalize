@@ -1,2 +1,1 @@
-'use strict';
-alert('this is a script file');
+"use strict";
