@@ -6,9 +6,7 @@
 </head>
 <body>
 {% include "global/partials/sidebar.html" %}
-<main class="main-content-container">
-    {% block content %}{% endblock content %}
-</main>
+{% block content %}{% endblock content %}
 
 {% comment %} <a class="back-to-top" href="#" title="Voltar ao Topo">➤</a> {% endcomment %}
 <script src="{% static 'global/js/build/scripts.js' %}"></script>
