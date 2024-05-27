@@ -4,8 +4,15 @@ from django.views.generic import View
 
 class LoginClassView(View):
     def get(self, *args, **kwargs):
+        title = 'Login'
+        subtitle = 'de Usuário'
+
         return render(
             self.request,
             'users/pages/login.html',
-            {'title': 'Login'}
+            {
+                'site_title': title,
+                'page_title': title,
+                'page_subtitle': subtitle,
+            }
         )
