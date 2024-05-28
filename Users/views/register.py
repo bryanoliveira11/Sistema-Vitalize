@@ -19,6 +19,7 @@ class RegisterClassView(View):
                 'site_title': title,
                 'page_title': title,
                 'page_subtitle': subtitle,
+                'btn_text': 'Cadastrar',
                 'form': form,
                 'form_action': reverse('users:register'),
             }

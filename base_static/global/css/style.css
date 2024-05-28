@@ -70,9 +70,8 @@ body {
   font-size: 1.6rem;
   font-family: var(--font-primary);
   color: var(--color-dark-text);
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
-  overflow: hidden;
 }
 
 ul {
@@ -105,7 +104,7 @@ img {
 
 .sidebar {
   width: 16rem;
-  height: 100%;
+  height: 100vh;
   padding: 1.6rem 0;
   display: flex;
   flex-direction: column;
@@ -247,22 +246,53 @@ select option {
 }
 
 .form-content button {
-  padding: 1rem 2rem;
-  margin-top: 2rem;
-  font-size: 1.5rem;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  border-radius: 0.3rem;
-  background: var(--color-primary);
-  color: var(--color-white);
+  position: relative;
   width: 100%;
-  transition: all 100ms ease-in-out;
+  padding: 1rem 2rem;
+  margin-top: 2.5rem;
+  background: var(--color-primary);
+  color: var(--color-gray-0);
+  border: 2px solid var(--color-primary);
+  border-radius: 0.3rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.3rem;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-.form-content button:hover {
-  letter-spacing: 0.1rem;
-  filter: brightness(85%);
+.form-content button span {
+  position: relative;
+  transition: all .45s ease-out;
+}
+
+/* button animation */
+
+.form-content button #circle-anim {
+  width: 0%;
+  height: 0%;
+  opacity: 0;
+  line-height: 4rem;
+  border-radius: 33%;
+  background: var(--color-accent);
+  position: absolute;
+  transition: all .5s ease-out;
+  top: 2rem;
+  left: 7rem;
+}
+
+.form-content button:hover #circle-anim  {
+  width: 200%;
+  height: 500%;
+  opacity: 1;
+  top: -7rem;
+  left: -7rem;
+}
+
+.form-content button:hover span {
+  color: var(--color-dark-text);
 }
 
 .plaintext-button {

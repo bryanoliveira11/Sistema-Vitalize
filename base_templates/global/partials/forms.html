@@ -38,8 +38,15 @@
   <div class="form-content form-content-grid">
     <div class="form-group">
       <button class="btn-submit" type="submit">
-        <i class="fa-solid fa-check"></i>
-        Enviar
+        <div id="circle-anim"></div>
+        <span>
+          {% if btn_text %}
+          {{btn_text}}
+          {% else %}
+          Enviar
+          {% endif %}
+          <i class="fas fa-check"></i>
+        </span>
       </button>
     </div>
   </div>
