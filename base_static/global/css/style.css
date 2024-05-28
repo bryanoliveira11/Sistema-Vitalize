@@ -88,14 +88,38 @@ img {
 
 .container {
   width: 72rem;
-  margin: 0 auto;
+  margin: 1rem auto;
   padding: var(--spacing-medium);
 }
 
 /* sidebar */
 
-.sidebar .vitalize {
-  margin-top: 1.5rem;
+#menu-hamburguer, #close-menu {
+  background: var(--color-secondary);
+  height: fit-content;
+  color: var(--color-gray-0);
+  cursor: pointer;
+  transition: scale 150ms ease-out;
+  padding: 1rem;
+}
+
+#menu-hamburguer {
+  display: none;
+  margin-top: 4.5rem;
+  border-radius: 0.2rem;
+}
+
+#close-menu {
+  display: block;
+  margin-top: 3rem;
+}
+
+#menu-hamburguer:hover, #close-menu:hover {
+  scale: 1.1;
+}
+
+#menu-hamburguer i, #close-menu i {
+  font-size: 2.5rem;
 }
 
 .sidebar .vitalize h1 {
@@ -104,8 +128,7 @@ img {
 
 .sidebar {
   width: 16rem;
-  height: 100vh;
-  padding: 1.6rem 0;
+  padding: 1.6rem 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,7 +145,8 @@ img {
 
 .item {
   padding: 1.6rem 2rem;
-  border-radius: 0.8rem;
+  border-radius: 0.3rem;
+  transition: scale 150ms ease-out;
 }
 
 .item a {
@@ -135,6 +159,7 @@ img {
 .item:hover {
   cursor: pointer;
   background-color: var(--nav-color-secondary);
+  scale: 1.1;
 }
 
 .item i {
@@ -340,6 +365,10 @@ select option {
   font-size: 1.33rem;
 }
 
+.invisible {
+  display: none;
+}
+
 .capitalize {
   text-transform: capitalize;
 }
@@ -358,6 +387,24 @@ select option {
 
 .gray-3 {
   color: var(--color-gray-3);
+}
+
+/* keyframes */
+
+.fade-in {
+  animation: FadeIn 0.5s ease-in;
+}
+
+@keyframes FadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* @medias */
@@ -396,6 +443,13 @@ select option {
   }
 }
 
-@media (max-width: 600px) {
 
+@media (max-width: 600px) {
+  #menu-hamburguer {
+    display: block;
+  }
+
+  .sidebar, #close-menu {
+    display: none;
+  }
 }
