@@ -71,7 +71,6 @@ body {
   font-family: var(--font-primary);
   color: var(--color-dark-text);
   min-height: 100vh;
-  display: flex;
 }
 
 ul {
@@ -204,46 +203,36 @@ select option {
   margin-top: 2.5rem;
   background: var(--color-primary);
   color: var(--color-gray-0);
-  border: 2px solid var(--color-primary);
+  border: none;
   border-radius: 0.3rem;
   text-transform: uppercase;
   text-decoration: none;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  letter-spacing: 0.3rem;
-  overflow: hidden;
   cursor: pointer;
+  transition: 200ms linear;
+  z-index: 1;
+  overflow: hidden;
 }
 
-.form-content button span {
-  position: relative;
-  transition: all .45s ease-out;
-}
-
-/* button animation */
-
-.form-content button #circle-anim {
-  width: 0%;
-  height: 0%;
-  opacity: 0;
-  line-height: 4rem;
-  border-radius: 33%;
-  background: var(--color-accent);
+.form-content button::before {
+  content: '';
   position: absolute;
-  transition: all .5s ease-out;
-  top: 2rem;
-  left: 14rem;
+  border-radius: 0.3rem;
+  top: 0; right: 0;
+  height: 100%;
+  width: 0;
+  background: var(--color-accent);
+  z-index: -1;
+  transition: 200ms linear;
 }
 
-.form-content button:hover #circle-anim  {
-  width: 200%;
-  height: 500%;
-  opacity: 1;
-  top: -7rem;
-  left: -7rem;
+.form-content button:hover::before {
+  width: 100%;
+  left: 0;
 }
 
-.form-content button:hover span {
+.form-content button:hover {
   color: var(--color-dark-text);
 }
 
