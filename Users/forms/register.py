@@ -20,6 +20,7 @@ class RegisterForm(forms.ModelForm):
         add_attr(self.fields['email'], 'class', 'span-2')
         add_placeholder(self.fields['password'], 'Digite sua Senha')
         add_placeholder(self.fields['password2'], 'Confirme sua Senha')
+        add_attr(self.fields['password'], 'class', 'password-help-text-m0')
 
     first_name = forms.CharField(
         label='Nome', max_length=150,
