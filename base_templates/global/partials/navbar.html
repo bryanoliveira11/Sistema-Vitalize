@@ -1,0 +1,46 @@
+<div class="wrap">
+  <div class="container">
+    <div class="row justify-content-between">
+        <div class="col">
+          <p class="mb-0 phone" title="Whatsapp">
+            <i class="fa-brands fa-whatsapp"></i>
+            <a href="#">+99 99999-9999</a>
+          </p>
+        </div>
+        <div class="col d-flex justify-content-end">
+          <div class="social-media">
+            <p class="mb-0 d-flex">
+              <a href="#" class="d-flex align-items-center justify-content-center" title="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="#" class="d-flex align-items-center justify-content-center" title="Localização">
+                <i class="fa-solid fa-location-dot"></i>
+              </a>
+            </p>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home:home' %}" title="Vitalize">
+      Vitalize <span>Centro Estético</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="fa fa-bars"></span> Menu
+    </button>
+    <div class="collapse navbar-collapse" id="ftco-nav">
+      <ul class="navbar-nav left-0">
+        <li class="nav-item"><a href="#" class="nav-link">Vitrine</a></li>
+        <li class="nav-item"><a href="#" class="nav-link">Agendamentos</a></li>
+        <li class="nav-item">
+          <a href="{% url 'users:login' %}" class="nav-link">
+            <i class="fas fa-user"></i>
+            Entrar
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

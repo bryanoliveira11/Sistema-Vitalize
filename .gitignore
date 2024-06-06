@@ -138,3 +138,4 @@ static/
 utils/create_env_file.py
 .VSCodeCounter
 utils/database.py
+base_static/global/css/bootstrap.css
