@@ -1,52 +1,54 @@
+{% load static %}
+
 {% if form.errors %}
-  <div class="form-content form-content-grid">
-    <div class="message-form">
-      <div class="message message-error center">
-        <div class="message-content">
-          <i class="fa-regular fa-circle-xmark icon-shake"></i>
-          Existem Erros Neste Formulário.
+    <div class="form-content form-content-grid">
+        <div class="message-form">
+            <div class="message message-error center">
+                <div class="message-content">
+                    <i class="fa-regular fa-circle-xmark icon-shake"></i>
+                    Existem Erros Neste Formulário.
+                </div>
+                <i class="fa-solid fa-xmark dismiss-flash-message" title="Remover Mensagem"></i>
+            </div>
         </div>
-        <i class="fa-solid fa-xmark dismiss-flash-message" title="Remover Mensagem"></i>
-      </div>
     </div>
-  </div>
 {% endif %}
 
-<form action="{{form_action}}" class="main-form"
-  method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  <div class="form-content form-content-grid">
-  {% for field in form  %}
-  <div class="form-group {{field.field.widget.attrs.class}}">
-    <label for="{{field.id_for_label}}"> {{field.label}} </label>
-    {{field}}
+<div class="main-content container">
+    <form action="{{form_action}}" class="main-form container"
+    method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-content form-content-grid">
+    {% for field in form  %}
+    <div class="form-group {{field.field.widget.attrs.class}}">
+      <label for="{{field.id_for_label}}"> {{field.label}} </label>
+      {{field}}
 
-  {% if field.help_text %}
-  <p class="help-text">{{field.help_text}}</p>
-  {% endif %}
-  {{field.errors}}
-  </div>
-
-  {% if field.name == 'cover' and field.value.url %}
-  <div class="span-2">
-    <img class="form-image" src="{{field.value.url}}" alt="">
-  </div>
-  {% endif %}
-  {% endfor %}
-  </div>
-
-  <div class="form-content form-content-grid">
-    <div class="form-group">
-      <button class="btn-submit" type="submit">
-        <div id="circle-anim"></div>
-        <span>
-          {% if btn_text %}
-          {{btn_text}}
-          {% else %}
-          Enviar
-          {% endif %}
-        </span>
-      </button>
+      {% if field.help_text %}
+        <p class="help-text">{{field.help_text}}</p>
+      {% endif %}
+        {{field.errors}}
     </div>
-  </div>
-</form>
+
+      {% if field.name == 'cover' and field.value.url %}
+        <div class="span-2">
+          <img class="form-image" src="{{field.value.url}}" alt="">
+        </div>
+      {% endif %}
+    {% endfor %}
+    </div>
+
+    <div class="form-content form-content-grid">
+        <div class="form-group">
+            <button class="btn-submit" type="submit">
+                {% if btn_text %}
+                {{btn_text}}
+                {% else %}
+                Enviar
+                {% endif %}
+                <i class="fa-solid fa-check"></i>
+            </button>
+        </div>
+    </div>
+    </form>
+</div>

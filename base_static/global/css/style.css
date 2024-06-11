@@ -85,19 +85,20 @@ img {
   max-width: 100%;
 }
 
-.main-content-container {
-  width: 72rem;
-  margin: 3rem auto;
+.container {
+  max-width: 144rem;
+  margin: 0 auto;
   padding: var(--spacing-medium);
 }
 
 /* nav adjustments */
 
 p.phone i {
-  margin-right:  0.5rem;
+  margin-right: 0.5rem;
 }
 
-p.phone i, div.social-media a i {
+p.phone i,
+div.social-media a i {
   font-size: 1.8rem;
 }
 
@@ -105,7 +106,7 @@ div.collapse.navbar-collapse {
   justify-content: end;
 }
 
-div.collapse.navbar-collapse li.nav-item a.nav-link{
+div.collapse.navbar-collapse li.nav-item a.nav-link {
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--color-dark-text);
@@ -121,6 +122,11 @@ div.social-media a:hover i {
 
 /* pages */
 
+.page-title-container {
+  max-width: 64rem;
+  margin: 4rem auto;
+}
+
 .page-title h1 {
   font-size: 3rem;
   margin-bottom: 0.5rem;
@@ -135,14 +141,14 @@ div.social-media a:hover i {
 
 /* forms */
 
-form.main-form {
-  margin-top: 4rem;
+.main-form {
+  padding-top: 0;
 }
 
 .form-content {
-  max-width: 72rem;
+  max-width: 64rem;
   margin: 0 auto;
-  color: var(--color-dark-text);
+  margin-bottom: var(--spacing-medium);
 }
 
 .form-content label,
@@ -158,18 +164,14 @@ form.main-form {
   margin-bottom: 0.5rem;
 }
 
-.password-help-text-m0 p.help-text {
-  margin: 0;
-}
-
 .help-text {
-  padding: 0.4rem 0 0 0.2rem;
+  padding: 0.4rem 0 0 0;
   font-size: 1.4rem;
 }
 
 .helptext-p {
   font-size: 1.4rem;
-  margin-bottom: 0.2rem;
+  margin: 0;
 }
 
 .errorlist li {
@@ -185,10 +187,9 @@ form.main-form {
 .form-content textarea,
 .form-content select {
   width: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 0.4rem;
   border: 1px solid var(--color-gray-3);
-  font-size: 1.4rem;
   transition: all 100ms ease-in-out;
 }
 
@@ -211,11 +212,6 @@ select option {
   color: var(--color-black);
 }
 
-.form-content input:focus {
-  border: 1px solid var(--color-accent);
-  outline: var(--color-accent) solid 1px;
-}
-
 .form-content-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
@@ -230,7 +226,7 @@ select option {
 .form-content button {
   position: relative;
   width: 100%;
-  padding: 0.6rem;
+  padding: 1rem 2rem;
   margin-top: 2.5rem;
   background: var(--color-primary);
   color: var(--color-gray-0);
@@ -250,7 +246,8 @@ select option {
   content: '';
   position: absolute;
   border-radius: 0.3rem;
-  top: 0; right: 0;
+  top: 0;
+  right: 0;
   height: 100%;
   width: 0;
   background: var(--color-accent);
@@ -267,21 +264,37 @@ select option {
   color: var(--color-dark-text);
 }
 
-.plaintext-button {
-  display: inline;
-  border: none;
-  background: none;
-  color: var(--color-primary);
-  font-size: 1.6rem;
-}
-
-.plaintext-button:hover {
-  cursor: pointer;
-  filter: brightness(85%);
-}
-
 .inline-form {
   display: inline;
+}
+
+.login-password-field {
+  position: relative;
+}
+
+#id_profile_picture:hover {
+  cursor: pointer;
+}
+
+#id_password.login-password-field {
+  padding-right: 5rem;
+}
+
+#show-password-icon {
+  padding: 1rem;
+  color: var(--color-dark-text);
+  position: absolute;
+  right: 0.15rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+#show-password-icon {
+  top: 47%;
+}
+
+#show-password-icon:hover {
+  background: rgba(68, 68, 68, 0.062);
 }
 
 /* forgot password */
@@ -320,6 +333,10 @@ select option {
   text-transform: capitalize;
 }
 
+.pb-0 {
+  padding-bottom: 0;
+}
+
 .m-1 {
   margin: 1rem;
 }
@@ -330,6 +347,10 @@ select option {
 
 .mr-03 {
   margin-right: 0.3rem;
+}
+
+.gray-0 {
+  color: var(--color-gray-0);
 }
 
 .gray-3 {
@@ -360,11 +381,26 @@ select option {
 
 /* @medias */
 
-@media (max-width: 750px) {
+@media (max-width: 600px) {
+  #menu-hamburguer {
+    display: block;
+  }
+
+  .sidebar,
+  #close-menu {
+    display: none;
+  }
+
   .form-content-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
     gap: calc(var(--spacing-gutter-medium) / 2);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .forgot-password-content {
+    margin-top: 1rem;
     align-items: center;
     justify-content: center;
   }
@@ -392,15 +428,8 @@ select option {
   .errorlist li {
     margin-bottom: 0.3rem;
   }
-}
 
-
-@media (max-width: 600px) {
-  #menu-hamburguer {
-    display: block;
-  }
-
-  .sidebar, #close-menu {
-    display: none;
+  .main-content-error-page {
+    margin: 0 auto;
   }
 }
