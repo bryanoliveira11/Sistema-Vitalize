@@ -10,7 +10,7 @@ from utils.django_forms import add_attr, add_placeholder, strong_password
 User = get_user_model()
 
 
-class RegisterForm(forms.ModelForm):
+class RegisterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._my_errors = defaultdict(list)
@@ -77,15 +77,6 @@ class RegisterForm(forms.ModelForm):
         ),
         widget=forms.PasswordInput()
     )
-
-    class Meta:
-        model = User
-        fields = [
-            'first_name',
-            'last_name',
-            'email',
-            'password',
-        ]
 
     # def clean_username(self):
     #     return self.validate_username(is_register=True)
