@@ -20,7 +20,11 @@ ALLOWED_HOSTS: List = [environ.get(
 )]
 
 CSRF_TRUSTED_ORIGINS: List = [environ.get(
+<<<<<<< HEAD
     'CSRF_TRUSTED_ORIGINS', 'http://127.0.0.1')
+=======
+    'CSRF_TRUSTED_ORIGINS', 'http://127.0.0.1:8000')
+>>>>>>> 4a34220c166bd51318cf05340fa42401ff677862
 ]
 
 ROOT_URLCONF = 'Vitalize.urls'

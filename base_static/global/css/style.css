@@ -139,7 +139,7 @@ div.social-media a:hover i {
   color: var(--color-gray-6);
 }
 
-/* forms */
+/* forms 
 
 .main-form {
   padding-top: 0;
@@ -229,6 +229,8 @@ select option {
   padding: 1rem;
 }
 
+*/
+
 .form-content button {
   position: relative;
   width: 100%;
@@ -278,10 +280,6 @@ select option {
   position: relative;
 }
 
-#id_profile_picture:hover {
-  cursor: pointer;
-}
-
 #id_password.login-password-field {
   padding-right: 5rem;
 }
@@ -303,7 +301,7 @@ select option {
   background: rgba(68, 68, 68, 0.062);
 }
 
-/* forgot password */
+/* forgot password 
 
 .forgot-password-content {
   margin: 0.5rem 0.3rem 0.5rem 0;
@@ -316,6 +314,8 @@ select option {
   color: var(--color-dark-text);
   font-size: 1.3rem;
 }
+
+*/
 
 /* utils */
 
