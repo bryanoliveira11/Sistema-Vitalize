@@ -193,6 +193,12 @@ div.social-media a:hover i {
   transition: all 100ms ease-in-out;
 }
 
+.form-content input:focus,
+.form-content input:focus-visible {
+  border: 1px solid var(--color-accent);
+  outline: var(--color-accent) solid 1px;
+}
+
 .form-content textarea {
   resize: none;
 }
