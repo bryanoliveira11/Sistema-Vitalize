@@ -1,8 +1,15 @@
 {% extends "global/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <main class="main-content-container">
   {% include "global/partials/page_title.html" %}
-  {% include "global/partials/forms.html" %}
+  {% include "global/partials/messages.html" %}
+  {% include "global/partials/form_messages.html" %}
+  <form method="POST" action="{{form_action}}" class="form-container">
+    {% csrf_token %}
+    {{form|crispy}}
+    <button type="submit">Login</button>
+  </form>
 </main>
 {% endblock content %}

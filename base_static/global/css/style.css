@@ -132,7 +132,7 @@ div.col.whatsapp-number {
 
 .page-title-container {
   max-width: 64rem;
-  margin: 4rem auto 2rem auto;
+  margin: 4rem auto 0 auto;
 }
 
 .page-title h1 {
@@ -157,7 +157,7 @@ div.col.whatsapp-number {
 .form-container {
   max-width: 64rem;
   margin: 0 auto;
-  margin-bottom: var(--spacing-medium);
+  margin: 2rem auto;
 }
 
 .form-content-grid {

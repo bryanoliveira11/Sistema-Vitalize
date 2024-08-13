@@ -10,7 +10,45 @@ from utils.django_forms import add_attr, add_placeholder, strong_password
 User = get_user_model()
 
 
-class RegisterForm(forms.Form):
+class RegisterForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._my_errors = defaultdict(list)
+        add_placeholder(self.fields['first_name'], 'Digite seu Nome')
+        add_placeholder(self.fields['last_name'], 'Digite seu Sobrenome')
+        add_placeholder(self.fields['email'], 'EX.: email@dominio.com')
+        add_attr(self.fields['email'], 'class', 'span-2')
+        add_placeholder(self.fields['password'], 'Digite sua Senha')
+        add_placeholder(self.fields['password2'], 'Confirme sua Senha')
+        add_attr(self.fields['password'], 'class', 'password-help-text-m0')
+
+    def validate_email(self):
+        email = self.cleaned_data.get('email')
+        email_database = User.objects.filter(email__iexact=email).first()
+
+        if email_database:
+            self._my_errors['email'].append(
+                'Este E-mail Está em Uso.'
+            )
+
+        return email
+
+    def validate_password(self):
+        password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+
+        if password != password2:
+            self._my_errors['password'].append(
+                'Senhas Precisam ser Iguais.'
+            )
+            self._my_errors['password2'].append(
+                'Senhas Precisam ser Iguais.'
+            )
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'password']
+
     first_name = forms.CharField(
         label='Nome', max_length=150,
         error_messages={
@@ -63,40 +101,6 @@ class RegisterForm(forms.Form):
         },
         widget=forms.PasswordInput()
     )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._my_errors = defaultdict(list)
-        add_placeholder(self.fields['first_name'], 'Digite seu Nome')
-        add_placeholder(self.fields['last_name'], 'Digite seu Sobrenome')
-        add_placeholder(self.fields['email'], 'EX.: email@dominio.com')
-        add_attr(self.fields['email'], 'class', 'span-2')
-        add_placeholder(self.fields['password'], 'Digite sua Senha')
-        add_placeholder(self.fields['password2'], 'Confirme sua Senha')
-        add_attr(self.fields['password'], 'class', 'password-help-text-m0')
-
-    def validate_email(self):
-        email = self.cleaned_data.get('email')
-        email_database = User.objects.filter(email__iexact=email).first()
-
-        if email_database:
-            self._my_errors['email'].append(
-                'Este E-mail Está em Uso.'
-            )
-
-        return email
-
-    def validate_password(self):
-        password = self.cleaned_data.get('password')
-        password2 = self.cleaned_data.get('password2')
-
-        if password != password2:
-            self._my_errors['password'].append(
-                'Senhas Precisam ser Iguais.'
-            )
-            self._my_errors['password2'].append(
-                'Senhas Precisam ser Iguais.'
-            )
 
     def clean_email(self):
         return self.validate_email()
