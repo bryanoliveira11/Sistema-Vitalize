@@ -94,6 +94,10 @@ img {
 
 /* nav adjustments */
 
+.nav-container {
+  padding: 0;
+}
+
 p.phone i {
   margin-right: 0.5rem;
 }
@@ -528,6 +532,16 @@ div.col.whatsapp-number i {
 
 /* @medias */
 
+@media (max-width: 990px) {
+  #ftco-nav {
+    margin-top: 1rem;
+  }
+
+  #ftco-nav a.nav-link {
+    padding-left: 1rem;
+  }
+}
+
 @media (max-width: 700px) {
   .btn-google-signin.profile {
     width: 84%;
@@ -560,5 +574,11 @@ div.col.whatsapp-number i {
 
   .form-image {
     padding: 1rem 0 0 0;
+  }
+}
+
+@media (max-width: 574px) {
+  .nav-container {
+    padding: 0 1.5rem;
   }
 }
