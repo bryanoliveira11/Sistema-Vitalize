@@ -100,7 +100,7 @@ p.phone i {
 
 p.phone i,
 div.social-media a i {
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 div.collapse.navbar-collapse {
@@ -114,11 +114,35 @@ div.collapse.navbar-collapse li.nav-item a.nav-link {
 }
 
 div.social-media i {
-  color: var(--color-accent);
+  color: var(--color-gray-0);
 }
 
-div.social-media a:hover i {
+div.social-media a {
+  transition: filter 150ms ease-in-out;
+}
+
+div.social-media a.insta,
+div.social-media a.insta:hover {
   color: var(--color-gray-0);
+  background: linear-gradient(
+    45deg,
+    #405de6,
+    #5851db,
+    #833ab4,
+    #c13584,
+    #e1306c,
+    #fd1d1d
+  );
+}
+
+div.social-media a.local,
+div.social-media a.local:hover {
+  background: var(--color-gray-6);
+}
+
+div.social-media a:hover,
+div.col.whatsapp-number a:hover {
+  filter: brightness(70%);
 }
 
 div.col.whatsapp-number {
@@ -126,6 +150,10 @@ div.col.whatsapp-number {
   flex-direction: column;
   align-items: start;
   justify-content: center;
+}
+
+div.col.whatsapp-number i {
+  color: var(--color-success);
 }
 
 /* pages */
@@ -171,7 +199,7 @@ div.col.whatsapp-number {
 }
 
 .form-container input {
-  padding: .8rem;
+  padding: 0.8rem;
   font-size: 1.4rem;
   transition: all 100ms ease-in-out;
 }
@@ -226,7 +254,25 @@ div.col.whatsapp-number {
 }
 
 .form-container button:hover {
-  color: var(--color-dark-text);
+  color: var(--color-gray-0);
+}
+
+.input-group-text {
+  cursor: pointer;
+  max-width: 4rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 100ms ease-in-out;
+}
+
+.input-group-text:hover {
+  filter: brightness(80%);
+}
+
+.input-group-text .fa-eye {
+  font-size: 1.3rem;
 }
 
 .inline-form {

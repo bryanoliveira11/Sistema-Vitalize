@@ -5,10 +5,6 @@
 <main class="main-content-container mx-auto">
   {% include "global/partials/page_title.html" %}
   {% include "global/partials/form_messages.html" %}
-  <form method="POST" action="{{form_action}}" class="form-container">
-    {% csrf_token %}
-    {{form|crispy}}
-    <button type="submit">Cadastrar</button>
-  </form>
+  <div class="form-container">{% crispy form %}</div>
 </main>
 {% endblock content %}
