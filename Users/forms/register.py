@@ -22,6 +22,29 @@ class RegisterForm(forms.Form):
         add_placeholder(self.fields['password2'], 'Confirme sua Senha')
         add_attr(self.fields['password'], 'class', 'password-help-text-m0')
 
+    def validate_email(self):
+        email = self.cleaned_data.get('email')
+        email_database = User.objects.filter(email__iexact=email).first()
+
+        if email_database:
+            self._my_errors['email'].append(
+                'Este E-mail Está em Uso.'
+            )
+        
+        return email 
+    
+    def validate_password(self):
+        password = self.cleaned_data.get('password')
+        password2 = self.cleaned_data.get('password2')
+
+        if password != password2:
+            self._my_errors['password'].append(
+                'Senhas Precisam ser Iguais.'
+            )
+            self._my_errors['password2'].append(
+                'Senhas Precisam ser Iguais.'
+            )
+
     first_name = forms.CharField(
         label='Nome', max_length=150,
         error_messages={
@@ -78,14 +101,11 @@ class RegisterForm(forms.Form):
         widget=forms.PasswordInput()
     )
 
-    # def clean_username(self):
-    #     return self.validate_username(is_register=True)
-
-    # def clean_email(self):
-    #     return self.validate_email(is_register=True)
+    def clean_email(self):
+        return self.validate_email()
 
     def clean(self, *args, **kwargs):
-        # self.validate_password()
+        self.validate_password()
 
         if self._my_errors:
             raise ValidationError(self._my_errors)
