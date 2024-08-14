@@ -43,14 +43,13 @@ class VitalizeUser(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name='Alterado em',
     )
-    phone_number = PhoneNumberField(blank=True)
-    is_staff = models.BooleanField(
-        default=False, verbose_name='Colaborador Vitalize')
-    is_superuser = models.BooleanField(
-        default=False, verbose_name='Administrador Vitalize'
+    phone_number = PhoneNumberField(
+        blank=True, verbose_name='Telefone / Celular'
     )
-    is_client = models.BooleanField(
-        default=False, verbose_name='Cliente Vitalize'
+    is_staff = models.BooleanField(
+        default=False, verbose_name='Colaborador Vitalize', editable=False)
+    is_superuser = models.BooleanField(
+        default=False, verbose_name='Administrador Vitalize', editable=False
     )
 
     objects = CustomUserManager()

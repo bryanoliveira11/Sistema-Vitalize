@@ -257,7 +257,6 @@ button:hover .submit {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: .5rem;
   transition: filter 100ms ease-in-out;
 }
 
@@ -423,7 +422,6 @@ button:hover .submit {
 }
 
 .span-2 {
-  margin-top: 0.5rem;
   grid-column: span 2;
   font-size: 1.33rem;
 }
@@ -503,7 +501,8 @@ button:hover .submit {
   50% {
     transform: translate(40px, -60px);
   }
-  60%, 100% {
+  60%,
+  100% {
     transform: translateY(0);
   }
 }

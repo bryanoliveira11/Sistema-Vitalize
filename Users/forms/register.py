@@ -98,7 +98,7 @@ class RegisterForm(forms.ModelForm):
     )
 
     phone_number = PhoneNumberField(
-        label='Telefone ou Celular',
+        label='Telefone ou Celular', max_length=15,
         help_text=mark_safe(
             '''
           <p class="helptext-p">&#x2022; Somente Números</p>
