@@ -1,13 +1,12 @@
 from collections import defaultdict
 
-from crispy_forms.bootstrap import AppendedText, Field, StrictButton
+from crispy_forms.bootstrap import AppendedText, Field, PrependedAppendedText
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.urls import reverse
-from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from utils.django_forms import add_attr, add_placeholder, strong_password
 
@@ -26,19 +25,18 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['password2'], 'Confirme sua Senha')
         add_attr(self.fields['password'], 'class', 'password-help-text-m0')
         self.helper = FormHelper()
-        self.helper.form_method = 'POST'
-        self.helper.form_action = reverse('users:register')
+        self.helper.form_tag = False
         self.helper.layout = Layout(
             Field('first_name'),
             Field('last_name'),
-            Field('email'),
-            AppendedText('password', format_html(
-                '<i class="fa-solid fa-eye"></i>')
+            PrependedAppendedText('email', mark_safe(
+                '<i class="fa-solid fa-envelope"></i>')),
+            AppendedText('password', mark_safe(
+                '<i class="fa-solid fa-eye"></i>'), css_class='show-password'
             ),
-            AppendedText('password2', format_html(
-                '<i class="fa-solid fa-eye"></i>')
+            AppendedText('password2', mark_safe(
+                '<i class="fa-solid fa-eye"></i>'), css_class='show-password'
             ),
-            StrictButton('Cadastrar')
         )
 
     def validate_email(self):
@@ -85,9 +83,7 @@ class RegisterForm(forms.ModelForm):
     )
 
     email = forms.EmailField(
-        label=format_html(
-            '<i class="fa-solid fa-envelope mr-03"></i> E-mail'
-        ),
+        label='E-mail',
         help_text=('E-mail Precisa ser Válido.'),
         error_messages={
             'required': 'Digite seu E-mail.',
@@ -95,13 +91,11 @@ class RegisterForm(forms.ModelForm):
     )
 
     password = forms.CharField(
-        label=format_html(
-            '<i class="fa-solid fa-lock mr-03"></i> Senha'
-        ),
+        label='Senha',
         error_messages={
             'required': 'Digite sua Senha.'
         },
-        help_text=format_html(
+        help_text=mark_safe(
             '''
           <p class="helptext-p password">&#x2022; Mínimo de 8 Dígitos</p>
           <p class="helptext-p password">&#x2022; 1x Letra Maiúscula</p>

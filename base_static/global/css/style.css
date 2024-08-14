@@ -224,59 +224,55 @@ div.col.whatsapp-number i {
   position: relative;
   width: 100%;
   padding: 1rem 2rem;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   background: var(--color-primary);
   color: var(--color-gray-0);
   border: none;
   border-radius: 0.3rem;
   text-transform: uppercase;
-  text-decoration: none;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 600;
   cursor: pointer;
-  transition: 200ms linear;
-  z-index: 1;
+  transition: all 200ms ease-in;
   overflow: hidden;
 }
 
-.form-container button::before {
-  content: '';
-  position: absolute;
-  border-radius: 0.3rem;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 0;
-  background: var(--color-accent);
-  z-index: -1;
-  transition: 200ms linear;
-}
-
-.form-container button:hover::before {
-  width: 100%;
-  left: 0;
-}
-
 .form-container button:hover {
-  color: var(--color-gray-0);
+  background: var(--color-primary);
+  filter: brightness(120%);
+}
+
+button:hover .submit {
+  animation: sending 2s infinite;
+  animation-fill-mode: forwards;
+}
+
+.asteriskField {
+  display: none;
 }
 
 .input-group-text {
-  cursor: pointer;
   max-width: 4rem;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: .5rem;
   transition: filter 100ms ease-in-out;
 }
 
-.input-group-text:hover {
-  filter: brightness(80%);
+.input-group-text i {
+  color: var(--clr-dark-background);
+  font-size: 1.3rem;
 }
 
-.input-group-text .fa-eye {
-  font-size: 1.3rem;
+.show-password + .input-group-text {
+  cursor: pointer;
+  margin: 0;
+}
+
+.show-password + .input-group-text:hover {
+  filter: brightness(80%);
 }
 
 .inline-form {
@@ -497,6 +493,18 @@ div.col.whatsapp-number i {
   to {
     opacity: 0;
     transform: translateX(-30px);
+  }
+}
+
+@keyframes sending {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translate(40px, -60px);
+  }
+  60%, 100% {
+    transform: translateY(0);
   }
 }
 
