@@ -7,9 +7,10 @@
   {% include "global/partials/messages.html" %}
   {% include "global/partials/form_messages.html" %}
   <form method="POST" action="{{form_action}}" class="form-container">
-    {% csrf_token %}
-    {{form|crispy}}
-    <button type="submit">Login</button>
+    {% crispy form %}
+    <button type="submit">
+      <span>Login</span>
+    </button>
   </form>
 </main>
 {% endblock content %}

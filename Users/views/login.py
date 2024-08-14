@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import View
-
+from django.contrib import messages
 from Users.forms import LoginForm
-
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
 
 class LoginClassView(View):
     def get(self, *args, **kwargs):
@@ -23,3 +24,28 @@ class LoginClassView(View):
                 'form_action': reverse('users:login'),
             }
         )
+
+    def post(self, *args, **kwargs):
+        POST = self.request.POST
+        form = LoginForm(POST)
+
+        if form.is_valid():
+            authenticated_user = authenticate(
+                request=self.request,
+                email=form.cleaned_data.get('email', ''),
+                password=form.cleaned_data.get('password', '')
+            )
+
+            if authenticated_user is not None:
+                login(self.request, user=authenticated_user)
+                messages.success(
+                    self.request,
+                    f'Logado como "{self.request.user}".'
+                )
+                return redirect(reverse('home:home'))
+            else:
+                messages.error(self.request, 'Credenciais Inválidas.')
+        else:
+            messages.error(self.request, 'E-mail ou Senha Inválidos.')
+
+        return redirect(reverse('users:login'))
