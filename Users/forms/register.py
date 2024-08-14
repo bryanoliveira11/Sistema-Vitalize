@@ -24,6 +24,7 @@ class RegisterForm(forms.ModelForm):
         add_attr(self.fields['email'], 'class', 'span-2')
         add_placeholder(self.fields['password'], 'Digite sua Senha')
         add_placeholder(self.fields['password2'], 'Confirme sua Senha')
+        add_placeholder(self.fields['phone_number'], 'Digite seu Telefone')
         add_attr(self.fields['password'], 'class', 'password-help-text-m0')
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -39,9 +40,7 @@ class RegisterForm(forms.ModelForm):
             AppendedText('password', mark_safe(
                 '<i class="fa-solid fa-eye"></i>'), css_class='show-password'
             ),
-            AppendedText('password2', mark_safe(
-                '<i class="fa-solid fa-eye"></i>'), css_class='show-password'
-            ),
+            Field('password2'),
         )
 
     def validate_email(self):

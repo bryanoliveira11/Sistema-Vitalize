@@ -127,6 +127,35 @@ class HandlePhoneNumberMask {
   }
 }
 
+class ShowHidePassword {
+  constructor() {
+    this.passwordField = document.querySelector('#id_password');
+    this.inputGroup = this.passwordField.parentElement;
+    this.eyeIconContainer = this.inputGroup.querySelector('.input-group-text');
+    this.eyeIcon = this.inputGroup.querySelector('.input-group-text .fa-eye');
+  }
+  init() {
+    if (!this.passwordField || !this.inputGroup || !this.eyeIconContainer || !this.eyeIcon) return;
+    this.updateInputType();
+  }
+  updateInputType() {
+    let is_password_visible = false;
+    this.eyeIconContainer.addEventListener('click', () => {
+      if (is_password_visible) {
+        this.passwordField.type = 'password';
+        this.eyeIcon.classList.remove('fa-eye-slash');
+        this.eyeIcon.classList.add('fa-eye');
+      } else {
+        this.passwordField.type = 'text';
+        this.eyeIcon.classList.remove('fa-eye');
+        this.eyeIcon.classList.add('fa-eye-slash');
+      }
+      is_password_visible = !is_password_visible;
+    });
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
+new ShowHidePassword().init();
