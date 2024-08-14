@@ -7,6 +7,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+from phonenumber_field.formfields import PhoneNumberField
 
 from utils.django_forms import add_attr, add_placeholder, strong_password
 
@@ -30,7 +31,11 @@ class RegisterForm(forms.ModelForm):
             Field('first_name'),
             Field('last_name'),
             PrependedAppendedText('email', mark_safe(
-                '<i class="fa-solid fa-envelope"></i>')),
+                '<i class="fa-solid fa-envelope"></i>')
+            ),
+            PrependedAppendedText('phone_number', mark_safe(
+                '<i class="fa-solid fa-phone"></i>')
+            ),
             AppendedText('password', mark_safe(
                 '<i class="fa-solid fa-eye"></i>'), css_class='show-password'
             ),
@@ -64,7 +69,9 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'password']
+        fields = [
+            'first_name', 'last_name', 'email', 'password', 'phone_number'
+        ]
 
     first_name = forms.CharField(
         label='Nome', max_length=150,
@@ -88,6 +95,21 @@ class RegisterForm(forms.ModelForm):
         error_messages={
             'required': 'Digite seu E-mail.',
         },
+    )
+
+    phone_number = PhoneNumberField(
+        label='Telefone ou Celular',
+        help_text=mark_safe(
+            '''
+          <p class="helptext-p">&#x2022; Somente Números</p>
+          <p class="helptext-p">&#x2022; Informe o DDD</p>
+            '''
+        ),
+        error_messages={
+            'required': 'Digite seu Telefone.',
+            'invalid': 'Digite um Telefone Válido (exemplo : 1123456789).',
+        },
+        region='BR',
     )
 
     password = forms.CharField(

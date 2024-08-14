@@ -1,6 +1,7 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class CustomUserManager(BaseUserManager):
@@ -42,7 +43,7 @@ class VitalizeUser(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name='Alterado em',
     )
-    phone_number = models.CharField(max_length=11, blank=True, default='')
+    phone_number = PhoneNumberField(blank=True)
     is_staff = models.BooleanField(
         default=False, verbose_name='Colaborador Vitalize')
     is_superuser = models.BooleanField(
