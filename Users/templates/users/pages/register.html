@@ -19,7 +19,7 @@
   {% include "global/partials/form_messages.html" %}
   <form method="POST" action="{{form_action}}" class="form-container">
     {% crispy form %}
-    <button type="submit">
+    <button type="submit" class="form-button" title="Cadastrar">
       <span>Cadastrar</span>
       <i class="fa-solid fa-paper-plane submit" aria-hidden="true"></i>
     </button>

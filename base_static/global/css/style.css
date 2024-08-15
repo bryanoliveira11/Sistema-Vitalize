@@ -224,7 +224,7 @@ div.col.whatsapp-number i {
   font-size: 1.3rem;
 }
 
-.form-container button {
+.form-container button.form-button {
   position: relative;
   width: 100%;
   padding: 1rem 2rem;
@@ -241,12 +241,12 @@ div.col.whatsapp-number i {
   overflow: hidden;
 }
 
-.form-container button:hover {
+.form-container button.form-button:hover {
   background: var(--color-primary);
   filter: brightness(120%);
 }
 
-button:hover .submit {
+button.form-button:hover .submit {
   animation: sending 2s infinite;
   animation-fill-mode: forwards;
 }
@@ -346,6 +346,10 @@ button:hover .submit {
   margin: 0 auto;
 }
 
+.social-accounts-container a {
+  width: 100%;
+}
+
 .social-accounts-container .google-login {
   max-width: 64rem;
   width: 100%;
@@ -398,6 +402,10 @@ button:hover .submit {
   font-size: 1.5rem;
 }
 
+.login-register-redirect i {
+  font-size: 10rem;
+}
+
 a.default-link {
   color: var(--color-primary);
 }
@@ -405,6 +413,19 @@ a.default-link {
 a.default-link:hover {
   color: var(--color-primary);
   filter: brightness(85%);
+}
+
+button.google-callback-btn {
+  background: none;
+  outline: none;
+  border: none;
+  width: 100%;
+}
+
+button.google-callback-btn h2 {
+  font-weight: 600;
+  font-size: 1.8rem;
+  text-transform: uppercase;
 }
 
 /* messages */

@@ -110,9 +110,7 @@ class HandlePhoneNumberMask {
   }
   init() {
     if (!this.phoneNumber) return;
-    this.phoneNumber.addEventListener('input', (event) =>
-      this.handlePhone(event),
-    );
+    this.phoneNumber.addEventListener('input', (e) => this.handlePhone(e));
   }
   handlePhone(event) {
     let input = event.target;
