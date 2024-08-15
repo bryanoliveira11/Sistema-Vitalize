@@ -117,6 +117,10 @@ div.collapse.navbar-collapse li.nav-item a.nav-link {
   color: var(--color-dark-text);
 }
 
+div.collapse.navbar-collapse li.nav-item a.nav-link:hover {
+  color: var(--color-gray-0);
+}
+
 div.social-media i {
   color: var(--color-gray-0);
 }
@@ -307,6 +311,12 @@ button:hover .submit {
   max-width: 64rem;
   width: 100%;
   margin: 2rem auto;
+}
+
+.logout-container i.fa-circle-check {
+  font-size: 10rem;
+  color: var(--color-success);
+  margin-bottom: 2rem;
 }
 
 .plaintext-button {
@@ -515,12 +525,11 @@ a.default-link:hover {
 
 /* utils */
 
-.user-logout-link {
-  transition: filter 100ms ease-in-out;
+.plaintext-button.user-logout-link {
   color: var(--color-primary);
 }
 
-.user-logout-link:hover {
+.plaintext-button.user-logout-link:hover {
   color: var(--color-primary);
   filter: brightness(85%);
 }

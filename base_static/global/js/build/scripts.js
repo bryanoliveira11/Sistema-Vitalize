@@ -32,7 +32,7 @@ class DismissFlashMessages {
       btn.addEventListener('click', () => {
         const parentElement = btn.parentElement;
         if (parentElement.classList.contains('message')) {
-          parentElement.classList.add('hide-message');
+          addClassList(parentElement, 'hide-message');
           ChangeDisplayAnimationEnd(parentElement);
         }
       });
@@ -145,12 +145,12 @@ class ShowHidePassword {
     this.eyeIconContainer.addEventListener('click', () => {
       if (is_password_visible) {
         this.passwordField.type = 'password';
-        this.eyeIcon.classList.remove('fa-eye-slash');
-        this.eyeIcon.classList.add('fa-eye');
+        removeClassList(this.eyeIcon, 'fa-eye-slash');
+        addClassList(this.eyeIcon, 'fa-eye');
       } else {
         this.passwordField.type = 'text';
-        this.eyeIcon.classList.remove('fa-eye');
-        this.eyeIcon.classList.add('fa-eye-slash');
+        removeClassList(this.eyeIcon, 'fa-eye');
+        addClassList(this.eyeIcon, 'fa-eye-slash');
       }
       is_password_visible = !is_password_visible;
     });

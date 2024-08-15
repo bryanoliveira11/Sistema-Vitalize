@@ -1,7 +1,14 @@
 <div class="logout-container">
   <div class="col-md-12 text-center">
+      <i class="fa-solid fa-circle-check icon-shake"></i>
       <h2>Usuário já Logado</h2>
-      <span> Você está logado como <span class="text-underline">"{{request.user.email}}"</span>
+      <span> Você está logado como <span>
+        {% if request.user.email %}
+        "{{request.user.email}}"
+        {% else %}
+        "{{request.user}}"
+        {% endif %}
+      </span>
         <a href="{% url 'users:logout' %}" class="plaintext-button user-logout-link">clique aqui</a>
         {% include "global/partials/logout_form.html" %}
         para sair.

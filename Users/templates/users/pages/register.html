@@ -5,6 +5,7 @@
 <main class="main-content-container">
   {% include "global/partials/page_title.html" %}
   {% include "global/partials/form_messages.html" %}
+  {% include "global/partials/messages.html" %}
 
   {% if request.user.is_authenticated %}
   {% include "global/partials/is_authenticated.html" %}
