@@ -15,6 +15,13 @@
       <span>Cadastrar</span>
       <i class="fa-solid fa-paper-plane submit" aria-hidden="true"></i>
     </button>
+    <div class="login-register-redirect">
+      <h3> Já tem uma Conta?
+        <span>
+            <a class="default-link" href="{% url 'users:login' %}">Faça Login</a>
+        </span>
+      </h3>
+    </div>
   </form>
   {% endif %}
 </main>

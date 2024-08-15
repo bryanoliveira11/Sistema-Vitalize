@@ -11,6 +11,11 @@ INSTALLED_APPS = [
     # crispy forms
     'crispy_forms',
     'crispy_bootstrap5',
+    # all auth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     # cors headers
     'corsheaders',
     # debug toolbar

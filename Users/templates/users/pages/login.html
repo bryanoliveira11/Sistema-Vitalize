@@ -1,6 +1,7 @@
 {% extends "global/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
 
 {% block content %}
 <main class="main-content-container">
@@ -18,15 +19,21 @@
     </button>
     <div class="social-accounts-login">
       <hr class="social-accounts-sep">
-      {% if not request.user.is_authenticated %}
       <div class="social-accounts-container">
           <a class="social-btn btn-google"
-              href="#"
+              href="{% provider_login_url 'google'%}?next={% url 'home:home' %}"
               title="Entrar com o Google.">
               <img src="{% static 'global/img/google_icon.png' %}" alt="">
-          </a>
+              <span>Entrar com o Google</span>
+          </a>  
       </div>
-      {% endif %}
+      <div class="login-register-redirect">
+        <h3> Novo Usuário?
+          <span>
+              <a class="default-link" href="{% url 'users:register' %}">Crie uma Conta</a>
+          </span>
+        </h3>
+      </div>
   </form>
   {% endif %}
 </main>

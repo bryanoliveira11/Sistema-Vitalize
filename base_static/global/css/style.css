@@ -332,8 +332,8 @@ hr.social-accounts-sep {
   height: 0.1rem;
   border: 0;
   margin: 3rem auto 3rem auto;
-  background: var(--color-gray-6);
-  color: var(--color-gray-6);
+  background: var(--color-gray-5);
+  color: var(--color-gray-5);
   line-height: 2rem;
   max-width: 64rem;
   opacity: 1;
@@ -342,7 +342,7 @@ hr.social-accounts-sep {
 hr.social-accounts-sep:before {
   content: '';
   display: block;
-  background: var(--color-gray-6);
+  background: var(--color-gray-5);
 }
 
 body.dark-mode-style hr.social-accounts-sep:after {
@@ -374,24 +374,53 @@ hr.social-accounts-sep:after {
 }
 
 .social-btn {
-  width: 4rem;
+  width: 100%;
   height: 4rem;
-  display: inline-block;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 300ms ease-in-out;
   border-radius: 0.3rem;
-  margin: 0 0.5rem 0 0.5rem;
-  border: none;
+  border: 1px solid var(--color-gray-1);
   outline: none;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.11);
+}
+
+.social-btn span {
+  color: var(--color-dark-text);
+  font-weight: 600;
 }
 
 .social-btn img {
   border-radius: 0.3rem;
   padding: 0.3rem;
+  width: 4rem;
 }
 
 .social-btn:hover {
+  background: var(--color-white);
+  filter: brightness(85%);
+}
+
+.social-btn:hover span {
+  color: var(--color-dark-text);
+}
+
+.login-register-redirect {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.login-register-redirect h3 {
+  font-size: 1.5rem;
+}
+
+a.default-link {
+  color: var(--color-primary);
+}
+
+a.default-link:hover {
+  color: var(--color-primary);
   filter: brightness(85%);
 }
 
@@ -482,14 +511,6 @@ hr.social-accounts-sep:after {
 .login-message h3,
 .login-message a {
   font-size: 1.6rem;
-}
-
-.login-register-redirect h3 {
-  font-size: 1.4rem;
-}
-
-.login-register-redirect span {
-  margin-left: 0.3rem;
 }
 
 /* utils */

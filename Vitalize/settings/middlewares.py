@@ -8,6 +8,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # cors headers middleware
     'corsheaders.middleware.CorsMiddleware',
+    # all auth middleware
+    'allauth.account.middleware.AccountMiddleware',
     # debug toolbar middleware
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     # AxesMiddleware should be the last middleware in the MIDDLEWARE list.

@@ -10,6 +10,7 @@ from .messages import *
 from .security import *
 from .smtp import *
 from .templates import *
+from .all_auth import *
 
 from .axes_config import *  # isort:skip
 
