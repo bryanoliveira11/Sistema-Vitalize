@@ -11,9 +11,9 @@ class LogoutClassView(View):
         raise Http404()
 
     def post(self, *args, **kwargs):
-        user = self.request.user.get_username()
+        user = str(self.request.user)
 
-        if self.request.POST.get('user') != user:
+        if str(self.request.POST.get('user')) != user:
             messages.error(self.request, 'Usuário de Logout Inválido.')
             return redirect(reverse('users:login'))
         messages.success(self.request, 'Logout Efetuado. Até a Próxima !')

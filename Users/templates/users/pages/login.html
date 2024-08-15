@@ -18,7 +18,9 @@
         <img src="{% static 'global/img/google_icon.png' %}" alt="">
       </div>
       <div class="google-login-text">
-        <a href=""><h2>Entrar com o Google</h2></a>
+        <a href="{% url 'users:google_login' %}?next={% url 'home:home' %}">
+          <h2>Entrar com o Google</h2>
+        </a>
       </div>
     </div>
   </div>

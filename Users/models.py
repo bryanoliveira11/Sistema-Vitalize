@@ -49,11 +49,7 @@ class VitalizeUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
-
-    def get_username(self):
-        ''' Returns the User E-mail '''
-        return self.email
+        return f'{self.email}'
 
     class Meta:
         verbose_name = 'Usuário Vitalize'

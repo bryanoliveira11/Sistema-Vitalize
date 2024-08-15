@@ -1,3 +1,4 @@
+from allauth.account.views import LoginView
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
@@ -41,7 +42,7 @@ class LoginClassView(View):
                 login(self.request, user=authenticated_user)
                 messages.success(
                     self.request,
-                    f'Logado como "{self.request.user.get_username()}".'
+                    f'Logado como "{self.request.user}".'
                 )
                 return redirect(reverse('home:home'))
             else:
