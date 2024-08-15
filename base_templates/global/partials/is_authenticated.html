@@ -1,0 +1,10 @@
+<div class="logout-container">
+  <div class="col-md-12 text-center">
+      <h2>Usuário já Logado</h2>
+      <span> Você está logado como <span class="text-underline">"{{request.user.email}}"</span>
+        <a href="{% url 'users:logout' %}" class="plaintext-button user-logout-link">clique aqui</a>
+        {% include "global/partials/logout_form.html" %}
+        para sair.
+      </span>
+  </div>
+</div>

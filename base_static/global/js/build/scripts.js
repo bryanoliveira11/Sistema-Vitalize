@@ -130,12 +130,14 @@ class HandlePhoneNumberMask {
 class ShowHidePassword {
   constructor() {
     this.passwordField = document.querySelector('#id_password');
+    if (!this.passwordField) return;
     this.inputGroup = this.passwordField.parentElement;
+    if (!this.inputGroup) return;
     this.eyeIconContainer = this.inputGroup.querySelector('.input-group-text');
     this.eyeIcon = this.inputGroup.querySelector('.input-group-text .fa-eye');
   }
   init() {
-    if (!this.passwordField || !this.inputGroup || !this.eyeIconContainer || !this.eyeIcon) return;
+    if (!this.inputGroup || !this.eyeIconContainer || !this.eyeIcon) return;
     this.updateInputType();
   }
   updateInputType() {
@@ -155,7 +157,25 @@ class ShowHidePassword {
   }
 }
 
+class LogoutLinks {
+  constructor() {
+    this.linksLogout = Array.from(
+      document.querySelectorAll('.user-logout-link'),
+    );
+    this.formLogout = document.querySelector('.form-logout');
+  }
+  init() {
+    for (const link of this.linksLogout) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.formLogout.submit();
+      });
+    }
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
 new ShowHidePassword().init();
+new LogoutLinks().init();

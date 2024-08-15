@@ -35,14 +35,24 @@
     </button>
     <div class="collapse navbar-collapse" id="ftco-nav">
       <ul class="navbar-nav left-0">
-        <li class="nav-item"><a href="#" class="nav-link">Vitrine</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Agendamentos</a></li>
+        <li class="nav-item"><a href="{% url "home:home" %}" class="nav-link" title="Vitrine">Vitrine</a></li>
+        <li class="nav-item"><a href="#" class="nav-link" title="Agendamentos">Agendamentos</a></li>
+        {% if request.user.is_authenticated %}
         <li class="nav-item">
-          <a href="{% url 'users:login' %}" class="nav-link">
+          <a href="{% url 'users:logout' %}" class="nav-link user-logout-link" title="Sair">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Sair
+            {% include "global/partials/logout_form.html" %}
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a href="{% url 'users:login' %}" class="nav-link" title="Entrar">
             <i class="fas fa-user"></i>
             Entrar
           </a>
         </li>
+        {% endif %}
       </ul>
     </div>
   </div>

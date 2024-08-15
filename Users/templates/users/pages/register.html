@@ -5,6 +5,10 @@
 <main class="main-content-container">
   {% include "global/partials/page_title.html" %}
   {% include "global/partials/form_messages.html" %}
+
+  {% if request.user.is_authenticated %}
+  {% include "global/partials/is_authenticated.html" %}
+  {% else %}
   <form method="POST" action="{{form_action}}" class="form-container">
     {% crispy form %}
     <button type="submit">
@@ -12,5 +16,6 @@
       <i class="fa-solid fa-paper-plane submit" aria-hidden="true"></i>
     </button>
   </form>
+  {% endif %}
 </main>
 {% endblock content %}

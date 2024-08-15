@@ -28,7 +28,7 @@ class LoginClassView(View):
     def post(self, *args, **kwargs):
         POST = self.request.POST
         form = LoginForm(POST)
-
+        
         if form.is_valid():
             authenticated_user = authenticate(
                 request=self.request,
@@ -40,7 +40,7 @@ class LoginClassView(View):
                 login(self.request, user=authenticated_user)
                 messages.success(
                     self.request,
-                    f'Logado como "{self.request.user}".'
+                    f'Logado como "{self.request.user.email}".'
                 )
                 return redirect(reverse('home:home'))
             else:

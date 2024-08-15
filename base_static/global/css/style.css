@@ -303,6 +303,16 @@ button:hover .submit {
   background: rgba(68, 68, 68, 0.062);
 }
 
+.logout-container {
+  max-width: 64rem;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.plaintext-button {
+  display: inline;
+}
+
 /* forgot password */
 
 .forgot-password-content {
@@ -317,6 +327,74 @@ button:hover .submit {
   font-size: 1.3rem;
 }
 
+/* social login */
+hr.social-accounts-sep {
+  height: 0.1rem;
+  border: 0;
+  margin: 3rem auto 3rem auto;
+  background: var(--color-gray-6);
+  color: var(--color-gray-6);
+  line-height: 2rem;
+  max-width: 64rem;
+  opacity: 1;
+}
+
+hr.social-accounts-sep:before {
+  content: '';
+  display: block;
+  background: var(--color-gray-6);
+}
+
+body.dark-mode-style hr.social-accounts-sep:after {
+  background: var(--clr-dark-background);
+}
+
+hr.social-accounts-sep:after {
+  content: 'ou';
+  display: block;
+  text-align: center;
+  background: var(--color-white-background);
+  width: 5rem;
+  margin-top: -1rem;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translate(-50%);
+  -moz-transform: translate(-50%);
+  -ms-transform: translate(-50%);
+  -o-transform: translate(-50%);
+  transform: translate(-50%);
+}
+
+.social-accounts-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.social-btn {
+  width: 4rem;
+  height: 4rem;
+  display: inline-block;
+  text-align: center;
+  transition: all 300ms ease-in-out;
+  border-radius: 0.3rem;
+  margin: 0 0.5rem 0 0.5rem;
+  border: none;
+  outline: none;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+.social-btn img {
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+}
+
+.social-btn:hover {
+  filter: brightness(85%);
+}
+
 /* messages */
 
 .messages-container {
@@ -324,6 +402,7 @@ button:hover .submit {
   flex-flow: column nowrap;
   gap: calc(var(--spacing-medium) / 2);
   max-width: 67rem;
+  margin: 2rem auto;
 }
 
 .message-form {
@@ -415,10 +494,24 @@ button:hover .submit {
 
 /* utils */
 
+.user-logout-link {
+  transition: filter 100ms ease-in-out;
+  color: var(--color-primary);
+}
+
+.user-logout-link:hover {
+  color: var(--color-primary);
+  filter: brightness(85%);
+}
+
 .prevent-select {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.text-underline {
+  text-decoration: underline;
 }
 
 .span-2 {

@@ -1,4 +1,5 @@
 {% extends "global/base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -6,11 +7,27 @@
   {% include "global/partials/page_title.html" %}
   {% include "global/partials/messages.html" %}
   {% include "global/partials/form_messages.html" %}
+
+  {% if request.user.is_authenticated %}
+  {% include "global/partials/is_authenticated.html" %}
+  {% else %}
   <form method="POST" action="{{form_action}}" class="form-container">
     {% crispy form %}
     <button type="submit">
       <span>Login</span>
     </button>
+    <div class="social-accounts-login">
+      <hr class="social-accounts-sep">
+      {% if not request.user.is_authenticated %}
+      <div class="social-accounts-container">
+          <a class="social-btn btn-google"
+              href="#"
+              title="Entrar com o Google.">
+              <img src="{% static 'global/img/google_icon.png' %}" alt="">
+          </a>
+      </div>
+      {% endif %}
   </form>
+  {% endif %}
 </main>
 {% endblock content %}
