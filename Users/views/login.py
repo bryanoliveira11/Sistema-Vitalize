@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import View
-from django.contrib import messages
+
 from Users.forms import LoginForm
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect
+
 
 class LoginClassView(View):
     def get(self, *args, **kwargs):
@@ -28,7 +29,7 @@ class LoginClassView(View):
     def post(self, *args, **kwargs):
         POST = self.request.POST
         form = LoginForm(POST)
-        
+
         if form.is_valid():
             authenticated_user = authenticate(
                 request=self.request,
@@ -40,7 +41,7 @@ class LoginClassView(View):
                 login(self.request, user=authenticated_user)
                 messages.success(
                     self.request,
-                    f'Logado como "{self.request.user.email}".'
+                    f'Logado como "{self.request.user.get_username()}".'
                 )
                 return redirect(reverse('home:home'))
             else:

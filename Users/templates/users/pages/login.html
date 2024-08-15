@@ -12,28 +12,28 @@
   {% if request.user.is_authenticated %}
   {% include "global/partials/is_authenticated.html" %}
   {% else %}
+  <div class="social-accounts-container">
+    <div class="google-login">
+      <div class="google-icon">
+        <img src="{% static 'global/img/google_icon.png' %}" alt="">
+      </div>
+      <div class="google-login-text">
+        <a href=""><h2>Entrar com o Google</h2></a>
+      </div>
+    </div>
+  </div>
   <form method="POST" action="{{form_action}}" class="form-container">
     {% crispy form %}
     <button type="submit">
       <span>Login</span>
     </button>
-    <div class="social-accounts-login">
-      <hr class="social-accounts-sep">
-      <div class="social-accounts-container">
-          <a class="social-btn btn-google"
-              href="{% provider_login_url 'google'%}?next={% url 'home:home' %}"
-              title="Entrar com o Google.">
-              <img src="{% static 'global/img/google_icon.png' %}" alt="">
-              <span>Entrar com o Google</span>
-          </a>  
-      </div>
-      <div class="login-register-redirect">
-        <h3> Novo Usuário?
-          <span>
-              <a class="default-link" href="{% url 'users:register' %}">Crie uma Conta</a>
-          </span>
-        </h3>
-      </div>
+    <div class="login-register-redirect">
+      <h3> Novo Usuário?
+        <span>
+            <a class="default-link" href="{% url 'users:register' %}">Crie uma Conta</a>
+        </span>
+      </h3>
+    </div>
   </form>
   {% endif %}
 </main>

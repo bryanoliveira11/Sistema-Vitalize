@@ -52,6 +52,7 @@ class VitalizeUser(AbstractBaseUser, PermissionsMixin):
         return f'{self.first_name} {self.last_name}'
 
     def get_username(self):
+        ''' Returns the User E-mail '''
         return self.email
 
     class Meta:

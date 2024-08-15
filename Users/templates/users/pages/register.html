@@ -4,25 +4,25 @@
 {% block content %}
 <main class="main-content-container">
   {% include "global/partials/page_title.html" %}
-  {% include "global/partials/form_messages.html" %}
   {% include "global/partials/messages.html" %}
 
   {% if request.user.is_authenticated %}
   {% include "global/partials/is_authenticated.html" %}
   {% else %}
+  <div class="login-register-redirect">
+    <h3> Já tem uma Conta?
+      <span>
+          <a class="default-link" href="{% url 'users:login' %}">Faça Login</a>
+      </span>
+    </h3>
+  </div>
+  {% include "global/partials/form_messages.html" %}
   <form method="POST" action="{{form_action}}" class="form-container">
     {% crispy form %}
     <button type="submit">
       <span>Cadastrar</span>
       <i class="fa-solid fa-paper-plane submit" aria-hidden="true"></i>
     </button>
-    <div class="login-register-redirect">
-      <h3> Já tem uma Conta?
-        <span>
-            <a class="default-link" href="{% url 'users:login' %}">Faça Login</a>
-        </span>
-      </h3>
-    </div>
   </form>
   {% endif %}
 </main>
