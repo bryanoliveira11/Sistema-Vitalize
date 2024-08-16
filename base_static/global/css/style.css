@@ -71,7 +71,20 @@ body {
   font-size: 1.6rem;
   font-family: var(--font-primary);
   color: var(--color-dark-text);
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+footer {
+  margin-top: auto;
+}
+
+section {
+  max-width: 140rem;
+  width: 100%;
+  margin: 0 auto;
 }
 
 ul {
@@ -86,10 +99,19 @@ img {
   max-width: 100%;
 }
 
+h6 {
+  color: var(--color-dark-text);
+}
+
 .main-content-container {
   max-width: 144rem;
+  width: 100%;
   margin: 0 auto;
   padding: var(--spacing-medium);
+}
+
+.content-wrapper {
+  margin-bottom: 2rem;
 }
 
 /* nav adjustments */
@@ -162,6 +184,16 @@ div.col.whatsapp-number {
 
 div.col.whatsapp-number i {
   color: var(--color-success);
+}
+
+/* footer */
+
+a.quick-acess-link {
+  color: #212529bf;
+}
+
+a.quick-acess-link:hover {
+  color: var(--color-primary);
 }
 
 /* pages */

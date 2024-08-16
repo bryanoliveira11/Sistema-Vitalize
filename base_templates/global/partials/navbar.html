@@ -5,7 +5,7 @@
           <p class="mb-0 phone" title="Whatsapp">
             <i class="fa-brands fa-whatsapp"></i>
             <a href="https://api.whatsapp.com/send/?phone=551632026992&text&type=phone_number&app_absent=0"
-            target="_blank">16 3202-6992</a>
+            target="_blank">(16) 3202-6992</a>
           </p>
         </div>
         <div class="col d-flex justify-content-end">
@@ -25,7 +25,7 @@
     </div>
   </div>
 </div>
-<nav class="navbar navbar-expand-lg navbar-dark shadow ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+<nav class="navbar navbar-expand-lg shadow ftco_navbar ftco-navbar-light" id="ftco-navbar">
   <div class="nav-container">
     <a class="navbar-brand" href="{% url 'home:home' %}" title="Vitalize">
       Vitalize <span>Espaço Estético</span>
@@ -35,7 +35,7 @@
     </button>
     <div class="collapse navbar-collapse" id="ftco-nav">
       <ul class="navbar-nav left-0">
-        <li class="nav-item"><a href="{% url "home:home" %}" class="nav-link" title="Vitrine">Vitrine</a></li>
+        <li class="nav-item"><a href="{% url 'home:home' %}" class="nav-link" title="Vitrine">Vitrine</a></li>
         <li class="nav-item"><a href="#" class="nav-link" title="Agendamentos">Agendamentos</a></li>
         {% if request.user.is_authenticated %}
         <li class="nav-item">

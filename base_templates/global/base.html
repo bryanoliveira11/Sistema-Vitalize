@@ -8,8 +8,10 @@
 </head>
 <body>
 {% include "global/partials/navbar.html" %}
-{% block content %}{% endblock content %}
-
+<div class="content-wrapper">
+  {% block content %}{% endblock content %}
+</div>
+{% include "global/partials/footer.html" %}
 {% comment %} <a class="back-to-top" href="#" title="Voltar ao Topo">➤</a> {% endcomment %}
 <script src="{% static 'global/js/build/scripts.js' %}"></script>
 </body>
