@@ -103,6 +103,22 @@ h6 {
   color: var(--color-dark-text);
 }
 
+#btn-back-to-top {
+  background: var(--color-primary);
+  color: var(--color-gray-0);
+  font-size: 2rem;
+  border-radius: 50%;
+  box-shadow: 6px 5px 18px -6px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 6px 5px 18px -6px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 5px 18px -6px rgba(0, 0, 0, 0.75);
+  padding: 0.5rem 1.2rem;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: none;
+  transition: all 150ms ease-in-out;
+}
+
 .main-content-container {
   max-width: 144rem;
   width: 100%;

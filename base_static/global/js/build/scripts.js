@@ -172,8 +172,34 @@ class LogoutLinks {
   }
 }
 
+class BackToTopButton {
+  constructor() {
+    this.backToTopBtn = document.getElementById('btn-back-to-top');
+  }
+  init() {
+    if (!this.backToTopBtn) return;
+    this.backToTopBtn.addEventListener('click', () => this.backToTop());
+    window.onscroll = () => this.scroll();
+  }
+  scroll() {
+    if (
+      document.body.scrollTop > 20 ||
+      document.documentElement.scrollTop > 20
+    ) {
+      changeDisplayStyle(this.backToTopBtn, 'block');
+    } else {
+      changeDisplayStyle(this.backToTopBtn, 'none');
+    }
+  }
+  backToTop() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
 new ShowHidePassword().init();
 new LogoutLinks().init();
+new BackToTopButton().init();
