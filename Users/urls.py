@@ -14,4 +14,5 @@ urlpatterns = [
         all_auth_views.oauth2_login,
         name='google_login'
     ),
+    path('profile/', views.ProfileClassView.as_view(), name='profile'),
 ]

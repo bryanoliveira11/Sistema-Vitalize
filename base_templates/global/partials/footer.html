@@ -45,6 +45,13 @@
           <p>
             <a href="#!" class="quick-acess-link">Agendamentos</a>
           </p>
+          {% if request.user.is_authenticated %}
+          <p>
+            <a href="{% url 'users:profile' %}" class="quick-acess-link">
+              Seu Perfil
+            </a>
+          </p>
+          {% endif %}
           {% if not request.user.is_authenticated %}
           <p>
             <a href="{% url 'users:login' %}" class="quick-acess-link">Entrar</a>

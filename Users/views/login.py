@@ -20,7 +20,6 @@ class LoginClassView(View):
                 'site_title': title,
                 'page_title': title,
                 'page_subtitle': subtitle,
-                'btn_text': title,
                 'form': form,
                 'form_action': reverse('users:login'),
             }
