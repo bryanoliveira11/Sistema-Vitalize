@@ -240,7 +240,7 @@ a.quick-acess-link:hover {
 
 .form-container {
   max-width: 64rem;
-  margin: 0 auto;
+  width: 100%;
   margin: 2rem auto;
 }
 
@@ -371,6 +371,41 @@ button.form-button:hover .submit {
   display: inline;
 }
 
+.form-with-selectors {
+  max-width: 64rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.form-with-selectors .form-selectors {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.form-with-selectors .form-selectors .selector-item {
+  background: var(--color-gray-5);
+  padding: 0.6rem 0.5rem;
+  border-radius: 0.2rem;
+  width: 50%;
+  cursor: pointer;
+}
+
+.form-with-selectors .form-selectors .selector-item:hover {
+  filter: brightness(120%);
+}
+
+.form-with-selectors .form-selectors .selector-item.active {
+  background: var(--color-secondary);
+}
+
+.form-with-selectors .form-selectors a.selector-item {
+  color: var(--color-gray-0);
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
 /* forgot password */
 
 .forgot-password-content {
@@ -386,6 +421,7 @@ button.form-button:hover .submit {
 }
 
 /* social login */
+
 .social-accounts-container {
   display: flex;
   align-items: center;

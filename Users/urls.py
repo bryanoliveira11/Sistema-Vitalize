@@ -15,4 +15,9 @@ urlpatterns = [
         name='google_login'
     ),
     path('profile/', views.ProfileClassView.as_view(), name='profile'),
+    path(
+        'profile/password/',
+        views.EditPasswordClassView.as_view(),
+        name='profile_password'
+    ),
 ]

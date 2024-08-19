@@ -6,12 +6,31 @@
   {% include "global/partials/page_title.html" %}
   {% include "global/partials/messages.html" %}
   {% include "global/partials/form_messages.html" %}
-  <form method="POST" action="{{form_action}}" class="form-container">
-    {% crispy form %}
-    <button type="submit" class="form-button" title="Cadastrar">
-      <span>Fazer Alterações</span>
-      <i class="fa-solid fa-check"></i>
-    </button>
-  </form>
+  <div class="form-with-selectors">
+    <div class="form-selectors">
+      {% if is_data_form %}
+      <a href="{% url 'users:profile' %}" class="selector-item active" title="Altere seus Dados">
+      {% else %}
+      <a href="{% url 'users:profile' %}" class="selector-item" title="Altere seus Dados">
+      {% endif %}
+      Edite seus Dados
+      </a>
+
+      {% if is_password_form %}
+      <a href="{% url 'users:profile_password' %}" class="selector-item active" title="Altere sua Senha">
+      {% else %}
+      <a href="{% url 'users:profile_password' %}" class="selector-item" title="Altere sua Senha">
+      {% endif %}
+      Edite sua Senha
+      </a>
+    </div>
+    <form method="POST" action="{{form_action}}" class="form-container">
+      {% crispy form %}
+      <button type="submit" class="form-button" title="Cadastrar">
+        <span>Editar</span>
+        <i class="fa-solid fa-check"></i>
+      </button>
+    </form>
+  </a>
 </main>
 {% endblock content %}
