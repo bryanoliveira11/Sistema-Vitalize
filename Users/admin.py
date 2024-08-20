@@ -12,12 +12,3 @@ class AdminVitalizeUser(admin.ModelAdmin):
     ordering = '-id',
     list_filter = 'is_staff', 'is_superuser'
     list_per_page = 20
-
-
-# @admin.register(Permissions)
-# class AdminPermissions(admin.ModelAdmin):
-#     list_display = 'id', 'permission',
-#     list_display_links = 'permission',
-#     search_fields = 'permission',
-#     ordering = '-id',
-#     list_per_page = 10

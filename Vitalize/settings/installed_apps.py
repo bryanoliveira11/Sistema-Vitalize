@@ -1,6 +1,7 @@
 INSTALLED_APPS = [
     'Home',
     'Users',
+    'Logs',
     # django
     'django.contrib.admin',
     'django.contrib.auth',
