@@ -18,6 +18,8 @@ from allauth.socialaccount.providers.google import views as all_auth_views
 from django.contrib import admin
 from django.urls import include, path
 
+from Users.views.login_cancelled import login_cancelled
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Home.urls')),
@@ -26,6 +28,11 @@ urlpatterns = [
         'accounts/google/login/callback/',
         all_auth_views.oauth2_callback,
         name='google_callback'
+    ),
+    path(
+        'accounts/social/login/cancelled/',
+        login_cancelled,
+        name='socialaccount_login_cancelled'
     ),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
