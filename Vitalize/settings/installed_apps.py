@@ -1,10 +1,16 @@
 INSTALLED_APPS = [
     'Home',
     'Users',
+<<<<<<< HEAD
     'Products',
     'Sales',
     'Schedules',
     'CashRegister',
+=======
+    'Logs',
+     # jazzmin
+    'jazzmin',
+>>>>>>> 6dd1d4f758a857a3d025510259fd18197320af9d
     # django
     'django.contrib.admin',
     'django.contrib.auth',

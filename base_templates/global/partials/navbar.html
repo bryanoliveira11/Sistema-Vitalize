@@ -28,7 +28,7 @@
 <nav class="navbar navbar-expand-lg shadow ftco_navbar ftco-navbar-light" id="ftco-navbar">
   <div class="nav-container">
     <a class="navbar-brand" href="{% url 'home:home' %}" title="Vitalize">
-      Vitalize <span>Espaço Estético</span>
+      Vitalize <span>Centro Estético</span>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="fa fa-bars"></span> Menu
@@ -42,7 +42,11 @@
           <a href="{% url 'users:profile' %}" class="nav-link"
           title="{{request.user.first_name}} {{request.user.last_name}}">
             <i class="fa-solid fa-circle-user"></i>
+            {% if request.user.first_name and request.user.last_name %}
             {{request.user.first_name}} {{request.user.last_name}}
+            {% else %}
+            {{request.user}}
+            {% endif %}
             {% include "global/partials/logout_form.html" %}
           </a>
         </li>
