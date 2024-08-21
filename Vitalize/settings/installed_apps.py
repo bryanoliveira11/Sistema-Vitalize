@@ -2,6 +2,8 @@ INSTALLED_APPS = [
     'Home',
     'Users',
     'Logs',
+     # jazzmin
+    'jazzmin',
     # django
     'django.contrib.admin',
     'django.contrib.auth',
