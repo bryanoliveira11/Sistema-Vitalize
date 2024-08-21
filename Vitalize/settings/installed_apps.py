@@ -1,6 +1,10 @@
 INSTALLED_APPS = [
     'Home',
     'Users',
+    'Products',
+    'Sales',
+    'Schedules',
+    'CashRegister',
     # django
     'django.contrib.admin',
     'django.contrib.auth',

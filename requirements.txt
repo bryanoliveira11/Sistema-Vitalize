@@ -27,6 +27,7 @@ markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 mdurl==0.1.2
 phonenumberslite==8.13.43
+pillow==10.4.0
 pycparser==2.22
 Pygments==2.18.0
 python-dateutil==2.9.0.post0
