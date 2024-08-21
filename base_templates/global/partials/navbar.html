@@ -47,9 +47,16 @@
             {% else %}
             {{request.user}}
             {% endif %}
-            {% include "global/partials/logout_form.html" %}
           </a>
         </li>
+        {% if request.user.is_superuser %}
+        <li class="nav-item">
+          <a href="/admin" class="nav-link" title="Área Administrativa">
+            <i class="fa-solid fa-user-tie"></i>
+            Admin
+          </a>
+        </li>
+        {% endif %}
         <li class="nav-item">
           <a href="{% url 'users:logout' %}" class="nav-link user-logout-link" title="Sair">
             <i class="fa-solid fa-right-from-bracket"></i>
