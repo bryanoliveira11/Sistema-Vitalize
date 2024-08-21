@@ -15,8 +15,8 @@ from Users.forms import EditPasswordForm, ProfileForm
 )
 class ProfileClassView(View):
     def get_user_full_name(self) -> str:
-        fullname = self.request.user.get_full_name()  # type:ignore
-        return fullname
+        user = self.request.user.get_full_name()  # type:ignore
+        return user
 
     def render_form(
         self, form: ProfileForm | EditPasswordForm, title: str, subtitle: str,
