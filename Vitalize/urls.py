@@ -18,7 +18,7 @@ from allauth.socialaccount.providers.google import views as all_auth_views
 from django.contrib import admin
 from django.urls import include, path
 
-from Users.views.login_cancelled import login_cancelled
+from Users.views.all_auth import account_signup, login_cancelled
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,6 +33,10 @@ urlpatterns = [
         'accounts/social/login/cancelled/',
         login_cancelled,
         name='socialaccount_login_cancelled'
+    ),
+    path('accounts/signup/', account_signup, name='account_signup'),
+    path(
+        'accounts/social/signup/', account_signup, name='socialaccount_signup'
     ),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
