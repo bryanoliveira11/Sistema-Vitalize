@@ -27,12 +27,12 @@ class CashOut(models.Model):
 
 
 class CashRegister(models.Model):
-    sale = models.ManyToManyField(Sales, verbose_name='Venda')
+    sale = models.ManyToManyField(Sales, verbose_name='Venda', blank=True)
 
-    cash_out = models.ManyToManyField(CashOut, verbose_name='Sangria')
+    cash_out = models.ManyToManyField(CashOut, verbose_name='Sangria', blank=True)
 
     cash = models.DecimalField(
-        max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Preço'
+        max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Preço (R$)'
     )
 
     is_open = models.BooleanField(
@@ -44,7 +44,7 @@ class CashRegister(models.Model):
     )
 
     close_date = models.DateTimeField(
-        verbose_name='Data de fechamento'
+        verbose_name='Data de fechamento',  null=True, blank=True
     )
 
     updated_date = models.DateTimeField(

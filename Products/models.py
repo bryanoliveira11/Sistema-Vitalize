@@ -29,7 +29,7 @@ class Products(models.Model):
     )
 
     price = models.DecimalField(
-        max_digits=5, decimal_places=2, null=False, blank=False, verbose_name='Preço'
+        max_digits=7, decimal_places=2, null=False, blank=False, verbose_name='Preço (R$)'
     )
     
     cover_path = models.ImageField(

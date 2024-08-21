@@ -26,14 +26,14 @@ class PaymentTypes(models.Model):
 
 class Sales(models.Model):
 
-    schedule = models.ForeignKey(Schedules, verbose_name='Agendamento', on_delete=models.DO_NOTHING)
+    schedule = models.ForeignKey(Schedules, verbose_name='Agendamento', on_delete=models.DO_NOTHING, null=True, blank=True)
 
-    product = models.ManyToManyField(Products, verbose_name="Produto")
+    product = models.ManyToManyField(Products, verbose_name="Produto", blank=True)
 
     payment = models.ManyToManyField(PaymentTypes, verbose_name="Tipo de Pagamento")
 
     total_price = models.DecimalField(
-        max_digits=5, decimal_places=2, null=False, blank=False, verbose_name='Preço'
+        max_digits=7, decimal_places=2, null=False, blank=False, verbose_name='Preço (R$)'
     )
 
     created_at = models.DateTimeField(
