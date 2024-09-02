@@ -9,18 +9,16 @@
       {% include "Home/partials/categories.html" %}
       {% include "global/partials/search.html" %}
     </div>
+    {% if products %}
     <div class="products-grid">
+      {% for product in products  %}
       {% include "Home/partials/item.html" %}
-      {% include "Home/partials/item.html" %}
-      {% include "Home/partials/item.html" %}
-      {% include "Home/partials/item.html" %}
-      {% include "Home/partials/item.html" %}
-      {% include "Home/partials/item.html" %}
-      {% include "Home/partials/item.html" %}
-      {% include "Home/partials/item.html" %}
-      {% include "Home/partials/item.html" %}
-      {% include "Home/partials/item.html" %}
+      {% endfor %}
     </div>
+    {% else %}
+    {% include "global/partials/empty.html" %}
+    {% endif %}
+    {% include "global/partials/pagination.html" %}
   </div>
 </main>
 {% endblock content %}

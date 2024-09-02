@@ -1,4 +1,8 @@
 from django.db import models
+from django.utils.text import slugify
+
+from utils.resize_image import resize_image
+from utils.strings import generate_random_string
 
 
 class Categories(models.Model):
@@ -24,7 +28,7 @@ class Categories(models.Model):
 
 class Products(models.Model):
     product_category = models.ForeignKey(
-        Categories, verbose_name='Categorias', on_delete=models.DO_NOTHING)
+        Categories, verbose_name='Categoria', on_delete=models.DO_NOTHING)
 
     product_name = models.CharField(
         max_length=50, null=False, blank=False, verbose_name='Nome'
@@ -35,9 +39,15 @@ class Products(models.Model):
         null=False, blank=False, verbose_name='Preço (R$)'
     )
 
+    slug = models.SlugField(unique=True, blank=True, default='')
+
     cover_path = models.ImageField(
         upload_to='products/%Y/%m/%d/', null=False,
         blank=False, verbose_name='Imagem'
+    )
+
+    is_active = models.BooleanField(
+        verbose_name='Mostrar na Vitrine', default=True
     )
 
     created_at = models.DateTimeField(
@@ -50,6 +60,23 @@ class Products(models.Model):
 
     def __str__(self):
         return f'{self.product_name}'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = f'{slugify(self.product_name)}{
+                generate_random_string(length=5)}'
+            self.slug = slug
+
+        saved = super().save(*args, **kwargs)
+
+        # resizing the cover image
+        if self.cover_path:
+            try:
+                resize_image(self.cover_path, new_width=840)
+            except FileNotFoundError:
+                ...
+
+        return saved
 
     class Meta:
         verbose_name = 'Produto Vitalize'

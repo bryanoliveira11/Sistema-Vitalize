@@ -220,7 +220,7 @@ div.col.whatsapp-number i {
 .products-container .products-filter {
   display: flex;
   gap: 1.5rem;
-  margin: 1.5rem 0 2rem 0;
+  margin: 2rem 0 4rem 0;
 }
 
 .products-container .products-filter .dropdown {
@@ -305,8 +305,8 @@ div.col.whatsapp-number i {
 
 .products-container .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+  gap: 2rem;
 }
 
 .products-grid .card .bg-image {
@@ -318,12 +318,14 @@ div.col.whatsapp-number i {
 .products-grid .card .bg-image img {
   transition: all 150ms ease-in-out;
   width: 100%;
+  max-height: 32rem;
   height: 100%;
   object-fit: cover;
 }
 
 .products-grid .card .bg-image:hover img {
   transform: scale(1.1);
+  filter: grayscale(33%);
 }
 
 .products-grid .card .card-body {
@@ -339,6 +341,70 @@ div.col.whatsapp-number i {
   display: block;
   width: fit-content;
 }
+
+/* empty results */
+
+.main-content-error-page {
+  max-width: 114rem;
+  width: 100%;
+  text-align: center;
+  margin: 10rem auto 5rem auto;
+  font-size: 10rem;
+}
+
+.error-message-content h2 {
+  font-size: 2.5rem;
+  margin-top: var(--spacing-medium);
+}
+
+/* pagination */
+
+.pagination-content {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem 0.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+}
+
+.pagination .page-item {
+  padding: 0.5rem 1.5rem;
+  font-size: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-secondary);
+}
+
+.pagination .page-link {
+  text-decoration: none;
+  background: var(--color-gray-4);
+  color: var(--color-gray-0);
+}
+
+.pagination .page-link.page-item {
+  transition: all 150ms ease-in-out;
+}
+
+.pagination .page-link.page-item:hover {
+  filter: brightness(85%);
+}
+
+.pagination .page-current {
+  background: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+}
+
+.pagination-arrow {
+  font-size: 3rem;
+  color: var(--color-secondary);
+  transition: all 200ms ease-in-out;
+}
+
+.pagination-arrow:hover {
+  color: var(--color-secondary);
+  scale: 1.08;
+}
+
 
 /* footer */
 
