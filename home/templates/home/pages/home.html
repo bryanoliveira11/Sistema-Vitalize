@@ -2,7 +2,25 @@
 
 {% block content %}
 <main class="main-content-container">
-  {% include "global/partials/page_title.html" %}
-  {% include "global/partials/messages.html" %}
+  <div class="products-container">
+    {% include "global/partials/page_title.html" %}
+    {% include "global/partials/messages.html" %}
+    <div class="products-filter">
+      {% include "Home/partials/categories.html" %}
+      {% include "global/partials/search.html" %}
+    </div>
+    <div class="products-grid">
+      {% include "Home/partials/item.html" %}
+      {% include "Home/partials/item.html" %}
+      {% include "Home/partials/item.html" %}
+      {% include "Home/partials/item.html" %}
+      {% include "Home/partials/item.html" %}
+      {% include "Home/partials/item.html" %}
+      {% include "Home/partials/item.html" %}
+      {% include "Home/partials/item.html" %}
+      {% include "Home/partials/item.html" %}
+      {% include "Home/partials/item.html" %}
+    </div>
+  </div>
 </main>
 {% endblock content %}

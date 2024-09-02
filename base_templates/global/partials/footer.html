@@ -39,16 +39,18 @@
           </h6>
           <p>
             <a href="{% url 'home:home' %}" class="quick-acess-link">
-              Vitrine
+              &#8226; Vitrine
             </a>
           </p>
           <p>
-            <a href="#!" class="quick-acess-link">Agendamentos</a>
+            <a href="#!" class="quick-acess-link">
+              &#8226; Agendamentos
+            </a>
           </p>
           {% if request.user.is_authenticated %}
           <p>
             <a href="{% url 'users:profile' %}" class="quick-acess-link">
-              Seu Perfil
+              &#8226; Seu Perfil
             </a>
           </p>
           {% endif %}

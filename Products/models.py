@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Categories(models.Model):
     category_name = models.CharField(
         max_length=50, null=False, blank=False, verbose_name='Nome'
@@ -22,18 +23,21 @@ class Categories(models.Model):
 
 
 class Products(models.Model):
-    product_category = models.ForeignKey(Categories, verbose_name='Categorias', on_delete=models.DO_NOTHING)
+    product_category = models.ForeignKey(
+        Categories, verbose_name='Categorias', on_delete=models.DO_NOTHING)
 
     product_name = models.CharField(
         max_length=50, null=False, blank=False, verbose_name='Nome'
     )
 
     price = models.DecimalField(
-        max_digits=7, decimal_places=2, null=False, blank=False, verbose_name='Preço (R$)'
+        max_digits=7, decimal_places=2,
+        null=False, blank=False, verbose_name='Preço (R$)'
     )
-    
+
     cover_path = models.ImageField(
-        upload_to='products/%Y/%m/%d/', null=False, blank=False, verbose_name='Imagem'
+        upload_to='products/%Y/%m/%d/', null=False,
+        blank=False, verbose_name='Imagem'
     )
 
     created_at = models.DateTimeField(
