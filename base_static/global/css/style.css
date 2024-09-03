@@ -416,7 +416,7 @@ nav .breadcrumb .breadcrumb-item a:hover {
   gap: 1rem;
   max-width: 54rem;
   width: 100%;
-  padding: 0 4rem;
+  padding-left: 4rem;
 }
 
 .products-container .product-data h1 {
@@ -427,6 +427,24 @@ nav .breadcrumb .breadcrumb-item a:hover {
 .products-container .product-data h3 {
   color: var(--color-dark-text);
   font-size: 2.3rem;
+}
+
+.products-container .product-data h4 {
+  margin-bottom: 1rem;
+}
+
+.products-container .vitalize-location {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.products-container .vitalize-location iframe {
+  width: 100%;
+  border: 1px solid var(--color-gray-3);
+  flex-grow: 1;
 }
 
 .related-products {
@@ -1090,8 +1108,13 @@ button.google-callback-btn h2 {
   }
 
   .products-container.details .product-data {
+    max-width: 90rem;
     padding: 2rem 0;
     gap: 0.5rem;
+  }
+
+  .products-container .vitalize-location iframe {
+    height: 30rem;
   }
 
   .related-products .page-title-container {
