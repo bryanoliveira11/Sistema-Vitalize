@@ -117,6 +117,7 @@ h6 {
   right: 2rem;
   display: none;
   transition: all 150ms ease-in-out;
+  z-index: 1;
 }
 
 .main-content-container {
@@ -214,6 +215,7 @@ div.col.whatsapp-number i {
 }
 
 .products-container .page-title-container,
+.related-products .page-title-container,
 .products-container .messages-container,
 .products-container .products-filter {
   max-width: 114rem;
@@ -312,13 +314,13 @@ div.col.whatsapp-number i {
   gap: 2rem;
 }
 
-.products-grid .card .bg-image {
+.card .bg-image {
   overflow: hidden;
   position: relative;
   cursor: pointer;
 }
 
-.products-grid .card .bg-image img {
+.card .bg-image img {
   transition: all 150ms ease-in-out;
   width: 100%;
   max-height: 32rem;
@@ -326,16 +328,17 @@ div.col.whatsapp-number i {
   object-fit: cover;
 }
 
-.products-grid .card .bg-image:hover img {
+.card .bg-image:hover img {
   transform: scale(1.1);
   filter: grayscale(33%);
 }
 
-.products-grid .card .card-body {
+.card .card-body {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   padding: 2rem;
   font-size: 1.4rem;
 }
@@ -424,6 +427,46 @@ nav .breadcrumb .breadcrumb-item a:hover {
 .products-container .product-data h3 {
   color: var(--color-dark-text);
   font-size: 2.3rem;
+}
+
+.related-products {
+  max-width: 114rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.related-products .owl-carousel {
+  margin-top: 2rem;
+}
+
+.owl-carousel .owl-item img {
+  height: 32rem;
+}
+
+.owl-carousel .owl-dot.active {
+  color: var(--color-primary);
+}
+
+.owl-theme .owl-dots .owl-dot span {
+  background: var(--color-gray-4) !important;
+}
+
+.owl-theme .owl-dots .owl-dot.active span{
+  width:10px;
+  height:10px;
+  margin:5px 7px;
+  background: var(--color-primary) !important;
+  display:block;
+  backface-visibility: visible;
+  -webkit-backface-visibility:visible;
+  -webkit-transition:opacity 200ms ease;
+  -moz-transition:opacity 200ms ease;
+  -ms-transition:opacity 200ms ease;
+  -o-transition:opacity 200ms ease;
+  transition:opacity 200ms ease;
+  -webkit-border-radius:30px;
+  -moz-border-radius:30px;
+  border-radius:30px;
 }
 
 /* pagination */
@@ -1049,6 +1092,10 @@ button.google-callback-btn h2 {
   .products-container.details .product-data {
     padding: 2rem 0;
     gap: 0.5rem;
+  }
+
+  .related-products .page-title-container {
+    margin-top: 1rem;
   }
 }
 

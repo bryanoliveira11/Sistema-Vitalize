@@ -1,7 +1,7 @@
 from django.db.models.query import QuerySet
 from django.views.generic import ListView
 
-from Products.models import Categories, Products
+from Products.models import Products
 from utils.pagination import make_pagination
 
 

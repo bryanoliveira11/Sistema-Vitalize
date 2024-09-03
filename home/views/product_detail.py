@@ -1,5 +1,4 @@
 from django.http import Http404
-from django.urls import reverse
 from django.views.generic import DetailView
 
 from Products.models import Products
@@ -26,13 +25,22 @@ class ProductDetailClassView(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         product = context.get('product')
-        http_referer = self.request.META.get(
-            'HTTP_REFERER', reverse('home:products')
-        )
+
+        if product:
+            category = product.product_category
+            if category:
+                related_products = Products.objects.filter(
+                    product_category=category,
+                ).all().select_related('product_category').exclude(
+                    pk=product.pk,
+                )
+
         context.update({
             'product': product,
+            'related_products': related_products if related_products else None,
             'site_title': product.product_name if product else None,
-            'go_back_url': http_referer,
+            'page_title': 'Veja',
+            'page_subtitle': 'Também',
         })
 
         return context

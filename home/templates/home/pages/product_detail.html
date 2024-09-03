@@ -1,4 +1,5 @@
 {% extends "global/base.html" %}
+{% load static %}
 
 {% block content %}
 <main class="main-content-container">
@@ -29,5 +30,38 @@
       </div>
     </div>
   </div>
+  {% if related_products is not None %}
+  <div class="related-products">
+    {% include "global/partials/page_title.html" %}
+    <div class="owl-carousel owl-theme">
+      {% for product in related_products  %}
+      {% include "Home/partials/product_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
 </main>
+
+<script src="{% static 'owlcarousel/js/jquery.min.js' %}"></script>
+<script src="{% static 'owlcarousel/js/owl.carousel.min.js' %}"></script>
+<script>
+  $(document).ready(function(){
+    $(".owl-carousel").owlCarousel({
+      margin: 15,
+      responsiveClass:true,
+      responsive:{
+        0:{
+            items:1,
+            loop: true,
+        },
+        700:{
+            items:2,
+        },
+        1000:{
+            items:3,
+        }
+    }
+    });
+  });
+</script>
 {% endblock content %}
