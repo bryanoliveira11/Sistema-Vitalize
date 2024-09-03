@@ -1,0 +1,33 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<main class="main-content-container">
+  <div class="products-container details">
+    <nav aria-label="breadcrumb" class="breadcrumb-container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'home:products' %}" title="Vitrine">Vitrine</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          <a href="{% url 'home:product_detail' product.slug %}"
+          title="{{product.product_name}}">
+            {{product.product_name}}
+          </a>
+        </li>
+      </ol>
+    </nav>
+    <div class="product-content">
+      <div class="product-image">
+        <img src="{{product.cover_path.url}}" alt="{{product.product_name}}">
+      </div>
+      <div class="product-data">
+        <h1>{{product.product_name}}</h1>
+        <a href="category-url" class="category" title="{{product.product_category}}">
+          <p>{{product.product_category}}</p>
+        </a>
+        <h3>R$ {{product.price}}</h3>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock content %}

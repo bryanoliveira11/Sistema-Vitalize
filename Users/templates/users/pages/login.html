@@ -13,7 +13,7 @@
   {% include "global/partials/is_authenticated.html" %}
   {% else %}
   <div class="social-accounts-container">
-    <a href="{% url 'users:google_login' %}?next={% url 'home:home' %}" title="Entrar com o Google">
+    <a href="{% url 'users:google_login' %}?next={% url 'home:products' %}" title="Entrar com o Google">
       <div class="google-login">
           <div class="google-icon">
             <img src="{% static 'global/img/google_icon.png' %}" alt="">

@@ -1,15 +1,15 @@
 <div class="card shadow">
-  <a href="details-url">
+  <a href="{% url 'home:product_detail' product.slug %}">
     <div class="bg-image">
       <img src="{{product.cover_path.url}}"
-        class="w-100" />
+        class="w-100" alt="{{product.product_name}}"/>
     </div>
   </a>
   <div class="card-body">
-    <a href="details-url" class="text-reset" title="{{product.product_name}}">
+    <a href="{% url 'home:product_detail' product.slug %}" class="text-reset" title="{{product.product_name}}">
       <h2 class="card-title mb-3">{{product.product_name}}</h2>
     </a>
-    <a href="category-url" class="text-reset" title="{{product.product_category}}">
+    <a href="category-url" class="category" title="{{product.product_category}}">
       <p>{{product.product_category}}</p>
     </a>
     <h3 class="mb-3">R$ {{product.price}}</h3>

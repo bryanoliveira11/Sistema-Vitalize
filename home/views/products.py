@@ -6,7 +6,7 @@ from utils.pagination import make_pagination
 
 
 class ProductsClassView(ListView):
-    template_name = 'Home/pages/home.html'
+    template_name = 'Home/pages/products.html'
     model = Products
     context_object_name = 'products'
     ordering = ['-id']

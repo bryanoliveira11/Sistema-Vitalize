@@ -42,7 +42,7 @@ class LoginClassView(View):
                     self.request,
                     f'Logado como "{self.request.user}".'
                 )
-                return redirect(reverse('home:home'))
+                return redirect(reverse('home:products'))
             else:
                 messages.error(self.request, 'Credenciais Inválidas.')
         else:
