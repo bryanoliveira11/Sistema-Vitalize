@@ -8,7 +8,6 @@
         {% endif %}
         {% if pagination_range.first_page_out_of_range %}
             <a href="?page=1{{ additional_url_query }}" aria-label="Go to page 1" class="page-link page-item"> 1 </a>
-            <span class="page-item">...</span>
         {% endif %}
         {% for page in pagination_range.pagination %}
         {% if pagination_range.current_page == page %}
