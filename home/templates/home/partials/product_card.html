@@ -9,9 +9,11 @@
     <a href="{% url 'home:product_detail' product.slug %}" class="text-reset" title="{{product.product_name}}">
       <h2 class="card-title mb-3">{{product.product_name}}</h2>
     </a>
+    {% if product.product_category is not None %}
     <a href="category-url" class="category" title="{{product.product_category}}">
       <p>{{product.product_category}}</p>
     </a>
+    {% endif %}
     <h3 class="mb-3">R$ {{product.price}}</h3>
   </div>
 </div>

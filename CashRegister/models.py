@@ -1,19 +1,19 @@
 from django.db import models
+
 from Sales.models import Sales
+
 
 class CashOut(models.Model):
     value = models.DecimalField(
-        max_digits=5, decimal_places=2, null=False, blank=False, verbose_name='Valor'
+        max_digits=5, decimal_places=2, null=False,
+        blank=False, verbose_name='Valor'
     )
-
     description = models.CharField(
         max_length=100, null=False, blank=False, verbose_name='Descrição'
     )
-
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
     )
-
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name='Alterado em',
     )
@@ -28,25 +28,22 @@ class CashOut(models.Model):
 
 class CashRegister(models.Model):
     sale = models.ManyToManyField(Sales, verbose_name='Venda', blank=True)
-
-    cash_out = models.ManyToManyField(CashOut, verbose_name='Sangria', blank=True)
-
-    cash = models.DecimalField(
-        max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Preço (R$)'
+    cash_out = models.ManyToManyField(
+        CashOut, verbose_name='Sangria', blank=True
     )
-
+    cash = models.DecimalField(
+        max_digits=10, decimal_places=2, null=False,
+        blank=False, verbose_name='Preço (R$)'
+    )
     is_open = models.BooleanField(
         default=True
     )
-
     open_date = models.DateTimeField(
         auto_now_add=True, verbose_name='Data de Abertura'
     )
-
     close_date = models.DateTimeField(
         verbose_name='Data de fechamento',  null=True, blank=True
     )
-
     updated_date = models.DateTimeField(
         auto_now=True, verbose_name='Alterado em'
     )

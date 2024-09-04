@@ -25,6 +25,7 @@ class ProductDetailClassView(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         product = context.get('product')
+        related_products = None
 
         if product:
             category = product.product_category
@@ -37,7 +38,7 @@ class ProductDetailClassView(DetailView):
 
         context.update({
             'product': product,
-            'related_products': related_products if related_products else None,
+            'related_products': related_products,
             'site_title': product.product_name if product else None,
             'page_title': 'Veja',
             'page_subtitle': 'Também',

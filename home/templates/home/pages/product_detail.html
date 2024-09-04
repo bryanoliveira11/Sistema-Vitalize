@@ -23,12 +23,14 @@
       </div>
       <div class="product-data">
         <h1>{{product.product_name}}</h1>
+        {% if product.product_category is not None %}
         <a href="category-url" class="category" title="{{product.product_category}}">
           <p>
             <i class="fa-solid fa-list"></i>
             {{product.product_category}}
           </p>
         </a>
+        {% endif %}
         <h3>R$ {{product.price}}</h3>
         <div class="vitalize-location">
           <a href="https://maps.app.goo.gl/B3V6baE1PWmGA1M56"
