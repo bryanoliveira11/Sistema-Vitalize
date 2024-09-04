@@ -197,9 +197,64 @@ class BackToTopButton {
   }
 }
 
+class ProductMagnifierGlass {
+  constructor() {
+    this.productImage = document.querySelector('#product-image img');
+    this.zoom = 2;
+  }
+  init() {
+    if (!this.productImage) return;
+    this.createMagnifier();
+  }
+  getCursorPosition(event) {
+    const rect = this.productImage.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    return { x, y };
+  }
+  moveMagnifier = (event) => {
+    event.preventDefault();
+    const pos = this.getCursorPosition(event);
+    const { width, height } = this.productImage;
+    const magnifier = document.querySelector('#product-magnifier-glass');
+
+    let x = pos.x;
+    let y = pos.y;
+
+    const magnifierWidth = magnifier.offsetWidth / this.zoom;
+    const magnifierHeight = magnifier.offsetHeight / this.zoom;
+
+    if (x > width - magnifierWidth) x = width - magnifierWidth;
+    if (x < magnifierWidth) x = magnifierWidth;
+    if (y > height - magnifierHeight) y = height - magnifierHeight;
+    if (y < magnifierHeight) y = magnifierHeight;
+
+    magnifier.style.left = `${x - magnifierWidth}px`;
+    magnifier.style.top = `${y - magnifierHeight}px`;
+    magnifier.style.backgroundPosition = `-${x * this.zoom - magnifierWidth}px -${y * this.zoom - magnifierHeight}px`;
+  };
+  createMagnifier() {
+    const magnifier = document.createElement('div');
+    magnifier.setAttribute('id', 'product-magnifier-glass');
+    magnifier.setAttribute('class', 'shadow');
+    this.productImage.parentElement.insertBefore(magnifier, this.productImage);
+
+    magnifier.style.backgroundImage = `url('${this.productImage.src}')`;
+    magnifier.style.backgroundRepeat = 'no-repeat';
+    magnifier.style.backgroundSize = `${this.productImage.width * this.zoom}px ${this.productImage.height * this.zoom}px`;
+
+    magnifier.style.position = 'absolute';
+    magnifier.style.pointerEvents = 'none';
+
+    this.productImage.addEventListener('mousemove', this.moveMagnifier);
+    magnifier.addEventListener('mousemove', this.moveMagnifier);
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
 new ShowHidePassword().init();
 new LogoutLinks().init();
 new BackToTopButton().init();
+new ProductMagnifierGlass().init();

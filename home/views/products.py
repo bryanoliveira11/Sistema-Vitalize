@@ -23,9 +23,9 @@ class ProductsClassView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         products = context.get('products')
-
-        if products:
-            categories = {product.product_category for product in products}
+        categories = {
+            product.product_category for product in products
+        } if products else None
 
         page_obj, pagination_range = make_pagination(
             self.request, products, 15

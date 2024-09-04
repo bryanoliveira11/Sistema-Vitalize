@@ -1,8 +1,8 @@
 <div class="card shadow">
   <a href="{% url 'home:product_detail' product.slug %}">
     <div class="bg-image">
-      <img src="{{product.cover_path.url}}"
-        class="w-100" alt="{{product.product_name}}"/>
+      <img src="{{product.cover_path.url}}" class="w-100"
+       alt="{{product.product_name}}" title="{{product.product_name}}"/>
     </div>
   </a>
   <div class="card-body">

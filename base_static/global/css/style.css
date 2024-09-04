@@ -318,6 +318,7 @@ div.col.whatsapp-number i {
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  height: 32rem;
 }
 
 .card .bg-image img {
@@ -406,6 +407,24 @@ nav .breadcrumb .breadcrumb-item a:hover {
 .products-container .product-image {
   max-width: 60rem;
   width: 100%;
+  position: relative;
+}
+
+.products-container .product-image:hover {
+  cursor: none;
+}
+
+.products-container .product-image:hover #product-magnifier-glass {
+  display: flex;
+}
+
+.product-image #product-magnifier-glass {
+  position: absolute;
+  border: 3px solid var(--color-primary);
+  border-radius: .3rem;
+  width: 10rem;
+  height: 10rem;
+  display: none;
 }
 
 .products-container .product-data {
@@ -429,8 +448,13 @@ nav .breadcrumb .breadcrumb-item a:hover {
   font-size: 2.3rem;
 }
 
-.products-container .product-data h4 {
+.products-container .product-data a.location-maps {
+  color: var(--color-dark-text);
   margin-bottom: 1rem;
+}
+
+.products-container .product-data a.location-maps i {
+  color: var(--color-error-dark);
 }
 
 .products-container .vitalize-location {
