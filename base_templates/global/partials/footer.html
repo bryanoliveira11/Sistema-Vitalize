@@ -56,7 +56,9 @@
           {% endif %}
           {% if not request.user.is_authenticated %}
           <p>
-            <a href="{% url 'users:login' %}" class="quick-acess-link">Entrar</a>
+            <a href="{% url 'users:login' %}" class="quick-acess-link">
+              &#8226; Entrar
+            </a>
           </p>
           {% endif %}
         </div>

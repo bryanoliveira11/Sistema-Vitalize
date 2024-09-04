@@ -592,6 +592,7 @@ a.quick-acess-link:hover {
 .page-title-container hr {
   opacity: 1;
   color: var(--color-gray-3);
+  margin-bottom: 2rem;
 }
 
 /* forms */

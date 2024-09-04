@@ -20,10 +20,9 @@ class ProfileClassView(View):
 
     def render_form(
         self, form: ProfileForm | EditPasswordForm, title: str, subtitle: str,
-        is_data_form: bool = False, is_password_form: bool = False
+        site_title: str | None = None, is_data_form: bool = False,
+        is_password_form: bool = False
     ):
-        title = title
-        subtitle = subtitle
 
         if is_data_form:
             form_action = reverse('users:profile')
@@ -34,7 +33,7 @@ class ProfileClassView(View):
             self.request,
             'users/pages/profile.html',
             {
-                'site_title': title,
+                'site_title': site_title if site_title else title,
                 'page_title': title,
                 'page_subtitle': subtitle,
                 'form': form,
@@ -94,7 +93,7 @@ class EditPasswordClassView(ProfileClassView):
     def get(self, *args, **kwargs):
         form = EditPasswordForm(instance=self.request.user)
         return self.render_form(
-            form=form, title='Alteração',
+            form=form, site_title='Alteração de Senha', title='Alteração',
             subtitle=f'de Senha ({self.get_user_full_name()})',
             is_password_form=True,
         )
@@ -118,7 +117,7 @@ class EditPasswordClassView(ProfileClassView):
             return redirect(reverse('users:login'))
 
         return self.render_form(
-            form=form, title='Alteração',
+            form=form, site_title='Alteração de Senha', title='Alteração',
             subtitle=f'de Senha ({self.get_user_full_name()})',
             is_password_form=True,
         )
