@@ -10,6 +10,11 @@ urlpatterns = [
     path('login/', views.LoginClassView.as_view(), name='login'),
     path('logout/', views.LogoutClassView.as_view(), name='logout'),
     path(
+        'admin/options/',
+        views.AdminUserOptionsClassView.as_view(),
+        name='admin_options'
+    ),
+    path(
         'accounts/google/login/',
         all_auth_views.oauth2_login,
         name='google_login'

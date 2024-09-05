@@ -51,7 +51,7 @@
         </li>
         {% if request.user.is_superuser %}
         <li class="nav-item">
-          <a href="/admin" class="nav-link" title="Área Administrativa">
+          <a href="{% url 'users:admin_options' %}" class="nav-link" title="Área Administrativa">
             <i class="fa-solid fa-user-tie"></i>
             Admin
           </a>

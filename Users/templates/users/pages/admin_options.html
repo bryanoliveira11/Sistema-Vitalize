@@ -1,0 +1,43 @@
+{% extends "global/base.html" %}
+{% load static %}
+
+{% block content %}
+<main class="main-content-container">
+  <div class="admin-options-container">
+    {% include "global/partials/page_title.html" %}
+    {% include "global/partials/messages.html" %}
+    <div class="cards-flex">
+      <a href="/admin" target="_blank" class="option-card shadow"
+      title="Área Administrativa">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/admin_icon.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Área Administrativa</h2>
+          <small>Acesse a área administrativa do site.</small>
+        </div>
+      </a>
+      <a href="#" class="option-card shadow"
+      title="Gerar Relatórios">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/report_icon.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Gerar Relatórios</h2>
+          <small>Visualize e baixe relatórios personalizados do site.</small>
+        </div>
+      </a>
+      <a href="#" class="option-card shadow"
+      title="Registrar uma Venda">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/sales_icon.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Registrar uma Venda</h2>
+          <small>Registre uma venda no site.</small>
+        </div>
+      </a>
+    </div>
+  </div>
+</main>
+{% endblock content %}
