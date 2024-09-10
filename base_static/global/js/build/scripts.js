@@ -251,6 +251,27 @@ class ProductMagnifierGlass {
   }
 }
 
+class NavBar {
+  constructor() {
+    this.navbarToggle = document.querySelector('.navbar-toggler');
+  }
+  init() {
+    if (!this.navbarToggle) return;
+    this.navbarToggle.addEventListener('click', () => this.handleToggle());
+  }
+  handleToggle() {
+    const navBar = document.getElementById('ftco-nav');
+    if (!navBar) return;
+    if (navBar.classList.contains('is-toggled')) {
+      removeClassList(navBar, 'is-toggled');
+      changeDisplayStyle(navBar, 'none');
+      return;
+    }
+    changeDisplayStyle(navBar, 'block');
+    addClassList(navBar, 'is-toggled');
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
@@ -258,3 +279,4 @@ new ShowHidePassword().init();
 new LogoutLinks().init();
 new BackToTopButton().init();
 new ProductMagnifierGlass().init();
+new NavBar().init();

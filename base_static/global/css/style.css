@@ -235,6 +235,7 @@ div.col.whatsapp-number i {
   max-width: 21rem;
   width: 100%;
   background: var(--color-secondary);
+  border-radius: 0.3rem;
 }
 
 .dropdown-menu.show {
@@ -291,7 +292,11 @@ div.col.whatsapp-number i {
 
 .products-container .products-filter .dropdown a {
   font-size: 1.6rem;
-  padding: 0.8rem 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.7rem;
 }
 
 .products-container .products-filter .dropdown a#dropdownMenuLink {
@@ -310,7 +315,7 @@ div.col.whatsapp-number i {
 
 .products-container .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
   gap: 2rem;
 }
 
@@ -318,7 +323,7 @@ div.col.whatsapp-number i {
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  height: 32rem;
+  height: 28rem;
 }
 
 .card .bg-image img {
@@ -580,7 +585,7 @@ a.quick-acess-link:hover {
   font-size: 3rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: var(--color-dark-text);
+  color: var(--clr-dark-background);
 }
 
 .page-title small {
@@ -1171,7 +1176,7 @@ button.google-callback-btn h2 {
     margin-top: 1rem;
   }
 
-  #ftco-nav a.nav-link {
+  .nav-container, #ftco-nav a.nav-link {
     padding-left: 1rem;
   }
 
