@@ -1,6 +1,5 @@
 from django.db.models.query import QuerySet
 from django.views.generic import ListView
-from django.http import Http404
 
 from Products.models import Products, Categories
 from django.db.models import Q
@@ -42,39 +41,36 @@ class ProductsClassView(ListView):
         return context
     
 
-# classe para filtrar por categoria
 class CategoriesFilterClassView(ProductsClassView):
-
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
 
-        # consulta no banco de dados
         queryset = queryset.filter(
             product_category__id=self.kwargs.get('id'),
             is_active=True,
         ).select_related('product_category')
 
-        if not queryset:
-            raise Http404()
-
         return queryset
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-
-        category_name = context.get('object_list', None)[0].product_category
+        
+        try:
+            category_name = context.get('object_list', None)[0].product_category
+            category_name = f'({str(category_name)})'
+        except IndexError:
+            category_name = None
 
         context.update({
-            'page_title': 'Categoria',
-            'page_subtitle': str(category_name),
+            'page_title': 'Filtro',
+            'page_subtitle': f'por Categoria {str(category_name)}',
+            'is_filtered': True,
         })
 
         return context
 
 
-# classe para a barra de pesquisa
 class SearchClassView(ProductsClassView):
-
     def __init__(self, *args, **kwargs) -> None:
         self.search_term = None
         super().__init__(*args, **kwargs)
@@ -83,16 +79,10 @@ class SearchClassView(ProductsClassView):
         queryset = super().get_queryset(*args, **kwargs)
         self.search_term = self.request.GET.get('q', '').strip()
 
-        # lançando um 404 not found caso não haja nada na pesquisa
-        if not self.search_term:
-            raise Http404()
-
-        # filtrando no banco de dados
         queryset = queryset.filter(
             Q(
                 Q(product_name__icontains=self.search_term) |
                 Q(product_category__category_name__icontains=self.search_term)
-
             )
         ).select_related('product_category')
 

@@ -1,0 +1,8 @@
+{% if is_filtered %}
+<div class="clean-filters">
+  <a href="{% url 'home:products' %}">
+    Limpar Filtros 
+    <i class="fa-solid fa-circle-xmark"></i>
+  </a>
+</div>
+{% endif %}

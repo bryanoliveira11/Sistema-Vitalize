@@ -362,13 +362,22 @@ a.category:hover {
   color: var(--color-primary);
 }
 
+.clean-filters a {
+  color: var(--color-error-dark);
+}
+
+.clean-filters a:hover {
+  color: var(--color-error-dark);
+  filter: brightness(75%);
+}
+
 /* empty results */
 
 .main-content-error-page {
   max-width: 114rem;
   width: 100%;
   text-align: center;
-  margin: 10rem auto 5rem auto;
+  margin: 2rem auto 5rem auto;
   font-size: 10rem;
 }
 
