@@ -41,7 +41,7 @@ class ProductsClassView(ListView):
         return context
 
 
-class CategoriesFilterClassView(ProductsClassView):
+class CategoryFilterClassView(ProductsClassView):
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
 
@@ -56,15 +56,19 @@ class CategoriesFilterClassView(ProductsClassView):
         context = super().get_context_data(*args, **kwargs)
 
         try:
-            category_name = context.get('object_list', None)[
+            category = context.get('products', None)[
                 0].product_category
-            category_name = f'({str(category_name)})'
         except IndexError:
-            category_name = None
+            category = None
+
+        category_name = f'({str(category)})'
 
         context.update({
+            'category': category,
             'page_title': 'Filtro',
-            'page_subtitle': f'por Categoria {str(category_name)}',
+            'page_subtitle': f'por Categoria {
+                category_name if category else ''
+            }',
             'is_filtered': True,
         })
 
@@ -83,8 +87,8 @@ class SearchClassView(ProductsClassView):
         queryset = queryset.filter(
             Q(
                 Q(product_name__icontains=self.search_term) |
-                Q(product_category__category_name__icontains=self.search_term)
-            )
+                Q(product_category__category_name__icontains=self.search_term),
+                is_active=True,),
         ).select_related('product_category')
 
         return queryset

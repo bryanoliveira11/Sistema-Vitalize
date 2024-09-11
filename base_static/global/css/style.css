@@ -368,7 +368,7 @@ a.category:hover {
 
 .clean-filters a:hover {
   color: var(--color-error-dark);
-  filter: brightness(75%);
+  filter: brightness(70%);
 }
 
 /* empty results */
@@ -384,6 +384,16 @@ a.category:hover {
 .error-message-content h2 {
   font-size: 2.5rem;
   margin-top: var(--spacing-medium);
+}
+
+.error-message-content a {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}
+
+.error-message-content a:hover {
+  color: var(--color-primary);
+  filter: brightness(70%);
 }
 
 /* product detail page */

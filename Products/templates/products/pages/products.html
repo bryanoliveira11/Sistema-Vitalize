@@ -11,6 +11,21 @@
       {% include "global/partials/search.html" %}
     </div>
     {% if products %}
+    {% if is_filtered and category is not None %}
+      <nav aria-label="breadcrumb" class="breadcrumb-container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'products:products' %}" title="Vitrine">Vitrine</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <a href="{% url 'products:products_category' category.id %}"
+            title="{{category.category_name}}">
+              {{category.category_name}}
+            </a>
+          </li>
+        </ol>
+      </nav>
+    {% endif %}
     <div class="products-grid">
       {% for product in products  %}
       {% include "Products/partials/product_card.html" %}

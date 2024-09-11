@@ -13,7 +13,7 @@ urlpatterns = [
     ),
     path(
         'products/category/<int:id>/',
-        views.CategoriesFilterClassView.as_view(),
+        views.CategoryFilterClassView.as_view(),
         name='products_category'
     ),
     path(
