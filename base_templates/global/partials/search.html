@@ -1,5 +1,5 @@
 <div class="search-container">
-  <form class="search-form" action="" method="GET">
+  <form class="search-form" action="{% url 'home:product_search' %}" method="GET">
       <input class="search-input" name="q"
         type="search" value="{{ search_term }}"
         placeholder="Buscar" required>
