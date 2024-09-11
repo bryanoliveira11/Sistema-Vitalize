@@ -5,7 +5,7 @@ from Products.models import Products
 
 
 class ProductDetailClassView(DetailView):
-    template_name = 'Home/pages/product_detail.html'
+    template_name = 'Products/pages/product_detail.html'
     model = Products
     context_object_name = 'product'
     slug_field = 'slug'

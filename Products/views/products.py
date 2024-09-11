@@ -1,13 +1,13 @@
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.views.generic import ListView
 
-from Products.models import Products, Categories
-from django.db.models import Q
+from Products.models import Categories, Products
 from utils.pagination import make_pagination
 
 
 class ProductsClassView(ListView):
-    template_name = 'Home/pages/products.html'
+    template_name = 'Products/pages/products.html'
     model = Products
     context_object_name = 'products'
     ordering = ['-id']
@@ -39,7 +39,7 @@ class ProductsClassView(ListView):
         })
 
         return context
-    
+
 
 class CategoriesFilterClassView(ProductsClassView):
     def get_queryset(self, *args, **kwargs):
@@ -54,9 +54,10 @@ class CategoriesFilterClassView(ProductsClassView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        
+
         try:
-            category_name = context.get('object_list', None)[0].product_category
+            category_name = context.get('object_list', None)[
+                0].product_category
             category_name = f'({str(category_name)})'
         except IndexError:
             category_name = None

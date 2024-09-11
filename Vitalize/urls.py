@@ -15,15 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from allauth.socialaccount.providers.google import views as all_auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django.conf import settings
+
 from Users.views.all_auth import account_signup, login_cancelled
-from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Home.urls')),
+    path('', include('Products.urls')),
     path('users/', include('Users.urls')),
     path(
         'accounts/google/login/callback/',

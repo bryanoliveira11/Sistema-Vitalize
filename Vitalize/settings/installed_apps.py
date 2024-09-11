@@ -1,12 +1,11 @@
 INSTALLED_APPS = [
-    'Home',
     'Users',
     'Products',
     'Sales',
     'Schedules',
     'CashRegister',
     'Logs',
-     # jazzmin
+    # jazzmin
     'jazzmin',
     # django
     'django.contrib.admin',

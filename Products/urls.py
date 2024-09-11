@@ -1,8 +1,8 @@
 from django.urls import path
 
-from Home import views
+from Products import views
 
-app_name = 'home'
+app_name = 'products'
 
 urlpatterns = [
     path('', views.ProductsClassView.as_view(), name='products'),
@@ -14,11 +14,11 @@ urlpatterns = [
     path(
         'products/category/<int:id>/',
         views.CategoriesFilterClassView.as_view(),
-        name='category'
+        name='products_category'
     ),
     path(
         'products/category/',
         views.SearchClassView.as_view(),
-        name='product_search'
+        name='products_search'
     )
 ]

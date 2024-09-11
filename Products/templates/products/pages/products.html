@@ -5,15 +5,15 @@
   <div class="products-container">
     {% include "global/partials/page_title.html" %}
     {% include "global/partials/messages.html" %}
-    {% include "Home/partials/is_filtered.html" %}
+    {% include "Products/partials/is_filtered.html" %}
     <div class="products-filter">
-      {% include "Home/partials/categories.html" %}
+      {% include "Products/partials/categories.html" %}
       {% include "global/partials/search.html" %}
     </div>
     {% if products %}
     <div class="products-grid">
       {% for product in products  %}
-      {% include "Home/partials/product_card.html" %}
+      {% include "Products/partials/product_card.html" %}
       {% endfor %}
     </div>
     {% else %}

@@ -27,7 +27,7 @@
 </div>
 <nav class="navbar navbar-expand-lg shadow ftco_navbar ftco-navbar-light" id="ftco-navbar">
   <div class="nav-container">
-    <a class="navbar-brand" href="{% url 'home:products' %}" title="Vitalize">
+    <a class="navbar-brand" href="{% url 'products:products' %}" title="Vitalize">
       Vitalize <span>Centro Estético</span>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,8 +35,18 @@
     </button>
     <div class="collapse navbar-collapse" id="ftco-nav">
       <ul class="navbar-nav left-0">
-        <li class="nav-item"><a href="{% url 'home:products' %}" class="nav-link" title="Vitrine">Vitrine</a></li>
-        <li class="nav-item"><a href="#" class="nav-link" title="Agendamentos">Agendamentos</a></li>
+        <li class="nav-item">
+          <a href="{% url 'products:products' %}" class="nav-link" title="Vitrine">
+            <i class="fa-solid fa-box-open"></i>
+            Vitrine
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" title="Agendamentos">
+            <i class="fa-solid fa-calendar-days"></i>
+            Agendamentos
+          </a>
+        </li>
         {% if request.user.is_authenticated %}
         <li class="nav-item">
           <a href="{% url 'users:profile' %}" class="nav-link"
