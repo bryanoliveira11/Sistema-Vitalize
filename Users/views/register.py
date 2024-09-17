@@ -2,8 +2,9 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import View
-from utils.create_log import create_log
+
 from Users.forms import RegisterForm
+from utils.create_log import create_log
 
 
 class RegisterClassView(View):
@@ -44,7 +45,9 @@ class RegisterClassView(View):
                 'Usuário Cadastrado com Sucesso ! Por Favor Faça seu Login.'
             )
 
-            create_log(user, 'Usuário foi cadastrado com sucesso.', 'VitalizeUser')
+            create_log(
+                user, 'Usuário foi cadastrado com sucesso.', 'VitalizeUser'
+            )
 
             del (self.request.session['register_data'])
 
