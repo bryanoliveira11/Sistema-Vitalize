@@ -38,9 +38,10 @@ class VitalizeUser(AbstractBaseUser, PermissionsMixin):
         blank=True, verbose_name='Telefone / Celular'
     )
     is_staff = models.BooleanField(
-        default=False, verbose_name='Colaborador Vitalize', editable=False)
+        default=False, verbose_name='Colaborador Vitalize', editable=True
+    )
     is_superuser = models.BooleanField(
-        default=False, verbose_name='Administrador Vitalize', editable=False
+        default=False, verbose_name='Administrador Vitalize', editable=True
     )
 
     objects = CustomUserManager()
@@ -52,7 +53,8 @@ class VitalizeUser(AbstractBaseUser, PermissionsMixin):
         return f'{self.email}'
 
     def get_full_name(self):
-        return f'{self.first_name} {self.last_name}' if self.first_name else self.email
+        return f'{self.first_name} {self.last_name}' \
+            if self.first_name else self.email
 
     class Meta:
         verbose_name = 'Usuário Vitalize'

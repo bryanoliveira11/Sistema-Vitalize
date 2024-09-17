@@ -8,6 +8,7 @@ app_name = 'users'
 urlpatterns = [
     path('register/', views.RegisterClassView.as_view(), name='register'),
     path('login/', views.LoginClassView.as_view(), name='login'),
+    path('auto-login/', views.AutoLoginClassView.as_view(), name='auto-login'),
     path('logout/', views.LogoutClassView.as_view(), name='logout'),
     path(
         'admin/options/',

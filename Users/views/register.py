@@ -1,13 +1,20 @@
 from django.contrib import messages
+from django.core.signing import dumps
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import View
 
 from Users.forms import RegisterForm
+from Users.templates.users.emails.email_templates import signin_email_template
 from utils.create_log import create_log
+from utils.email_service import send_html_mail
 
 
 class RegisterClassView(View):
+    def generate_user_token(self, user):
+        token = dumps(user.pk)
+        return token
+
     def get(self, *args, **kwargs):
         title = 'Cadastro'
         subtitle = 'de Usuário'
@@ -42,11 +49,25 @@ class RegisterClassView(View):
 
             messages.success(
                 self.request,
-                'Usuário Cadastrado com Sucesso ! Por Favor Faça seu Login.'
+                'Usuário Cadastrado com Sucesso !</br>'
+                '<b>Confirme</b> seu Cadastro Utilizando '
+                'o <b>Link</b> que Enviamos em seu <b>E-mail</b>.'
             )
 
             create_log(
                 user, 'Usuário foi cadastrado com sucesso.', 'VitalizeUser'
+            )
+
+            token = self.generate_user_token(user=user)
+
+            url = f'{reverse('users:auto-login')}?token={token}'
+
+            send_html_mail(
+                subject='Confirmação de Cadastro',
+                html_content=signin_email_template(
+                    user.first_name, url
+                ),
+                recipient_list=[user.email],
             )
 
             del (self.request.session['register_data'])

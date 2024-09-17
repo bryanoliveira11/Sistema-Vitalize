@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, get_user_model, login
+from django.core.signing import BadSignature, SignatureExpired, loads
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import View
@@ -49,3 +50,37 @@ class LoginClassView(View):
             messages.error(self.request, 'E-mail ou Senha Inválidos.')
 
         return redirect(reverse('users:login'))
+
+
+class AutoLoginClassView(View):
+    def get(self, *args, **kwargs):
+        token = self.request.GET.get('token')
+
+        if token:
+            try:
+                user_id = loads(token, max_age=86400)
+                user = get_user_model().objects.get(pk=user_id)
+                login(
+                    self.request, user,
+                    'django.contrib.auth.backends.ModelBackend'
+                )
+                messages.success(
+                    self.request,
+                    f'Logado como "{self.request.user}".'
+                )
+                return redirect(reverse('products:products'))
+
+            except (BadSignature, SignatureExpired):
+                messages.error(
+                    self.request,
+                    'Token de Login Expirado. '
+                    'Por Favor, Utilize o Formulário Abaixo.'
+                )
+                return redirect(reverse('users:login'))
+        else:
+            messages.error(
+                self.request,
+                'Erro ao Logar Automaticamente. '
+                'Por Favor, Utilize o Formulário Abaixo.'
+            )
+            return redirect(reverse('users:login'))
