@@ -6,15 +6,15 @@ from Products.models import Categories, Products
 @admin.register(Products)
 class AdminVitalizeProducts(admin.ModelAdmin):
     list_display = 'id', 'product_name', 'product_category', \
-        'price', 'is_active',
+        'price', 'show', 'is_active',
     list_display_links = 'id',
-    list_editable = 'product_name', 'product_category', 'price', 'is_active',
+    list_editable = 'product_name', 'product_category', 'price', 'show', 'is_active',
     search_fields = 'product_name',
     prepopulated_fields = {
         'slug': ('product_name',)
     }
     ordering = '-id',
-    list_filter = 'product_category',
+    list_filter = 'product_category', 'is_active',
     list_per_page = 20
 
 

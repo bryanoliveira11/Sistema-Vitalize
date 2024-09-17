@@ -14,7 +14,7 @@ class ProductDetailClassView(DetailView):
         queryset = super().get_queryset(*args, **kwargs)
 
         queryset = queryset.filter(
-            is_active=True
+            show=True
         ).select_related('product_category')
 
         if not queryset:

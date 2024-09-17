@@ -16,7 +16,7 @@ class ProductsClassView(ListView):
         queryset = super().get_queryset(*args, **kwargs)
 
         queryset = queryset.filter(
-            is_active=True,
+            show=True,
         ).select_related('product_category')
 
         return queryset
@@ -47,7 +47,7 @@ class CategoryFilterClassView(ProductsClassView):
 
         queryset = queryset.filter(
             product_category__id=self.kwargs.get('id'),
-            is_active=True,
+            show=True,
         ).select_related('product_category')
 
         return queryset
@@ -88,7 +88,7 @@ class SearchClassView(ProductsClassView):
             Q(
                 Q(product_name__icontains=self.search_term) |
                 Q(product_category__category_name__icontains=self.search_term),
-                is_active=True,),
+                show=True,),
         ).select_related('product_category')
 
         return queryset

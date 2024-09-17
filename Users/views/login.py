@@ -4,7 +4,7 @@ from django.core.signing import BadSignature, SignatureExpired, loads
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import View
-
+from dotenv import load_dotenv
 from Users.forms import LoginForm
 
 
@@ -13,7 +13,7 @@ class LoginClassView(View):
         title = 'Login'
         subtitle = 'de Usuário'
         form = LoginForm()
-
+        
         return render(
             self.request,
             'users/pages/login.html',
@@ -73,7 +73,7 @@ class AutoLoginClassView(View):
             except (BadSignature, SignatureExpired):
                 messages.error(
                     self.request,
-                    'Token de Login Expirado. '
+                    'Token de Login Expirado ou Inválido. '
                     'Por Favor, Utilize o Formulário Abaixo.'
                 )
                 return redirect(reverse('users:login'))
