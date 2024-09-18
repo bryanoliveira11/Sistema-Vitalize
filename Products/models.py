@@ -1,9 +1,9 @@
 from django.db import models
-from django.utils.text import slugify
 from django.forms import ValidationError
+from django.utils.text import slugify
+
 from utils.resize_image import resize_image
 from utils.strings import generate_random_string
-from utils.django_forms import is_positive_float_number
 
 
 class Categories(models.Model):
@@ -78,7 +78,7 @@ class Products(models.Model):
                 ...
 
         return saved
-    
+
     def clean(self) -> None:
         cleaned_data = super().clean()
         errors = {}
