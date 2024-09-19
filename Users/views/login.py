@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
 from django.core.signing import BadSignature, SignatureExpired, loads
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import View
@@ -56,31 +57,36 @@ class AutoLoginClassView(View):
     def get(self, *args, **kwargs):
         token = self.request.GET.get('token')
 
-        if token:
-            try:
-                user_id = loads(token, max_age=86400)
-                user = get_user_model().objects.get(pk=user_id)
-                login(
-                    self.request, user,
-                    'django.contrib.auth.backends.ModelBackend'
-                )
-                messages.success(
-                    self.request,
-                    f'Logado como "{self.request.user}".'
-                )
-                return redirect(reverse('products:products'))
+        if not token or self.request.user.is_authenticated:
+            raise Http404()
 
-            except (BadSignature, SignatureExpired):
-                messages.error(
-                    self.request,
-                    'Token de Login Expirado ou Inválido. '
-                    'Por Favor, Utilize o Formulário Abaixo.'
-                )
-                return redirect(reverse('users:login'))
-        else:
+        try:
+            user_id = loads(token, max_age=86400)
+            user = get_user_model().objects.get(pk=user_id)
+
+            login(
+                self.request, user, 'django.contrib.auth.backends.ModelBackend'
+            )
+
+            messages.success(
+                self.request,
+                f'Logado como "{self.request.user}".'
+            )
+
+            return render(
+                self.request,
+                'Users/pages/account_confirmed.html',
+                context={
+                    'site_title': 'Conta Confirmada',
+                    'page_title': 'Confirmação',
+                    'page_subtitle': 'de Conta',
+                }
+            )
+
+        except (BadSignature, SignatureExpired):
             messages.error(
                 self.request,
-                'Erro ao Logar Automaticamente. '
+                'Token de Login Expirado ou Inválido. '
                 'Por Favor, Utilize o Formulário Abaixo.'
             )
             return redirect(reverse('users:login'))

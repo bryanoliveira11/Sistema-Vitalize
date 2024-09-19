@@ -35,7 +35,12 @@ class RegisterForm(forms.ModelForm):
             PrependedAppendedText('email', mark_safe(
                 '<i class="fa-solid fa-envelope"></i>')
             ),
-            Field('email2', css_class='prevent-paste'),
+            PrependedAppendedText(
+                'email2', mark_safe(
+                    '<i class="fa-solid fa-envelope-circle-check"></i>'
+                ),
+                css_class='prevent-paste',
+            ),
             PrependedAppendedText('phone_number', mark_safe(
                 '<i class="fa-solid fa-phone"></i>')
             ),

@@ -800,7 +800,7 @@ button.form-button:hover .submit {
   margin: 2rem auto;
 }
 
-.logout-container i.fa-circle-check {
+.logout-container i {
   font-size: 10rem;
   color: var(--color-success);
   margin-bottom: 2rem;
