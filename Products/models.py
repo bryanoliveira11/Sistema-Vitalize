@@ -20,7 +20,7 @@ class Categories(models.Model):
     is_active = models.BooleanField(
         default=True, verbose_name='Ativo/Inativo',
         help_text='Marque Essa Caixa para Ativar essa Categoria. '
-        'Desmarque para Desativar.',
+        'Desmarque para Inativar.',
     )
 
     def __str__(self):
@@ -72,7 +72,7 @@ class Products(models.Model):
     is_active = models.BooleanField(
         default=True, verbose_name='Ativo/Inativo',
         help_text='Marque Essa Caixa para Ativar esse Produto. '
-        'Desmarque para Desativar.',
+        'Desmarque para Inativar.',
     )
 
     created_at = models.DateTimeField(
