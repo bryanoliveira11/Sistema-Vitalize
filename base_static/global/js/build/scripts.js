@@ -272,6 +272,23 @@ class NavBar {
   }
 }
 
+class PreventPaste {
+  constructor() {
+    this.fields = document.querySelectorAll('.prevent-paste');
+  }
+  init() {
+    if (this.fields.length === 0) return;
+    this.preventPaste();
+  }
+  preventPaste() {
+    for (const field of this.fields) {
+      field.addEventListener('paste', (e) => {
+        e.preventDefault();
+      });
+    }
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
@@ -280,3 +297,4 @@ new LogoutLinks().init();
 new BackToTopButton().init();
 new ProductMagnifierGlass().init();
 new NavBar().init();
+new PreventPaste().init();

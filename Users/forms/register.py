@@ -17,11 +17,12 @@ User = get_user_model()
 class RegisterForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._my_errors = defaultdict(list)
+        self._my_errors: defaultdict[str, list[str]] = defaultdict(list)
+
         add_placeholder(self.fields['first_name'], 'Digite seu Nome')
         add_placeholder(self.fields['last_name'], 'Digite seu Sobrenome')
         add_placeholder(self.fields['email'], 'EX.: email@dominio.com')
-        add_attr(self.fields['email'], 'class', 'span-2')
+        add_placeholder(self.fields['email2'], 'Confirme seu E-mail')
         add_placeholder(self.fields['password'], 'Digite sua Senha')
         add_placeholder(self.fields['password2'], 'Confirme sua Senha')
         add_placeholder(self.fields['phone_number'], 'Digite seu Telefone')
@@ -34,6 +35,7 @@ class RegisterForm(forms.ModelForm):
             PrependedAppendedText('email', mark_safe(
                 '<i class="fa-solid fa-envelope"></i>')
             ),
+            Field('email2', css_class='prevent-paste'),
             PrependedAppendedText('phone_number', mark_safe(
                 '<i class="fa-solid fa-phone"></i>')
             ),
@@ -66,6 +68,17 @@ class RegisterForm(forms.ModelForm):
                 'Senhas Precisam ser Iguais.'
             )
 
+    def handle_css_classes(self):
+        for field_name, field in self.fields.items():
+            if field_name in ['password', 'password2']:
+                continue
+
+            if field_name in self.errors:
+                add_attr(field, 'class', 'is-invalid')
+                return
+
+            add_attr(field, 'class', 'is-valid')
+
     class Meta:
         model = User
         fields = [
@@ -93,6 +106,13 @@ class RegisterForm(forms.ModelForm):
         help_text=('E-mail Precisa ser Válido.'),
         error_messages={
             'required': 'Digite seu E-mail.',
+        },
+    )
+
+    email2 = forms.EmailField(
+        label='Confirmação de E-mail',
+        error_messages={
+            'required': 'Confirme seu E-mail.'
         },
     )
 
@@ -139,10 +159,23 @@ class RegisterForm(forms.ModelForm):
     def clean_email(self):
         return self.validate_email()
 
+    def clean_email2(self):
+        email = self.cleaned_data.get('email')
+        email2 = self.cleaned_data.get('email2')
+
+        if email != email2:
+            self._my_errors['email'].append(
+                'E-mails Precisam ser Iguais.'
+            )
+            self._my_errors['email2'].append(
+                'E-mails Precisam ser Iguais.'
+            )
+
     def clean(self, *args, **kwargs):
         self.validate_password()
+        self.handle_css_classes()
 
         if self._my_errors:
-            raise ValidationError(self._my_errors)
+            raise ValidationError(dict(self._my_errors))
 
         return super().clean(*args, **kwargs)
