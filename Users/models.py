@@ -38,10 +38,17 @@ class VitalizeUser(AbstractBaseUser, PermissionsMixin):
         blank=True, verbose_name='Telefone / Celular'
     )
     is_staff = models.BooleanField(
-        default=False, verbose_name='Colaborador Vitalize', editable=True
+        default=False,
+        verbose_name='Acesso a Área Administrativa',
+        editable=True,
+        help_text='Marque para Permitir '
+        'Acesso a Área Administrativa.',
+
     )
     is_superuser = models.BooleanField(
-        default=False, verbose_name='Administrador Vitalize', editable=True
+        default=False, verbose_name='Administrador Vitalize', editable=True,
+        help_text='Administrador Vitalize : Marque para dar Todas as '
+        'Permissões para Este Usuário na Área Administrativa.',
     )
 
     objects = CustomUserManager()
