@@ -18,11 +18,31 @@ class Categories(models.Model):
         auto_now=True, verbose_name='Alterado em',
     )
     is_active = models.BooleanField(
-        default=True, verbose_name='Ativo/Inativo'
+        default=True, verbose_name='Ativo/Inativo',
+        help_text='Marque Essa Caixa para Ativar essa Categoria. '
+        'Desmarque para Desativar.',
     )
 
     def __str__(self):
         return f'{self.category_name}'
+
+    def clean(self) -> None:
+        cleaned_data = super().clean()
+        errors = {}
+
+        if not self.is_active:
+            products_with_category = Products.objects.filter(
+                product_category=self
+            ).select_related('product_category')
+
+            if products_with_category:
+                errors['is_active'] = f'Há {len(products_with_category)} \
+                Produto(s) Utilizando Essa Categoria.'
+
+        if errors:
+            raise ValidationError(errors)
+
+        return cleaned_data
 
     class Meta:
         verbose_name = 'Categoria Vitalize'
@@ -50,7 +70,9 @@ class Products(models.Model):
         verbose_name='Mostrar na Vitrine', default=True
     )
     is_active = models.BooleanField(
-        default=True, verbose_name='Ativo/Inativo'
+        default=True, verbose_name='Ativo/Inativo',
+        help_text='Marque Essa Caixa para Ativar esse Produto. '
+        'Desmarque para Desativar.',
     )
 
     created_at = models.DateTimeField(
@@ -85,6 +107,10 @@ class Products(models.Model):
 
         if float(self.price) <= 0:
             errors['price'] = 'Digite um Número Positivo.'
+
+        if self.product_category and not self.product_category.is_active:
+            errors['product_category'] = 'Esta Categoria \
+            se Encontra Inativa no Momento.'
 
         if errors:
             raise ValidationError(errors)
