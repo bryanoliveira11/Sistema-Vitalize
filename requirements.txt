@@ -17,6 +17,7 @@ django-axes==6.4.0
 django-compressor==4.4
 django-cors-headers==4.3.1
 django-crispy-forms==2.3
+django-currentuser==0.8.0
 django-debug-toolbar==4.3.0
 django-jazzmin==3.0.0
 django-phonenumber-field==8.0.0

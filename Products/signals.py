@@ -1,8 +1,7 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-
+from django_currentuser.middleware import get_current_authenticated_user
 from Products.models import Categories
-from Users.middlewares import get_current_user
 from utils.create_log import create_log
 
 
@@ -10,7 +9,7 @@ from utils.create_log import create_log
 def create_category_log(instance, created, *args, **kwargs):
     if instance and created:
         create_log(
-            get_current_user(),
+            get_current_authenticated_user(),
             f'Categoria "{
                 instance.category_name}" foi cadastrada.', 'Categories'
         )
@@ -20,7 +19,7 @@ def create_category_log(instance, created, *args, **kwargs):
 def delete_category_log(instance, *args, **kwargs):
     if instance:
         create_log(
-            get_current_user(),
+            get_current_authenticated_user(),
             f'Categoria "{
                 instance.category_name}" foi deletada.', 'Categories'
         )

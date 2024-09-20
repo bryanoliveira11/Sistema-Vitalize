@@ -6,8 +6,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # my
-    'Users.middlewares.CurrentUserMiddleware',
+    'django_currentuser.middleware.ThreadLocalUserMiddleware',
     # cors headers middleware
     'corsheaders.middleware.CorsMiddleware',
     # all auth middleware
