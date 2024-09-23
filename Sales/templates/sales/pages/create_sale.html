@@ -3,7 +3,24 @@
 
 {% block content %}
 <main class="main-content-container">
-  {% include "global/partials/page_title.html" %}
+  <nav aria-label="breadcrumb" class="breadcrumb-container form">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'users:admin_options' %}" title="Opções de Admin">
+          Admin
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'sales:create' %}"
+        title="Registrar Venda">
+          Registrar Venda
+        </a>
+      </li>
+    </ol>
+  </nav>
+  <div class="title-with-breadcrumb">
+    {% include "global/partials/page_title.html" %}
+  </div>
   {% include "global/partials/messages.html" %}
   {% include "global/partials/form_messages.html" %}
   <form method="POST" action="{{form_action}}" class="form-container">

@@ -44,7 +44,26 @@ class CreateSaleClassView(View):
 
         if form.is_valid():
             sale = form.save(commit=False)
+            schedule = form.cleaned_data.get('schedule')
+            products = form.cleaned_data.get('products')
+            payment_types = form.cleaned_data.get('payment_types')
+            total_price = 0
+
+            if schedule:
+                total_price += schedule.total_price
+
+            if products is not None:
+                total_price += sum(product.price for product in products)
+
+            sale.total_price = total_price
+
             sale.save()
+
+            if products is not None:
+                sale.products.set(products)
+
+            if payment_types is not None:
+                sale.payment_types.set(payment_types)
 
             messages.success(
                 self.request,

@@ -403,6 +403,15 @@ nav.breadcrumb-container {
   width: 100%;
 }
 
+nav.breadcrumb-container.form {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+nav.breadcrumb-container.form .breadcrumb {
+  margin-bottom: 0;
+}
+
 nav .breadcrumb {
   margin: 2rem 0;
 }
@@ -616,6 +625,10 @@ a.quick-acess-link:hover {
   opacity: 1;
   color: var(--color-gray-3);
   margin-bottom: 2rem;
+}
+
+.title-with-breadcrumb .page-title-container {
+  margin-top: 1rem;
 }
 
 /* admin options page */
@@ -1006,6 +1019,10 @@ button.google-callback-btn h2 {
   max-width: 64rem;
   margin: 2rem auto;
   --bs-gutter-x: 0;
+}
+
+.admin-options-container .messages-container {
+  max-width: 100%;
 }
 
 .message-form {

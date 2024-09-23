@@ -41,7 +41,8 @@ class Sales(models.Model):
     )
     total_price = models.DecimalField(
         max_digits=7, decimal_places=2, null=False,
-        blank=False, verbose_name='Preço Total (R$)'
+        blank=False, verbose_name='Preço Total (R$)',
+        editable=False,
     )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'

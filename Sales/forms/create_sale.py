@@ -82,7 +82,8 @@ class CreateSaleForm(forms.ModelForm):
         fields = ['schedule', 'products', 'payment_types']
 
     schedule = SchedulesChoiceField(
-        queryset=Schedules.objects.filter(status=True).select_related('user'),
+        queryset=Schedules.objects.filter(
+            status=True).order_by('-pk').select_related('user'),
         label='Agendamento',
         help_text='Selecionar um Agendamento (Caso Necessário).',
         required=False,
@@ -91,7 +92,7 @@ class CreateSaleForm(forms.ModelForm):
     products = ProductsMultipleChoiceField(
         queryset=Products.objects.filter(
             is_active=True,
-        ).order_by('-pk'),
+        ).order_by('-pk').select_related('product_category'),
         label='Produtos Disponíveis',
         help_text='''Se estiver em um Computador segure a tecla CTRL
           para selecionar mais de um Produto.''',
