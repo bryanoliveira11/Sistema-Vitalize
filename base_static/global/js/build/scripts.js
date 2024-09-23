@@ -391,6 +391,59 @@ class SelectInputCheckIcon {
   }
 }
 
+class SalesShowTotalPrice {
+  constructor() {
+    this.productsSelect = document.getElementById('id_products');
+    this.scheduleSelect = document.getElementById('id_schedule');
+    this.totalPriceElement = document.getElementById('total-price');
+  }
+
+  init() {
+    if (!this.totalPriceElement) return;
+
+    this.updateTotalPrice();
+    this.calculateTotalPrice();
+  }
+  calculateTotalPrice() {
+    let totalPrice = 0;
+
+    if (this.productsSelect) {
+      const selectedProducts = Array.from(this.productsSelect.selectedOptions);
+      selectedProducts.forEach((option) => {
+        const productPrice = parseFloat(option.getAttribute('data-price'));
+        totalPrice += isNaN(productPrice) ? 0 : productPrice;
+      });
+    }
+
+    if (this.scheduleSelect) {
+      const selectedSchedule = this.scheduleSelect.selectedOptions[0];
+      if (selectedSchedule) {
+        const schedulePrice = parseFloat(
+          selectedSchedule.getAttribute('data-price'),
+        );
+        totalPrice += isNaN(schedulePrice) ? 0 : schedulePrice;
+      }
+    }
+
+    this.totalPriceElement.textContent = totalPrice.toFixed(2) + ' R$';
+  }
+  updateTotalPrice() {
+    if (this.productsSelect) {
+      this.productsSelect.addEventListener(
+        'change',
+        this.calculateTotalPrice.bind(this),
+      );
+    }
+
+    if (this.scheduleSelect) {
+      this.scheduleSelect.addEventListener(
+        'change',
+        this.calculateTotalPrice.bind(this),
+      );
+    }
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
@@ -406,3 +459,4 @@ new SelectInputCheckIcon(
 ).init();
 new SalesProductSearch().init();
 new UserSchedulesSearch().init();
+new SalesShowTotalPrice().init();

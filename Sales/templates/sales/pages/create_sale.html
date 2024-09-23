@@ -8,6 +8,11 @@
   {% include "global/partials/form_messages.html" %}
   <form method="POST" action="{{form_action}}" class="form-container">
     {% crispy form %}
+    <div id="selected-prices">
+        <h2>Preço Total :
+          <span id="total-price">0.00 R$</span>
+        </h2>
+    </div>
     <button type="submit" class="form-button" title="Registrar">
       <span>Registrar Venda</span>
       <i class="fa-solid fa-dollar-sign"></i>

@@ -879,6 +879,18 @@ button.form-button:hover .submit {
   margin-bottom: 1.5rem;
 }
 
+#selected-prices {
+  margin-top: 2rem;
+}
+
+#selected-prices h2 {
+  font-size: 2.6rem;
+}
+
+#selected-prices #total-price {
+  font-weight: 600;
+}
+
 /* forgot password */
 
 .forgot-password-content {

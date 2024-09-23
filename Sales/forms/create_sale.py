@@ -14,12 +14,40 @@ from Schedules.models import Schedules
 User = get_user_model()
 
 
+class SchedulesCustomWidget(forms.Select):
+    def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        option = super().create_option(
+            name, value, label, selected, index, subindex, attrs
+        )
+        if value:
+            option["attrs"]["data-price"] = value.instance.total_price
+        return option
+
+
 class SchedulesChoiceField(forms.ModelChoiceField):
+    widget = SchedulesCustomWidget
+
     def label_from_instance(self, obj: Schedules):
         return f"{obj} - R${obj.total_price:.2f}"
 
 
+class ProductsCustomWidget(forms.SelectMultiple):
+    def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        option = super().create_option(
+            name, value, label, selected, index, subindex, attrs
+        )
+        if value:
+            option["attrs"]["data-price"] = value.instance.price
+        return option
+
+
 class ProductsMultipleChoiceField(forms.ModelMultipleChoiceField):
+    widget = ProductsCustomWidget
+
     def label_from_instance(self, obj: Products):
         return f"{obj.product_name} - \
           {obj.product_category} - R${obj.price:.2f}"
@@ -32,7 +60,6 @@ class CreateSaleForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('users'),
             Field('schedule'),
             Field('products'),
             Field('payment_types'),
