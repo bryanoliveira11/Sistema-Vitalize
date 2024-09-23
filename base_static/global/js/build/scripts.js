@@ -289,6 +289,45 @@ class PreventPaste {
   }
 }
 
+class UserSchedulesSearch {
+  constructor() {
+    this.schedulesField = document.getElementById('id_schedule');
+  }
+  init() {
+    if (!this.schedulesField) return;
+    this.createSearchBar();
+    this.search();
+  }
+  createSearchBar() {
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.id = 'scheduleSearch';
+    searchInput.className = 'form-control mb-2';
+    searchInput.placeholder = 'Busque um E-mail ou ID...';
+    this.schedulesField.parentNode.insertBefore(
+      searchInput,
+      this.schedulesField,
+    );
+  }
+  search() {
+    document
+      .getElementById('scheduleSearch')
+      .addEventListener('input', function () {
+        let filter = this.value.toLowerCase();
+        let options = document.querySelectorAll('#id_schedule option');
+
+        options.forEach((option) => {
+          let text = option.textContent.toLowerCase();
+          if (text.includes(filter)) {
+            option.style.display = '';
+          } else {
+            option.style.display = 'none';
+          }
+        });
+      });
+  }
+}
+
 class SalesProductSearch {
   constructor() {
     this.productField = document.getElementById('id_products');
@@ -366,3 +405,4 @@ new SelectInputCheckIcon(
   document.getElementById('div_id_payment_types'),
 ).init();
 new SalesProductSearch().init();
+new UserSchedulesSearch().init();

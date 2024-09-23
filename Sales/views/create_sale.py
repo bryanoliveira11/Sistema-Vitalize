@@ -15,11 +15,7 @@ from utils.create_log import create_log
     name='dispatch'
 )
 class CreateSaleClassView(View):
-    def get(self, *args, **kwargs):
-        if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
-
-        form = CreateSaleForm()
+    def render_form(self, form: CreateSaleForm):
         title = 'Registrar'
         subtitle = 'Venda'
 
@@ -33,6 +29,12 @@ class CreateSaleClassView(View):
                 'page_subtitle': subtitle,
             }
         )
+
+    def get(self, *args, **kwargs):
+        if not self.request.user.is_superuser:  # type: ignore
+            raise Http404()
+
+        return self.render_form(form=CreateSaleForm())
 
     def post(self, *args, **kwargs):
         form = CreateSaleForm(
@@ -57,4 +59,4 @@ class CreateSaleClassView(View):
 
             return redirect(reverse('users:admin_options'))
 
-        return redirect(reverse('sales:create_sale'))
+        return self.render_form(form=form)

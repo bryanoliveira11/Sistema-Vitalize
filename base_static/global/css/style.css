@@ -849,6 +849,7 @@ button.form-button:hover .submit {
   width: 100%;
   transition: all 100ms ease-in-out;
   font-size: 1.5rem;
+  overflow-x: auto;
 }
 
 .form-container select#id_products {
@@ -874,7 +875,7 @@ button.form-button:hover .submit {
   box-shadow: 0 0 0 0.25rem var(--color-accent-form-shadow);
 }
 
-#id_schedule_helptext, #id_products_helptext {
+#id_schedule_helptext, #id_products_helptext, #id_users_helptext {
   margin-bottom: 1.5rem;
 }
 

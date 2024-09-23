@@ -5,7 +5,7 @@ from Schedules.models import Schedules, Services
 
 @admin.register(Schedules)
 class AdminVitalizeSchedules(admin.ModelAdmin):
-    list_display = 'id', 'user', 'schedule_date', 'status',
+    list_display = 'id', 'user', 'total_price', 'schedule_date', 'status',
     list_display_links = 'id', 'user',
     search_fields = 'user',
     ordering = '-id',

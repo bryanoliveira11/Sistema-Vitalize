@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Sum
 from django.forms import ValidationError
 
 from utils.resize_image import resize_image
@@ -64,9 +65,14 @@ class Schedules(models.Model):
     user = models.ForeignKey(
         User, verbose_name='Usuario', null=True, on_delete=models.PROTECT
     )
-    service = models.ManyToManyField(Services, verbose_name="Serviço")
+    services = models.ManyToManyField(Services, verbose_name="Serviço")
     schedule_date = models.DateTimeField(
         null=False, blank=False, verbose_name='Data e Hora'
+    )
+    total_price = models.DecimalField(
+        max_digits=7, decimal_places=2, null=False,
+        blank=False, verbose_name='Preço Total (R$)',
+        editable=False,
     )
     status = models.BooleanField(
         default=True, verbose_name='Status',
@@ -80,7 +86,16 @@ class Schedules(models.Model):
     )
 
     def __str__(self):
-        return f'Agendamento de {self.user}'
+        return f'Agendamento Nº {self.pk} ({self.user})'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.update_total_price()
+
+    def update_total_price(self):
+        total = self.services.aggregate(total_price=Sum('price'))[
+            'total_price'] or 0
+        Schedules.objects.filter(pk=self.pk).update(total_price=total)
 
     class Meta:
         verbose_name = 'Agendamento Vitalize'
