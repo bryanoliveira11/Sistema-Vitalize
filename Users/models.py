@@ -37,6 +37,11 @@ class VitalizeUser(AbstractBaseUser, PermissionsMixin):
     phone_number = PhoneNumberField(
         blank=True, verbose_name='Telefone / Celular'
     )
+    is_active = models.BooleanField(
+        default=True, verbose_name='Ativo/Inativo',
+        help_text='Marque Essa Caixa para Ativar essa Categoria. '
+        'Desmarque para Inativar.',
+    )
     is_staff = models.BooleanField(
         default=False,
         verbose_name='Acesso a Área Administrativa',

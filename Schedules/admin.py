@@ -15,8 +15,9 @@ class AdminVitalizeSchedules(admin.ModelAdmin):
 
 @admin.register(Services)
 class AdminVitalizeServices(admin.ModelAdmin):
-    list_display = 'id', 'service_name', 'price', 
+    list_display = 'id', 'service_name', 'description', 'price',
     list_display_links = 'id', 'service_name',
+    list_editable = 'description', 'price',
     search_fields = 'service_name',
     ordering = '-id',
     list_filter = 'service_name',

@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ValidationError
 
 from Sales.models import Sales
 
@@ -6,7 +7,7 @@ from Sales.models import Sales
 class CashOut(models.Model):
     value = models.DecimalField(
         max_digits=5, decimal_places=2, null=False,
-        blank=False, verbose_name='Valor'
+        blank=False, verbose_name='Valor (R$)'
     )
     description = models.CharField(
         max_length=100, null=False, blank=False, verbose_name='Descrição'
@@ -21,6 +22,18 @@ class CashOut(models.Model):
     def __str__(self):
         return f'Sangria nº {self.pk}'
 
+    def clean(self) -> None:
+        cleaned_data = super().clean()
+        errors = {}
+
+        if float(self.value) <= 0:
+            errors['value'] = 'Digite um Número Positivo.'
+
+        if errors:
+            raise ValidationError(errors)
+
+        return cleaned_data
+
     class Meta:
         verbose_name = 'Sangria Vitalize'
         verbose_name_plural = 'Sangrias Vitalize'
@@ -33,7 +46,7 @@ class CashRegister(models.Model):
     )
     cash = models.DecimalField(
         max_digits=10, decimal_places=2, null=False,
-        blank=False, verbose_name='Preço (R$)'
+        blank=False, verbose_name='Valor do Caixa (R$)'
     )
     is_open = models.BooleanField(
         default=True

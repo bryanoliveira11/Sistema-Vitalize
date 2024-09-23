@@ -1,5 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.forms import ValidationError
+
+from utils.resize_image import resize_image
 
 User = get_user_model()
 
@@ -17,7 +20,7 @@ class Services(models.Model):
     )
     cover_path = models.ImageField(
         upload_to='services/%Y/%m/%d/', null=False,
-        blank=False, verbose_name='Imagem'
+        blank=False, verbose_name='Imagem do Serviço'
     )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
@@ -29,6 +32,29 @@ class Services(models.Model):
     def __str__(self):
         return f'{self.service_name}'
 
+    def clean(self) -> None:
+        cleaned_data = super().clean()
+        errors = {}
+
+        if float(self.price) <= 0:
+            errors['price'] = 'Digite um Número Positivo.'
+
+        if errors:
+            raise ValidationError(errors)
+
+        return cleaned_data
+
+    def save(self, *args, **kwargs):
+        saved = super().save(*args, **kwargs)
+
+        if self.cover_path:
+            try:
+                resize_image(self.cover_path, new_width=840)
+            except FileNotFoundError:
+                ...
+
+        return saved
+
     class Meta:
         verbose_name = 'Serviço Vitalize'
         verbose_name_plural = 'Serviços Vitalize'
@@ -36,7 +62,7 @@ class Services(models.Model):
 
 class Schedules(models.Model):
     user = models.ForeignKey(
-        User, verbose_name='Usuario', null=True, on_delete=models.SET_NULL
+        User, verbose_name='Usuario', null=True, on_delete=models.PROTECT
     )
     service = models.ManyToManyField(Services, verbose_name="Serviço")
     schedule_date = models.DateTimeField(
