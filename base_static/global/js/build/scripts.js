@@ -289,6 +289,69 @@ class PreventPaste {
   }
 }
 
+class SalesProductSearch {
+  constructor() {
+    this.productField = document.getElementById('id_products');
+  }
+  init() {
+    if (!this.productField) return;
+    this.createSearchBar();
+    this.search();
+  }
+  createSearchBar() {
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.id = 'productSearch';
+    searchInput.className = 'form-control mb-2';
+    searchInput.placeholder = 'Buscar Produtos...';
+    this.productField.parentNode.insertBefore(searchInput, this.productField);
+  }
+  search() {
+    document
+      .getElementById('productSearch')
+      .addEventListener('input', function () {
+        let filter = this.value.toLowerCase();
+        let options = document.querySelectorAll('#id_products option');
+
+        options.forEach((option) => {
+          let text = option.textContent.toLowerCase();
+          if (text.includes(filter)) {
+            option.style.display = '';
+          } else {
+            option.style.display = 'none';
+          }
+        });
+      });
+  }
+}
+
+class SelectInputCheckIcon {
+  constructor(field) {
+    this.selectField = field;
+  }
+  init() {
+    if (!this.selectField) return;
+    this.addCheckIcon();
+  }
+  addCheckIcon() {
+    const selectLabel = this.selectField.querySelector('label');
+    const labelText = selectLabel.innerText;
+    this.selectField.addEventListener('change', () => {
+      const icon = '<i class="fa-solid fa-circle-check"></i>';
+      let selectCount = 0;
+      this.selectField.querySelectorAll('option').forEach((option) => {
+        if (!option.selected) {
+          option.innerHTML = option.text;
+          return;
+        }
+        option.innerHTML = `${icon} ${option.text}`;
+        selectCount++;
+      });
+      selectLabel.innerHTML = `${labelText} &#8594; ${selectCount} ${icon}`;
+    });
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
@@ -298,3 +361,8 @@ new BackToTopButton().init();
 new ProductMagnifierGlass().init();
 new NavBar().init();
 new PreventPaste().init();
+new SelectInputCheckIcon(document.getElementById('div_id_products')).init();
+new SelectInputCheckIcon(
+  document.getElementById('div_id_payment_types'),
+).init();
+new SalesProductSearch().init();

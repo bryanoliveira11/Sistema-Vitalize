@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Products.urls')),
     path('users/', include('Users.urls')),
+    path('sales/', include('Sales.urls')),
     path(
         'accounts/google/login/callback/',
         all_auth_views.oauth2_callback,

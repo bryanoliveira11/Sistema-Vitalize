@@ -20,7 +20,7 @@ class AdminUserOptionsClassView(View):
         return render(
             self.request,
             'users/pages/admin_options.html',
-            {
+            context={
                 'site_title': f'{title} {subtitle}',
                 'page_title': title,
                 'page_subtitle': subtitle,

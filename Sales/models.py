@@ -33,7 +33,7 @@ class Sales(models.Model):
         Schedules, verbose_name='Agendamento',
         on_delete=models.PROTECT, null=True, blank=True
     )
-    product = models.ManyToManyField(
+    products = models.ManyToManyField(
         Products, verbose_name="Produto(s)", blank=True
     )
     payment_types = models.ManyToManyField(

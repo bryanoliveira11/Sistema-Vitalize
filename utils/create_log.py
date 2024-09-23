@@ -1,9 +1,12 @@
+from django.contrib.auth.models import AbstractBaseUser, AnonymousUser
+
 from Logs.models import VitalizeLogs
 from Users.models import VitalizeUser
 
 
 def create_log(
-    user: VitalizeUser | None, log: str, table_affected: str
+    user: VitalizeUser | AbstractBaseUser | AnonymousUser | None,
+    log: str, table_affected: str
 ) -> VitalizeLogs | None:
     if not user or not log or not table_affected:
         return

@@ -69,7 +69,8 @@ class Schedules(models.Model):
         null=False, blank=False, verbose_name='Data e Hora'
     )
     status = models.BooleanField(
-        default=True
+        default=True, verbose_name='Status',
+        help_text='Marcado/Desmarcado',
     )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
@@ -79,7 +80,7 @@ class Schedules(models.Model):
     )
 
     def __str__(self):
-        return f'Agendamento nº {self.pk}'
+        return f'Agendamento de {self.user}'
 
     class Meta:
         verbose_name = 'Agendamento Vitalize'

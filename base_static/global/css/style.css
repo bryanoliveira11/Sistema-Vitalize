@@ -845,6 +845,39 @@ button.form-button:hover .submit {
   font-weight: 600;
 }
 
+.form-container select {
+  width: 100%;
+  transition: all 100ms ease-in-out;
+  font-size: 1.5rem;
+}
+
+.form-container select#id_products {
+  height: 15rem;
+}
+
+.form-container select option {
+  border-radius: 0.2rem;
+  padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+  font-weight: 500;
+  color: var(--color-black);
+  font-size: 1.5rem;
+}
+
+.form-container select option:hover,
+.form-container select option:checked {
+  box-shadow: 0 0 10px 100px var(--color-accent) inset;
+}
+
+.form-container select:focus {
+  border-color: var(--color-accent);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem var(--color-accent-form-shadow);
+}
+
+#id_schedule_helptext, #id_products_helptext {
+  margin-bottom: 1.5rem;
+}
+
 /* forgot password */
 
 .forgot-password-content {

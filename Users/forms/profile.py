@@ -17,7 +17,7 @@ User = get_user_model()
 class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._my_errors = defaultdict(list)
+        self._my_errors: defaultdict[str, list[str]] = defaultdict(list)
         self._email_changed = False
         add_placeholder(self.fields['first_name'], 'Digite seu Nome')
         add_placeholder(self.fields['last_name'], 'Digite seu Sobrenome')
@@ -103,7 +103,7 @@ class ProfileForm(forms.ModelForm):
 
     def clean(self, *args, **kwargs):
         if self._my_errors:
-            raise ValidationError(self._my_errors)
+            raise ValidationError(dict(self._my_errors))
 
         return super().clean(*args, **kwargs)
 
@@ -168,6 +168,6 @@ class EditPasswordForm(forms.ModelForm):
         self.validate_password()
 
         if self._my_errors:
-            raise ValidationError(self._my_errors)
+            raise ValidationError(dict(self._my_errors))
 
         return super().clean(*args, **kwargs)

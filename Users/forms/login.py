@@ -1,7 +1,7 @@
-from django import forms
-from crispy_forms.bootstrap import AppendedText, Field, PrependedAppendedText
+from crispy_forms.bootstrap import AppendedText, PrependedAppendedText
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout
+from django import forms
 from django.utils.safestring import mark_safe
 
 from utils.django_forms import add_attr, add_placeholder
