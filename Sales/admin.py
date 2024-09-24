@@ -44,7 +44,8 @@ class AdminVitalizeSales(admin.ModelAdmin):
     get_payment_types.short_description = 'Tipo(s) de Pagamento'
 
     def price_in_BRL(self, obj):
-        return f'{obj.total_price} R$'
+        return f'{obj.total_price} R$' if obj.total_price \
+            is not None else f'{0} R$'
 
     price_in_BRL.short_description = 'Preço Total'
 

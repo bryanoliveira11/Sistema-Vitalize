@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.forms import ValidationError
 
@@ -51,7 +53,9 @@ class CashRegister(models.Model):
         blank=False, verbose_name='Valor do Caixa (R$)', editable=False,
     )
     is_open = models.BooleanField(
-        default=True, verbose_name='Aberto/Fechado', editable=False
+        default=True, verbose_name='Aberto/Fechado',
+        help_text='Marque para Abrir o Caixa. \
+        Desmarque para Fechar. Um Caixa Fechado não Poderá ser Editado.'
     )
     open_date = models.DateTimeField(
         auto_now_add=True, verbose_name='Data de Abertura'
@@ -71,8 +75,18 @@ class CashRegister(models.Model):
         if not self.cash:
             self.cash = 0
 
-        saved = super().save(*args, **kwargs)
-        return saved
+        if not self.is_open:
+            self.close_date = datetime.now()
+
+        super().save(*args, **kwargs)
+
+        if self.is_open:
+            self.update_total_price()
+
+    def update_total_price(self):
+        total = self.sales.aggregate(total_price=models.Sum('total_price'))[
+            'total_price'] or 0
+        CashRegister.objects.filter(pk=self.pk).update(cash=total)
 
     class Meta:
         verbose_name = 'Caixa Vitalize'

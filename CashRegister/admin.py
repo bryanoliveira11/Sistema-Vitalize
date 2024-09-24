@@ -9,7 +9,7 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
         'open_date', 'close_date',
     list_display_links = 'id',
     ordering = '-id',
-    list_filter = 'open_date', 'close_date',
+    list_filter = 'open_date', 'close_date', 'is_open',
     readonly_fields = 'open_date', 'close_date', 'cash_in_BRL',
     list_per_page = 20
 
@@ -25,9 +25,19 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
     get_sales.short_description = 'Vendas'
 
     def cash_in_BRL(self, obj):
-        return f'{obj.cash} R$'
+        return f'{obj.cash} R$' if obj.cash is not None else f'{0} R$'
 
     cash_in_BRL.short_description = 'Valor do Caixa'
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and not obj.is_open:
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and not obj.is_open:
+            return False
+        return super().has_delete_permission(request, obj)
 
 
 @admin.register(CashOut)
