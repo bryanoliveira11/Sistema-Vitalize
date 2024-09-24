@@ -40,9 +40,8 @@ class Sales(models.Model):
         PaymentTypes, verbose_name="Tipo de Pagamento"
     )
     total_price = models.DecimalField(
-        max_digits=7, decimal_places=2, null=True,
-        blank=True, verbose_name='Preço Total (R$)',
-        editable=False,
+        max_digits=7, decimal_places=2, null=False,
+        blank=False, verbose_name='Preço Total (R$)', editable=False,
     )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
@@ -55,6 +54,8 @@ class Sales(models.Model):
         return f'Venda nº {self.pk} - {self.total_price} R$'
 
     def save(self, *args, **kwargs):
+        if not self.total_price:
+            self.total_price = 0
         super().save(*args, **kwargs)
         self.update_total_price()
 

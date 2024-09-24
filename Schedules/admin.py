@@ -8,12 +8,24 @@ User = get_user_model()
 
 @admin.register(Schedules)
 class AdminVitalizeSchedules(admin.ModelAdmin):
-    list_display = 'id', 'user', 'total_price', 'schedule_date', 'status',
-    list_display_links = 'id', 'user',
+    list_display = 'id', 'user', 'get_services', \
+        'total_price', 'schedule_date', 'status',
+    list_display_links = 'id',
     search_fields = 'user',
     ordering = '-id',
-    list_filter = 'user', 'status',
+    list_filter = 'user', 'status', 'services',
     list_per_page = 20
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.prefetch_related('services').select_related('user')
+
+    def get_services(self, obj):
+        services = obj.services.all()
+        return ", ".join(
+            [service.service_name for service in services]
+        ) or 'Nenhum Serviço Escolhido.'
+    get_services.short_description = 'Serviço(s)'
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "services":

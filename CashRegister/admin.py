@@ -10,6 +10,7 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
     list_display_links = 'id',
     ordering = '-id',
     list_filter = 'open_date', 'close_date',
+    readonly_fields = 'open_date', 'close_date', 'cash_in_BRL',
     list_per_page = 20
 
     def get_queryset(self, request):
@@ -22,6 +23,11 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
             [str(sale) for sale in sales]
         ) or 'Nenhuma Venda Feita até o Momento.'
     get_sales.short_description = 'Vendas'
+
+    def cash_in_BRL(self, obj):
+        return f'{obj.cash} R$'
+
+    cash_in_BRL.short_description = 'Valor do Caixa'
 
 
 @admin.register(CashOut)

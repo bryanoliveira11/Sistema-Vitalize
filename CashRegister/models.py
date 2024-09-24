@@ -48,8 +48,7 @@ class CashRegister(models.Model):
     )
     cash = models.DecimalField(
         max_digits=10, decimal_places=2, null=False,
-        blank=False, verbose_name='Valor do Caixa (R$)',
-        editable=False,
+        blank=False, verbose_name='Valor do Caixa (R$)', editable=False,
     )
     is_open = models.BooleanField(
         default=True, verbose_name='Aberto/Fechado', editable=False

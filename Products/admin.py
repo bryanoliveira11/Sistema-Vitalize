@@ -8,8 +8,7 @@ class AdminVitalizeProducts(admin.ModelAdmin):
     list_display = 'id', 'product_name', 'product_category', \
         'price', 'show', 'is_active',
     list_display_links = 'id',
-    list_editable = 'product_name', 'product_category', \
-        'price', 'show', 'is_active',
+    list_editable = 'product_name', 'price', 'show', 'is_active',
     search_fields = 'product_name',
     prepopulated_fields = {
         'slug': ('product_name',)
@@ -17,6 +16,10 @@ class AdminVitalizeProducts(admin.ModelAdmin):
     ordering = '-id',
     list_filter = 'product_category', 'is_active',
     list_per_page = 20
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('product_category')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "product_category":

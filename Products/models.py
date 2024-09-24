@@ -70,7 +70,8 @@ class Products(models.Model):
         blank=False, verbose_name='Imagem'
     )
     show = models.BooleanField(
-        verbose_name='Mostrar na Vitrine', default=True
+        verbose_name='Mostrar na Vitrine', default=True,
+        help_text='Marque para Mostrar o Produto na Vitrine do Site.',
     )
     is_active = models.BooleanField(
         default=True, verbose_name='Ativo/Inativo',

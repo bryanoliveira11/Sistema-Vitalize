@@ -18,8 +18,10 @@ class AdminVitalizePaymentTypes(admin.ModelAdmin):
 class AdminVitalizeSales(admin.ModelAdmin):
     list_display = 'id', 'schedule', 'get_products', \
         'get_payment_types', 'total_price',
-    list_display_links = 'id', 'schedule',
+    list_display_links = 'id',
+    list_filter = 'payment_types', 'products',
     search_fields = 'schedule',
+    readonly_fields = 'created_at', 'price_in_BRL',
     ordering = '-id',
     list_per_page = 20
 
@@ -40,6 +42,11 @@ class AdminVitalizeSales(admin.ModelAdmin):
             [payment_type.payment_name for payment_type in payment_types]
         )
     get_payment_types.short_description = 'Tipo(s) de Pagamento'
+
+    def price_in_BRL(self, obj):
+        return f'{obj.total_price} R$'
+
+    price_in_BRL.short_description = 'Preço Total'
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "products":

@@ -74,8 +74,8 @@ class Schedules(models.Model):
         null=False, blank=False, verbose_name='Data e Hora'
     )
     total_price = models.DecimalField(
-        max_digits=7, decimal_places=2, null=True,
-        blank=True, verbose_name='Preço Total (R$)',
+        max_digits=7, decimal_places=2, null=False,
+        blank=False, verbose_name='Preço Total (R$)',
         editable=False,
     )
     status = models.BooleanField(
@@ -93,6 +93,8 @@ class Schedules(models.Model):
         return f'Agendamento Nº {self.pk} ({self.user})'
 
     def save(self, *args, **kwargs):
+        if not self.total_price:
+            self.total_price = 0
         super().save(*args, **kwargs)
         self.update_total_price()
 
