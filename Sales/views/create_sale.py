@@ -72,7 +72,7 @@ class CreateSaleClassView(View):
 
             create_log(
                 self.request.user,
-                'Venda Registrada com Sucesso.',
+                f'Venda ID : {sale.pk} Registrada com Sucesso.',
                 'Sales'
             )
 

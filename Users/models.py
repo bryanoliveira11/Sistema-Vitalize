@@ -39,7 +39,7 @@ class VitalizeUser(AbstractBaseUser, PermissionsMixin):
     )
     is_active = models.BooleanField(
         default=True, verbose_name='Ativo/Inativo',
-        help_text='Marque Essa Caixa para Ativar essa Categoria. '
+        help_text='Marque Essa Caixa para Ativar esse Usuário. '
         'Desmarque para Inativar.',
     )
     is_staff = models.BooleanField(

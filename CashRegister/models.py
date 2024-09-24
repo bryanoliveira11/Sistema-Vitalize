@@ -20,7 +20,7 @@ class CashOut(models.Model):
     )
 
     def __str__(self):
-        return f'Sangria nº {self.pk}'
+        return f'Sangria nº {self.pk} - {self.description}'
 
     def clean(self) -> None:
         cleaned_data = super().clean()
@@ -40,29 +40,40 @@ class CashOut(models.Model):
 
 
 class CashRegister(models.Model):
-    sale = models.ManyToManyField(Sales, verbose_name='Venda', blank=True)
+    sales = models.ManyToManyField(Sales, verbose_name='Venda', blank=True)
     cash_out = models.ManyToManyField(
-        CashOut, verbose_name='Sangria', blank=True
+        CashOut, verbose_name='Sangria',
+        blank=True, help_text='Faça uma Sangria no Caixa '
+        'Escolhendo uma Opção e Salvando.'
     )
     cash = models.DecimalField(
         max_digits=10, decimal_places=2, null=False,
-        blank=False, verbose_name='Valor do Caixa (R$)'
+        blank=False, verbose_name='Valor do Caixa (R$)',
+        editable=False,
     )
     is_open = models.BooleanField(
-        default=True
+        default=True, verbose_name='Aberto/Fechado', editable=False
     )
     open_date = models.DateTimeField(
         auto_now_add=True, verbose_name='Data de Abertura'
     )
     close_date = models.DateTimeField(
-        verbose_name='Data de fechamento',  null=True, blank=True
+        verbose_name='Data de fechamento',
+        null=True, blank=True, editable=False,
     )
     updated_date = models.DateTimeField(
         auto_now=True, verbose_name='Alterado em'
     )
 
     def __str__(self):
-        return f'Abertura de Caixa nº {self.pk}'
+        return f'Caixa nº {self.pk} - {self.open_date}'
+
+    def save(self, *args, **kwargs):
+        if not self.cash:
+            self.cash = 0
+
+        saved = super().save(*args, **kwargs)
+        return saved
 
     class Meta:
         verbose_name = 'Caixa Vitalize'

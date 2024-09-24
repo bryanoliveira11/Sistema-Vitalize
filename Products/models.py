@@ -30,14 +30,17 @@ class Categories(models.Model):
         cleaned_data = super().clean()
         errors = {}
 
-        if not self.is_active:
-            products_with_category = Products.objects.filter(
-                product_category=self
-            ).select_related('product_category')
+        try:
+            if not self.is_active:
+                products_with_category = Products.objects.filter(
+                    product_category=self
+                ).select_related('product_category')
 
-            if products_with_category:
-                errors['is_active'] = f'Há {len(products_with_category)} \
-                Produto(s) Utilizando Essa Categoria.'
+                if products_with_category:
+                    errors['is_active'] = f'Há {len(products_with_category)} \
+                    Produto(s) Utilizando Essa Categoria.'
+        except ValueError:
+            ...
 
         if errors:
             raise ValidationError(errors)
@@ -74,7 +77,6 @@ class Products(models.Model):
         help_text='Marque Essa Caixa para Ativar esse Produto. '
         'Desmarque para Inativar.',
     )
-
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
     )

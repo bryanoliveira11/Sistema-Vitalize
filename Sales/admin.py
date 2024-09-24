@@ -1,13 +1,14 @@
 from django.contrib import admin
 
+from Products.models import Products
 from Sales.models import PaymentTypes, Sales
 
 
 @admin.register(PaymentTypes)
 class AdminVitalizePaymentTypes(admin.ModelAdmin):
-    list_display = 'id', 'payment_name',
+    list_display = 'id', 'payment_name', 'is_active',
     list_display_links = 'id',
-    list_editable = 'payment_name',
+    list_editable = 'payment_name', 'is_active',
     search_fields = 'payment_name',
     ordering = '-id',
     list_per_page = 20
@@ -39,3 +40,16 @@ class AdminVitalizeSales(admin.ModelAdmin):
             [payment_type.payment_name for payment_type in payment_types]
         )
     get_payment_types.short_description = 'Tipo(s) de Pagamento'
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == "products":
+            kwargs["queryset"] = Products.objects.filter(
+                is_active=True
+            ).order_by('-pk')
+
+        if db_field.name == "payment_types":
+            kwargs["queryset"] = PaymentTypes.objects.filter(
+                is_active=True
+            ).order_by('-pk')
+
+        return super().formfield_for_manytomany(db_field, request, **kwargs)

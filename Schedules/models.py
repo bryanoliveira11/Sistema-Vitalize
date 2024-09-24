@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import Sum
 from django.forms import ValidationError
 
 from utils.resize_image import resize_image
@@ -22,6 +21,11 @@ class Services(models.Model):
     cover_path = models.ImageField(
         upload_to='services/%Y/%m/%d/', null=False,
         blank=False, verbose_name='Imagem do Serviço'
+    )
+    is_active = models.BooleanField(
+        default=True, verbose_name='Ativo/Inativo',
+        help_text='Marque Essa Caixa para Ativar esse Serviço. '
+        'Desmarque para Inativar.',
     )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
@@ -70,8 +74,8 @@ class Schedules(models.Model):
         null=False, blank=False, verbose_name='Data e Hora'
     )
     total_price = models.DecimalField(
-        max_digits=7, decimal_places=2, null=False,
-        blank=False, verbose_name='Preço Total (R$)',
+        max_digits=7, decimal_places=2, null=True,
+        blank=True, verbose_name='Preço Total (R$)',
         editable=False,
     )
     status = models.BooleanField(
@@ -93,7 +97,7 @@ class Schedules(models.Model):
         self.update_total_price()
 
     def update_total_price(self):
-        total = self.services.aggregate(total_price=Sum('price'))[
+        total = self.services.aggregate(total_price=models.Sum('price'))[
             'total_price'] or 0
         Schedules.objects.filter(pk=self.pk).update(total_price=total)
 

@@ -40,8 +40,8 @@ class Sales(models.Model):
         PaymentTypes, verbose_name="Tipo de Pagamento"
     )
     total_price = models.DecimalField(
-        max_digits=7, decimal_places=2, null=False,
-        blank=False, verbose_name='Preço Total (R$)',
+        max_digits=7, decimal_places=2, null=True,
+        blank=True, verbose_name='Preço Total (R$)',
         editable=False,
     )
     created_at = models.DateTimeField(
@@ -52,7 +52,20 @@ class Sales(models.Model):
     )
 
     def __str__(self):
-        return f'Venda nº {self.pk}'
+        return f'Venda nº {self.pk} - {self.total_price} R$'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.update_total_price()
+
+    def update_total_price(self):
+        product_total = self.products.aggregate(
+            total_price=models.Sum('price')
+        )['total_price'] or 0
+        schedule_total = self.schedule.total_price if self.schedule and \
+            self.schedule.total_price is not None else 0
+        total = product_total + schedule_total
+        Sales.objects.filter(pk=self.pk).update(total_price=total)
 
     class Meta:
         verbose_name = 'Venda Vitalize'

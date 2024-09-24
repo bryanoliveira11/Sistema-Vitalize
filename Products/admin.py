@@ -18,6 +18,13 @@ class AdminVitalizeProducts(admin.ModelAdmin):
     list_filter = 'product_category', 'is_active',
     list_per_page = 20
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "product_category":
+            kwargs["queryset"] = Categories.objects.filter(
+                is_active=True
+            ).order_by('-pk')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 @admin.register(Categories)
 class AdminVitalizeCategories(admin.ModelAdmin):
