@@ -80,13 +80,12 @@ class CashRegister(models.Model):
 
         super().save(*args, **kwargs)
 
-        if self.is_open:
-            self.update_total_price()
-
-    def update_total_price(self):
-        total = self.sales.aggregate(total_price=models.Sum('total_price'))[
-            'total_price'] or 0
-        CashRegister.objects.filter(pk=self.pk).update(cash=total)
+    def update_total_price(self, amount, operation:str='add'):
+        if operation == 'add':
+            self.cash += amount
+        elif operation == 'remove':
+            self.cash -= amount
+        self.save(update_fields=['cash'])
 
     class Meta:
         verbose_name = 'Caixa Vitalize'
