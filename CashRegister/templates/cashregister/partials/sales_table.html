@@ -1,6 +1,9 @@
 {% load humanize %}
 
 <div class="table-responsive">
+  <small>
+    Mostrando {{sales|length}} de {{cashregister.sales.all|length}} vendas.
+  </small>
   <table class="table table-striped table-bordered shadow">
     <thead>
       <tr>

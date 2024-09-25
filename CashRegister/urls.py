@@ -16,4 +16,9 @@ urlpatterns = [
         views.CashRegisterCloseClassView.as_view(),
         name='cashregister_close'
     ),
+    path(
+        'cashout/',
+        views.CashOutClassView.as_view(),
+        name='cashout'
+    ),
 ]

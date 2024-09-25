@@ -16,13 +16,11 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.prefetch_related('sales', 'cash_out')
+        return qs.prefetch_related('sales')
 
     def get_sales(self, obj):
         sales = obj.sales.all()
-        return ", ".join(
-            [str(sale) for sale in sales]
-        ) or 'Nenhuma Venda Feita até o Momento.'
+        return f'{len(sales)} Venda(s)'
     get_sales.short_description = 'Vendas'
 
     def cash_in_BRL(self, obj):
@@ -51,9 +49,22 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
 
 @admin.register(CashOut)
 class AdminVitalizeCashOut(admin.ModelAdmin):
-    list_display = 'id', 'value', 'description',
+    list_display = 'id', 'value', 'cashregister', 'created_at',
     list_display_links = 'id',
-    list_editable = 'value', 'description',
-    search_fields = 'value',
+    search_fields = 'value', 'cashregister',
+    readonly_fields = 'created_at', 'value_in_BRL',
     ordering = '-id',
     list_per_page = 20
+
+    def value_in_BRL(self, obj):
+        return f'R$ {obj.value}' if obj.value \
+            is not None else f'R$ {0}'
+
+    value_in_BRL.short_description = 'Valor da Sangria'
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "cashregister":
+            kwargs["queryset"] = CashRegister.objects.filter(
+                is_open=True,
+            ).order_by('-pk')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)

@@ -1,7 +1,13 @@
 {% load humanize %}
 
 <div class="form-container cash-register">
+  {% include "cashregister/partials/alternate_tables.html" %}
+
+  {% if show_cashouts %}
+  {% include "cashregister/partials/cashouts_table.html" %}
+  {% else %}
   {% include "cashregister/partials/sales_table.html" %}
+  {% endif %}
 
   <div class="cashregister-widgets">
     <div class="cashregister-cash">
@@ -20,7 +26,7 @@
     </button>
   </a>
 
-  <a href="#" title="Sangria de Caixa">
+  <a href="{% url 'cashregister:cashout' %}" title="Sangria de Caixa">
     <button type="button" class="form-button cash-register bg-secondary">
       <span>
         Sangria de Caixa <i class="fa-solid fa-hand-holding-dollar"></i>

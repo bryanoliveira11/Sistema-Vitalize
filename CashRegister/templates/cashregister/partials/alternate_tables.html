@@ -1,0 +1,21 @@
+<div class="alternate-tables form-container">
+  {% if not show_cashouts %}
+  <a href="{% url 'cashregister:cashregister' %}?show_cashouts=True"
+  title="Alternar para Sangrias">
+    <button type="button" class="form-button cash-register alternate-tables">
+      <span>
+        Alternar para Sangrias
+      </span>
+    </button>
+  </a>
+  {% else %}
+  <a href="{% url 'cashregister:cashregister' %}"
+  title="Alternar para Vendas">
+    <button type="button" class="form-button cash-register alternate-tables">
+      <span>
+        Alternar para Vendas
+      </span>
+    </button>
+  </a>
+  {% endif %}
+</div>

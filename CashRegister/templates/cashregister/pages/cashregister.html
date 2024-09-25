@@ -25,12 +25,20 @@
 
   {% if cashregister is None %}
   <div class="form-container">
-    <button type="submit" class="form-button"
+    <button type="submit" class="form-button cash-register"
       data-bs-toggle="modal" data-bs-target="#open-cashregister"
-      title="Fechar Caixa">
+      title="Abrir Caixa">
       <span>Abrir Caixa</span>
       <i class="fa-solid fa-cash-register"></i>
     </button>
+    <a href="{% url 'admin:CashRegister_cashregister_changelist' %}"
+    target="_blank">
+      <button type="submit" class="form-button cash-register bg-primary"
+      title="Ver Caixas">
+        <span>Ver Caixas</span>
+        <i class="fa-solid fa-eye"></i>
+      </button>
+    </a>
     {% include "cashregister/partials/modals.html" %}
   </div>
   {% else %}

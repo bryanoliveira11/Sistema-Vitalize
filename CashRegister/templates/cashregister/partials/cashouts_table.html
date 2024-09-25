@@ -1,0 +1,32 @@
+{% load humanize %}
+
+<div class="table-responsive mt-4">
+  <small>
+    Mostrando {{cashouts|length}} sangrias.
+  </small>
+  <table class="table table-striped table-bordered shadow">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Sangria ID</th>
+        <th scope="col">Horário</th>
+        <th scope="col">Valor</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cashout in cashouts  %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>
+          <a href="{% url 'admin:CashRegister_cashout_change' cashout.pk %}"
+          target="_blank" class="default-link" title="Visualizar Sangria">
+            Sangria Nº {{cashout.pk}}
+          </a>
+        </td>
+        <td>{{cashout.created_at|naturaltime}}</td>
+        <td>R$ {{cashout.value}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

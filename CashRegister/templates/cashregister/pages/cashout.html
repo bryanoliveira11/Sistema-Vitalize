@@ -1,0 +1,53 @@
+{% extends "global/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main class="main-content-container">
+  <nav aria-label="breadcrumb" class="breadcrumb-container form">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'users:admin_options' %}" title="Opções de Admin">
+          Admin
+        </a>
+      </li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a href="{% url 'cashregister:cashregister' %}"
+        title="Caixa">
+          Caixa
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'cashregister:cashout' %}"
+        title="Sangria">
+          Sangria
+        </a>
+      </li>
+    </ol>
+  </nav>
+  <div class="title-with-breadcrumb">
+    {% include "global/partials/page_title.html" %}
+  </div>
+  {% include "global/partials/messages.html" %}
+  {% include "global/partials/form_messages.html" %}
+  <form method="POST" action="{{form_action}}" class="form-container">
+    {% crispy form %}
+    <div id="selected-prices" class="cashout">
+        <h2>
+          Valor do Caixa :
+          <span id="cashregister-cash">R$ {{cashregister.cash}}</span>
+        </h2>
+        <h2>Retirar do Caixa :
+          <span id="total-price">R$ 0.00</span>
+        </h2>
+        <hr>
+        <h2>
+          SubTotal :
+          <span id="subtotal">R$ {{cashregister.cash}}</span>
+        </h2>
+    </div>
+    <button type="submit" class="form-button" title="Fazer Sangria">
+      <span>Fazer Sangria</span>
+    </button>
+  </form>
+</main>
+{% endblock content %}

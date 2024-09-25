@@ -395,12 +395,13 @@ class SalesShowTotalPrice {
   constructor() {
     this.productsSelect = document.getElementById('id_products');
     this.scheduleSelect = document.getElementById('id_schedule');
+    this.cashoutSelect = document.getElementById('id_cash_out');
     this.totalPriceElement = document.getElementById('total-price');
+    this.subtotalElement = document.getElementById('subtotal');
+    this.cashRegisterCashElement = document.getElementById('cashregister-cash');
   }
-
   init() {
     if (!this.totalPriceElement) return;
-
     this.updateTotalPrice();
     this.calculateTotalPrice();
   }
@@ -425,7 +426,23 @@ class SalesShowTotalPrice {
       }
     }
 
-    this.totalPriceElement.textContent = totalPrice.toFixed(2) + ' R$';
+    if (this.cashoutSelect) {
+      const cashOutValue = parseFloat(this.cashoutSelect.value);
+      totalPrice += isNaN(cashOutValue) ? 0 : cashOutValue;
+    }
+
+    this.totalPriceElement.textContent = 'R$ ' + totalPrice.toFixed(2);
+    this.updateSubtotal(totalPrice);
+  }
+  updateSubtotal(totalPrice) {
+    const cashRegisterCash = parseFloat(
+      this.cashRegisterCashElement.textContent
+        .replace('R$ ', '')
+        .replace(',', '.'),
+    );
+
+    const subtotal = cashRegisterCash - totalPrice;
+    this.subtotalElement.textContent = 'R$ ' + subtotal.toFixed(2);
   }
   updateTotalPrice() {
     if (this.productsSelect) {
@@ -438,6 +455,13 @@ class SalesShowTotalPrice {
     if (this.scheduleSelect) {
       this.scheduleSelect.addEventListener(
         'change',
+        this.calculateTotalPrice.bind(this),
+      );
+    }
+
+    if (this.cashoutSelect) {
+      this.cashoutSelect.addEventListener(
+        'input',
         this.calculateTotalPrice.bind(this),
       );
     }

@@ -41,6 +41,9 @@ class CreateSaleClassView(View):
         return self.render_form(form=CreateSaleForm())
 
     def post(self, *args, **kwargs):
+        if not self.request.user.is_superuser:  # type: ignore
+            raise Http404()
+
         form = CreateSaleForm(
             data=self.request.POST or None,
             files=self.request.FILES or None
