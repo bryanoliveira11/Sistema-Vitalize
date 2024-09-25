@@ -29,15 +29,15 @@
     </tbody>
   </table>
 
-  <div class="cashregister-cash">
-    <h2>Valor Total :
-      <span>R$ {{cashregister.cash}}</span>
-    </h2>
-  </div>
-
-  <div class="clock-container">
-    <i class="fa-regular fa-clock"></i>
-    <span class="clock" id="clock"></span>
+  <div class="cashregister-widgets">
+    <div class="cashregister-cash">
+      <i class="fa-solid fa-sack-dollar"></i>
+      <span class="cash">R$ {{cashregister.cash}}</span>
+    </div>
+    <div class="clock-container">
+      <i class="fa-regular fa-clock"></i>
+      <span class="clock" id="clock"></span>
+    </div>
   </div>
 
   <a href="{% url 'sales:create' %}" title="Nova Venda">
@@ -54,11 +54,10 @@
     </button>
   </a>
 
-  <form method="POST" action="{{close_cashregister}}">
-    {% csrf_token %}
-    <button type="submit" class="form-button cash-register bg-danger"
-    title="Fechar Caixa">
-      <span>Fechar Caixa <i class="fa-solid fa-ban"></i></span>
-    </button>
-  </form>
+  <button type="button" class="form-button cash-register bg-danger"
+  data-bs-toggle="modal" data-bs-target="#close-cashregister"
+  title="Fechar Caixa">
+    <span>Fechar Caixa <i class="fa-solid fa-ban"></i></span>
+  </button>
+  {% include "cashregister/partials/modals.html" %}
 </div>

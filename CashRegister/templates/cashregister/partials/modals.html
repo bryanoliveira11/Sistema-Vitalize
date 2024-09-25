@@ -1,0 +1,54 @@
+<div class="modal fade" id="open-cashregister" data-bs-backdrop="static"
+data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="staticBackdropLabel">Abrir o Caixa ?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Confirme a Abertura do Caixa.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <form method="POST" action="{{open_cashregister}}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-bg-primary">
+            Abrir Caixa
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="close-cashregister" data-bs-backdrop="static"
+data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="staticBackdropLabel">Fechar o Caixa ?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Essa Ação não pode ser Desfeita.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <form method="POST" action="{{close_cashregister}}">
+          {% csrf_token %}
+          <button type="submit" class="btn bg-danger">
+            Fechar Caixa
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

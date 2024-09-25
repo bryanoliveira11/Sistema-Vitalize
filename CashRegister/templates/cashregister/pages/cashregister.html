@@ -24,13 +24,15 @@
   {% include "global/partials/messages.html" %}
 
   {% if cashregister is None %}
-  <form method="POST" action="{{open_cashregister}}" class="form-container">
-    {% csrf_token %}
-    <button type="submit" class="form-button" title="Registrar">
+  <div class="form-container">
+    <button type="submit" class="form-button"
+      data-bs-toggle="modal" data-bs-target="#open-cashregister"
+      title="Fechar Caixa">
       <span>Abrir Caixa</span>
       <i class="fa-solid fa-cash-register"></i>
     </button>
-  </form>
+    {% include "cashregister/partials/modals.html" %}
+  </div>
   {% else %}
   {% include "cashregister/partials/sales.html" %}
   {% endif %}

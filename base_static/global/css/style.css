@@ -724,7 +724,7 @@ a.quick-acess-link:hover {
   font-size: 1.3rem;
 }
 
-.form-container button.form-button {
+button.form-button {
   position: relative;
   width: 100%;
   padding: 1rem 2rem;
@@ -741,11 +741,11 @@ a.quick-acess-link:hover {
   overflow: hidden;
 }
 
-.form-container button.form-button.cash-register {
+button.form-button.cash-register {
   padding: 0.5rem 1rem;
 }
 
-.form-container button.form-button:hover {
+button.form-button:hover {
   background: var(--color-primary);
   filter: brightness(120%);
 }
@@ -898,18 +898,15 @@ button.form-button:hover .submit {
   margin-bottom: 1.5rem;
 }
 
-#selected-prices,
-.cashregister-cash {
+#selected-prices {
   margin-top: 1.8rem;
 }
 
-#selected-prices h2,
-.cashregister-cash h2 {
+#selected-prices h2 {
   font-size: 2.4rem;
 }
 
-#selected-prices #total-price,
-.cashregister-cash span {
+#selected-prices #total-price span {
   font-weight: 600;
 }
 
@@ -1115,13 +1112,48 @@ button.google-callback-btn h2 {
 
 /* cash register */
 
-.clock {
-  font-size: 2rem;
+.cashregister-widgets i {
+  font-size: 2.2rem;
+}
+
+.clock, .cash {
+  font-size: 2.2rem;
   font-weight: 600;
   margin-left: 0.5rem;
 }
 
+.modal .modal-dialog {
+  max-width: 64rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+#open-cashregister,
+#close-cashregister {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+}
+
+#open-cashregister .modal-footer button,
+#close-cashregister .modal-footer button {
+  font-size: 1.6rem;
+  color: var(--color-gray-0);
+}
+
 /* utils */
+
+.btn-bg-primary {
+  background: var(--color-primary);
+  transition: filter 150ms ease-in-out;
+}
+
+.btn-bg-primary:hover {
+  background: var(--color-primary);
+  filter: brightness(80%);
+}
 
 .plaintext-button.user-logout-link {
   color: var(--color-primary);
