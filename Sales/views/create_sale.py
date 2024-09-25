@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from Sales.forms import CreateSaleForm
+from utils.cashregister_utils import get_today_cashregister
 from utils.create_log import create_log
 
 
@@ -33,6 +34,9 @@ class CreateSaleClassView(View):
     def get(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
             raise Http404()
+
+        if get_today_cashregister() is None:
+            return redirect(reverse('cashregister:cashregister'))
 
         return self.render_form(form=CreateSaleForm())
 
@@ -61,6 +65,11 @@ class CreateSaleClassView(View):
             if products is not None:
                 sale.products.set(products)
 
+            cashregister = get_today_cashregister()
+
+            if cashregister:
+                cashregister.sales.add(sale)
+
             messages.success(
                 self.request,
                 'Venda Registrada com Sucesso.'
@@ -72,6 +81,6 @@ class CreateSaleClassView(View):
                 'Sales'
             )
 
-            return redirect(reverse('users:admin_options'))
+            return redirect(reverse('cashregister:cashregister'))
 
         return self.render_form(form=form)

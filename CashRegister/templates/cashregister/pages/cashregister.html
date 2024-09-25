@@ -10,16 +10,10 @@
           Admin
         </a>
       </li>
-      <li class="breadcrumb-item" aria-current="page">
-        <a href="{% url 'cashregister:cashregister' %}"
-        title="Caixa">
-          Caixa
-        </a>
-      </li>
       <li class="breadcrumb-item active" aria-current="page">
-        <a href="{% url 'sales:create' %}"
-        title="Registrar Venda">
-          Registrar Venda
+        <a href="{% url 'cashregister:cashregister' %}"
+        title="Caixa de Hoje">
+          Caixa de Hoje
         </a>
       </li>
     </ol>
@@ -28,18 +22,17 @@
     {% include "global/partials/page_title.html" %}
   </div>
   {% include "global/partials/messages.html" %}
-  {% include "global/partials/form_messages.html" %}
-  <form method="POST" action="{{form_action}}" class="form-container">
-    {% crispy form %}
-    <div id="selected-prices">
-        <h2>Preço Total :
-          <span id="total-price">R$ 0.00</span>
-        </h2>
-    </div>
+
+  {% if cashregister is None %}
+  <form method="POST" action="{{open_cashregister}}" class="form-container">
+    {% csrf_token %}
     <button type="submit" class="form-button" title="Registrar">
-      <span>Registrar Venda</span>
-      <i class="fa-solid fa-dollar-sign"></i>
+      <span>Abrir Caixa</span>
+      <i class="fa-solid fa-cash-register"></i>
     </button>
   </form>
+  {% else %}
+  {% include "cashregister/partials/sales.html" %}
+  {% endif %}
 </main>
 {% endblock content %}

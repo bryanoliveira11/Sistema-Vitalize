@@ -741,6 +741,10 @@ a.quick-acess-link:hover {
   overflow: hidden;
 }
 
+.form-container button.form-button.cash-register {
+  padding: 0.5rem 1rem;
+}
+
 .form-container button.form-button:hover {
   background: var(--color-primary);
   filter: brightness(120%);
@@ -888,19 +892,24 @@ button.form-button:hover .submit {
   box-shadow: 0 0 0 0.25rem var(--color-accent-form-shadow);
 }
 
-#id_schedule_helptext, #id_products_helptext, #id_users_helptext {
+#id_schedule_helptext,
+#id_products_helptext,
+#id_users_helptext {
   margin-bottom: 1.5rem;
 }
 
-#selected-prices {
-  margin-top: 2rem;
+#selected-prices,
+.cashregister-cash {
+  margin-top: 1.8rem;
 }
 
-#selected-prices h2 {
-  font-size: 2.6rem;
+#selected-prices h2,
+.cashregister-cash h2 {
+  font-size: 2.4rem;
 }
 
-#selected-prices #total-price {
+#selected-prices #total-price,
+.cashregister-cash span {
   font-weight: 600;
 }
 
@@ -1104,6 +1113,14 @@ button.google-callback-btn h2 {
   font-size: 1.6rem;
 }
 
+/* cash register */
+
+.clock {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
 /* utils */
 
 .plaintext-button.user-logout-link {
@@ -1258,7 +1275,8 @@ button.google-callback-btn h2 {
     margin-top: 1rem;
   }
 
-  .nav-container, #ftco-nav a.nav-link {
+  .nav-container,
+  #ftco-nav a.nav-link {
     padding-left: 1rem;
   }
 

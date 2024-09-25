@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from CashRegister.models import CashOut, CashRegister
+from utils.cashregister_utils import get_today_cashregister
 
 
 @admin.register(CashRegister)
@@ -25,7 +26,7 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
     get_sales.short_description = 'Vendas'
 
     def cash_in_BRL(self, obj):
-        return f'{obj.cash} R$' if obj.cash is not None else f'{0} R$'
+        return f'R$ {obj.cash}' if obj.cash is not None else f'R$ {0}'
 
     cash_in_BRL.short_description = 'Valor do Caixa'
 
@@ -38,6 +39,14 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
         if obj is not None and not obj.is_open:
             return False
         return super().has_delete_permission(request, obj)
+
+    def has_add_permission(self, request):
+        today_cashregister = get_today_cashregister()
+
+        if today_cashregister is not None:
+            return False
+
+        return super().has_add_permission(request)
 
 
 @admin.register(CashOut)

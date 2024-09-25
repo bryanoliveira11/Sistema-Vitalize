@@ -37,8 +37,8 @@ class AdminVitalizeSales(admin.ModelAdmin):
     get_products.short_description = 'Produto(s)'
 
     def price_in_BRL(self, obj):
-        return f'{obj.total_price} R$' if obj.total_price \
-            is not None else f'{0} R$'
+        return f'R$ {obj.total_price}' if obj.total_price \
+            is not None else f'R$ {0}'
 
     price_in_BRL.short_description = 'Preço Total'
 

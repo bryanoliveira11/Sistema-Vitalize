@@ -444,6 +444,24 @@ class SalesShowTotalPrice {
   }
 }
 
+class DigitalClock {
+  constructor() {
+    this.clock = document.getElementById('clock');
+  }
+  init() {
+    if (!this.clock) return;
+    setInterval(() => this.updateClock(), 1000);
+    this.updateClock();
+  }
+  updateClock() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    this.clock.textContent = `${hours}:${minutes}:${seconds}`;
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
@@ -454,9 +472,7 @@ new ProductMagnifierGlass().init();
 new NavBar().init();
 new PreventPaste().init();
 new SelectInputCheckIcon(document.getElementById('div_id_products')).init();
-new SelectInputCheckIcon(
-  document.getElementById('div_id_payment_types'),
-).init();
 new SalesProductSearch().init();
 new UserSchedulesSearch().init();
 new SalesShowTotalPrice().init();
+new DigitalClock().init();
