@@ -1,0 +1,32 @@
+{% load humanize %}
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered shadow">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Venda</th>
+        <th scope="col">Tipo de Pagamento</th>
+        <th scope="col">Horário</th>
+        <th scope="col">Valor Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sale in sales  %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>
+          <a href="{% url 'admin:Sales_sales_change' sale.pk %}" target="_blank"
+          class="default-link" title="Visualizar Venda">
+            Venda Nº {{sale.pk}}
+          </a>
+        </td>
+        <td>{{sale.payment_type.payment_name}}</td>
+        <td>{{sale.created_at|naturaltime}}</td>
+        <td>R$ {{sale.total_price}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "global/partials/pagination.html" %}

@@ -9,6 +9,7 @@ from django.views.generic import View
 from CashRegister.models import CashRegister
 from utils.cashregister_utils import get_today_cashregister
 from utils.create_log import create_log
+from utils.pagination import make_pagination
 
 
 @method_decorator(
@@ -28,12 +29,19 @@ class CashRegisterClassView(View):
             messages.info(
                 self.request, 'Nenhum Caixa Aberto Encontrado.'
             )
+        else:
+            page_obj, pagination_range = make_pagination(
+                self.request, cashregister.sales.all().order_by('-pk'), 10
+            )
 
         return render(
             self.request,
             'cashregister/pages/cashregister.html',
             context={
+                'sales': page_obj,
+                'page_obj': page_obj,
                 'cashregister': cashregister,
+                'pagination_range': pagination_range,
                 'open_cashregister': reverse(
                     'cashregister:cashregister_open'
                 ),

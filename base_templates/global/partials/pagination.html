@@ -1,8 +1,8 @@
-{% if products.has_other_pages %}
+{% if page_obj.has_other_pages %}
 <nav role="navigation" aria-label="Pagination" class="pagination">
     <div class="pagination-content">
-        {% if products.has_previous %}
-            <a class="pagination-arrow" href="?page={{products.previous_page_number }}{{ additional_url_query }}">
+        {% if page_obj.has_previous %}
+            <a class="pagination-arrow" href="?page={{page_obj.previous_page_number }}{{ additional_url_query }}">
               <i class="fa-solid fa-angle-left"></i>
             </a>
         {% endif %}
@@ -30,8 +30,8 @@
                 {{ pagination_range.total_pages }}
             </a>
         {% endif %}
-        {% if products.has_next %}
-            <a class="pagination-arrow" href="?page={{ products.next_page_number }}{{ additional_url_query }}">
+        {% if page_obj.has_next %}
+            <a class="pagination-arrow" href="?page={{ page_obj.next_page_number }}{{ additional_url_query }}">
               <i class="fa-solid fa-angle-right"></i>
             </a>
         {% endif %}

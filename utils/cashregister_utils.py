@@ -1,7 +1,9 @@
 import pytz
+from django.db.models import Prefetch
 from django.utils import timezone
 
 from CashRegister.models import CashRegister
+from Sales.models import Sales
 
 
 def get_today_cashregister():
@@ -19,6 +21,11 @@ def get_today_cashregister():
     cashregisters = CashRegister.objects.filter(
         is_open=True,
         open_date__range=(time_start_utc, time_end_utc)
-    ).prefetch_related('sales', 'cash_out')
+    ).prefetch_related(
+        Prefetch(
+            'sales', queryset=Sales.objects.select_related('payment_type')
+        ),
+        'cash_out',
+    )
 
     return cashregisters.first() or None

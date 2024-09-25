@@ -558,7 +558,6 @@ nav .breadcrumb .breadcrumb-item a:hover {
 .pagination .page-item {
   padding: 0.2rem 1.2rem;
   font-size: 2rem;
-  border-radius: 50%;
   border: 1px solid var(--color-gray-6);
 }
 
@@ -1112,11 +1111,16 @@ button.google-callback-btn h2 {
 
 /* cash register */
 
+.cashregister-widgets {
+  margin-top: 1.5rem;
+}
+
 .cashregister-widgets i {
   font-size: 2.2rem;
 }
 
-.clock, .cash {
+.clock,
+.cash {
   font-size: 2.2rem;
   font-weight: 600;
   margin-left: 0.5rem;
@@ -1125,22 +1129,22 @@ button.google-callback-btn h2 {
 .modal .modal-dialog {
   max-width: 64rem;
   width: 100%;
-  margin: 0 auto;
   padding: 0 1rem;
-}
-
-#open-cashregister,
-#close-cashregister {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -20%);
 }
 
 #open-cashregister .modal-footer button,
 #close-cashregister .modal-footer button {
   font-size: 1.6rem;
   color: var(--color-gray-0);
+}
+
+.cash-register .pagination-content {
+  margin-top: 0;
+}
+
+.cash-register .pagination-content .page-item {
+  padding: .3rem .8rem;
+  font-size: 1.6rem;
 }
 
 /* utils */

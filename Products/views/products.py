@@ -32,6 +32,7 @@ class ProductsClassView(ListView):
 
         context.update({
             'products': page_obj,
+            'page_obj': page_obj,
             'pagination_range': pagination_range,
             'categories': categories,
             'page_title': 'Vitrine',

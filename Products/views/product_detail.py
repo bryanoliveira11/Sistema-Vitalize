@@ -14,7 +14,7 @@ class ProductDetailClassView(DetailView):
         queryset = super().get_queryset(*args, **kwargs)
 
         queryset = queryset.filter(
-            show=True
+            show=True,
         ).select_related('product_category')
 
         if not queryset:
@@ -31,7 +31,7 @@ class ProductDetailClassView(DetailView):
             category = product.product_category
             if category:
                 related_products = Products.objects.filter(
-                    product_category=category,
+                    product_category=category, show=True,
                 ).all().select_related('product_category').exclude(
                     pk=product.pk,
                 )

@@ -1,37 +1,11 @@
 {% load humanize %}
 
 <div class="form-container cash-register">
-  <table class="table table-striped shadow" id="cashregister-table">
-    <thead>
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">Venda</th>
-        <th scope="col">Tipo de Pagamento</th>
-        <th scope="col">Data/Hora</th>
-        <th scope="col">Valor Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for sale in cashregister.sales.all  %}
-      <tr>
-        <th scope="row"></th>
-        <td>
-          <a href="{% url 'admin:Sales_sales_change' sale.pk %}" target="_blank"
-          class="default-link" title="Visualizar Venda">
-            Venda Nº {{sale.pk}}
-          </a>
-        </td>
-        <td>{{sale.payment_type.payment_name}}</td>
-        <td>{{sale.created_at|naturaltime}}</td>
-        <td>R$ {{sale.total_price}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  {% include "cashregister/partials/sales_table.html" %}
 
   <div class="cashregister-widgets">
     <div class="cashregister-cash">
-      <i class="fa-solid fa-sack-dollar"></i>
+      <i class="fa-solid fa-cash-register"></i>
       <span class="cash">R$ {{cashregister.cash}}</span>
     </div>
     <div class="clock-container">
