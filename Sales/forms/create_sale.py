@@ -62,7 +62,7 @@ class CreateSaleForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field('schedule'),
             Field('products'),
-            Field('payment_types'),
+            Field('payment_type'),
         )
 
     def validate_sale(self):
@@ -79,7 +79,7 @@ class CreateSaleForm(forms.ModelForm):
 
     class Meta:
         model = Sales
-        fields = ['schedule', 'products', 'payment_types']
+        fields = ['schedule', 'products', 'payment_type']
 
     schedule = SchedulesChoiceField(
         queryset=Schedules.objects.filter(
@@ -99,13 +99,11 @@ class CreateSaleForm(forms.ModelForm):
         required=False,
     )
 
-    payment_types = forms.ModelMultipleChoiceField(
+    payment_type = forms.ModelChoiceField(
         queryset=PaymentTypes.objects.filter(
             is_active=True,
         ).order_by('-pk'),
         label='Tipos de Pagamento',
-        help_text='''Se estiver em um Computador segure a tecla CTRL
-          para selecionar mais de um Tipo de Pagamento.''',
         required=True,
     )
 

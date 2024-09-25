@@ -46,7 +46,6 @@ class CreateSaleClassView(View):
             sale = form.save(commit=False)
             schedule = form.cleaned_data.get('schedule')
             products = form.cleaned_data.get('products')
-            payment_types = form.cleaned_data.get('payment_types')
             total_price = 0
 
             if schedule:
@@ -61,9 +60,6 @@ class CreateSaleClassView(View):
 
             if products is not None:
                 sale.products.set(products)
-
-            if payment_types is not None:
-                sale.payment_types.set(payment_types)
 
             messages.success(
                 self.request,

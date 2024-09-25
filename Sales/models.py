@@ -36,8 +36,10 @@ class Sales(models.Model):
     products = models.ManyToManyField(
         Products, verbose_name="Produto(s)", blank=True
     )
-    payment_types = models.ManyToManyField(
-        PaymentTypes, verbose_name="Tipo de Pagamento"
+    payment_type = models.ForeignKey(
+        PaymentTypes,
+        verbose_name="Tipo de Pagamento",
+        on_delete=models.PROTECT,
     )
     total_price = models.DecimalField(
         max_digits=7, decimal_places=2, null=False,
