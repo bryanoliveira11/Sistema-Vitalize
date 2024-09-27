@@ -42,6 +42,7 @@ class ProductDetailClassView(DetailView):
             'site_title': product.product_name if product else None,
             'page_title': 'Veja',
             'page_subtitle': 'Também',
+            'is_product_detail': True,
         })
 
         return context

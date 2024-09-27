@@ -1,4 +1,5 @@
 {% extends "global/base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -31,15 +32,17 @@
   {% include "global/partials/form_messages.html" %}
   <form method="POST" action="{{form_action}}" class="form-container">
     {% crispy form %}
-    <div id="selected-prices">
+    <div class="form-container">
+      <div id="selected-prices">
         <h2>Preço Total :
           <span id="total-price">R$ 0.00</span>
         </h2>
+      </div>
+      <button type="submit" class="form-button" title="Registrar">
+        <span>Registrar Venda</span>
+        <i class="fa-solid fa-dollar-sign"></i>
+      </button>
     </div>
-    <button type="submit" class="form-button" title="Registrar">
-      <span>Registrar Venda</span>
-      <i class="fa-solid fa-dollar-sign"></i>
-    </button>
   </form>
 </main>
 {% endblock content %}

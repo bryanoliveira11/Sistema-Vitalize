@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from Products.models import Products
-from Sales.models import PaymentTypes, Sales
+from Sales.models import PaymentTypes, SaleItem, Sales
 
 
 @admin.register(PaymentTypes)
@@ -56,3 +56,12 @@ class AdminVitalizeSales(admin.ModelAdmin):
             ).order_by('-pk')
 
         return super().formfield_for_manytomany(db_field, request, **kwargs)
+
+
+@admin.register(SaleItem)
+class AdminVitalizeSaleItem(admin.ModelAdmin):
+    list_display = 'id', 'sale', 'product', 'quantity', 'created_at',
+    list_display_links = 'id',
+    search_fields = 'sale', 'product',
+    ordering = '-id',
+    list_per_page = 20

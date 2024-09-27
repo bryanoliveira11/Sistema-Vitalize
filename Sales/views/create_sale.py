@@ -28,6 +28,7 @@ class CreateSaleClassView(View):
                 'site_title': f'{title} {subtitle}',
                 'page_title': title,
                 'page_subtitle': subtitle,
+                'is_creating_sale': True,
             }
         )
 

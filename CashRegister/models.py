@@ -29,7 +29,7 @@ class CashRegister(models.Model):
     )
 
     def __str__(self):
-        return f'Caixa nº {self.pk} - {self.open_date}'
+        return f'Caixa Nº {self.pk} - {self.open_date}'
 
     def save(self, *args, **kwargs):
         if not self.cash:

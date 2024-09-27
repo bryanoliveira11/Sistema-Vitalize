@@ -42,6 +42,7 @@ urlpatterns = [
     path(
         'accounts/social/signup/', account_signup, name='socialaccount_signup'
     ),
+    path("select2/", include("django_select2.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 

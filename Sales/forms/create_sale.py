@@ -6,6 +6,7 @@ from crispy_forms.layout import Layout
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django_select2 import forms as s2forms
 
 from Products.models import Products
 from Sales.models import PaymentTypes, Sales
@@ -22,7 +23,7 @@ class SchedulesCustomWidget(forms.Select):
             name, value, label, selected, index, subindex, attrs
         )
         if value:
-            option["attrs"]["data-price"] = value.instance.total_price
+            option['attrs']['data-price'] = value.instance.total_price
         return option
 
 
@@ -30,27 +31,13 @@ class SchedulesChoiceField(forms.ModelChoiceField):
     widget = SchedulesCustomWidget
 
     def label_from_instance(self, obj: Schedules):
-        return f"{obj} - R${obj.total_price:.2f}"
+        return f'{obj} - R${obj.total_price:.2f}'
 
 
-class ProductsCustomWidget(forms.SelectMultiple):
-    def create_option(
-        self, name, value, label, selected, index, subindex=None, attrs=None
-    ):
-        option = super().create_option(
-            name, value, label, selected, index, subindex, attrs
-        )
-        if value:
-            option["attrs"]["data-price"] = value.instance.price
-        return option
-
-
-class ProductsMultipleChoiceField(forms.ModelMultipleChoiceField):
-    widget = ProductsCustomWidget
-
+class ProductsCustomS2MultipleWidget(s2forms.ModelSelect2MultipleWidget):
     def label_from_instance(self, obj: Products):
-        return f"{obj.product_name} - \
-          {obj.product_category} - R${obj.price:.2f}"
+        return f'{obj.product_name} - \
+          {obj.product_category} - R${obj.price:.2f}'
 
 
 class CreateSaleForm(forms.ModelForm):
@@ -66,8 +53,8 @@ class CreateSaleForm(forms.ModelForm):
         )
 
     def validate_sale(self):
-        schedule = self.cleaned_data['schedule']
-        products = self.cleaned_data['products']
+        schedule = self.cleaned_data.get('schedule')
+        products = self.cleaned_data.get('products')
 
         if schedule is None and not products:
             self._my_errors['schedule'].append(
@@ -89,14 +76,28 @@ class CreateSaleForm(forms.ModelForm):
         required=False,
     )
 
-    products = ProductsMultipleChoiceField(
-        queryset=Products.objects.filter(
-            is_active=True,
-        ).order_by('-pk').select_related('product_category'),
-        label='Produtos Disponíveis',
-        help_text='''Se estiver em um Computador segure a tecla CTRL
-          para selecionar mais de um Produto.''',
+    products = forms.ModelMultipleChoiceField(
+        label='Selecionar Produtos',
+        queryset=Products.objects.filter(is_active=True).select_related(
+            'product_category'
+        ).order_by('-pk'),
         required=False,
+        widget=ProductsCustomS2MultipleWidget(
+            model=Products,
+            queryset=Products.objects.filter(is_active=True).select_related(
+                'product_category'
+            ).order_by('-pk'),
+            search_fields=[
+                'product_name__icontains',
+                'product_category__category_name__icontains',
+            ],
+            max_results=10,
+            attrs={
+                'data-placeholder': 'Buscar por Nome ou Categoria',
+                'data-close-on-select': 'false',
+                'selectionCssClass': 'form-control',
+            },
+        )
     )
 
     payment_type = forms.ModelChoiceField(
@@ -109,7 +110,7 @@ class CreateSaleForm(forms.ModelForm):
 
     def clean(self, *args, **kwargs):
         self.validate_sale()
-
+        print(self.data)
         if self._my_errors:
             raise ValidationError(dict(self._my_errors))
 

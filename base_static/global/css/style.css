@@ -875,10 +875,6 @@ button.form-button:hover .submit {
   overflow-x: auto;
 }
 
-.form-container select#id_products {
-  height: 15rem;
-}
-
 .form-container select option {
   border-radius: 0.2rem;
   padding: 0.3rem 0.5rem 0.3rem 0.5rem;
@@ -922,6 +918,38 @@ button.form-button:hover .submit {
 
 #selected-prices #total-price span {
   font-weight: 600;
+}
+
+/* select 2 */
+
+.select2.select2-container.select2-container--default {
+  max-width: 64rem;
+  width: 100% !important;
+}
+
+.select2.select2-container.select2-container--default.select2-container--focus.select2-container--below.select2-container--open {
+  border-color: var(--color-accent);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem var(--color-accent-form-shadow);
+}
+
+.select2-selection.select2-selection--multiple {
+  font-size: 1.4rem;
+  padding: 0.3rem;
+  transition: all 100ms ease-in-out;
+}
+
+.select2-container--default .select2-selection--multiple {
+  border: 1px solid #dee2e6 !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+  border: 1px solid var(--color-accent) !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected="true"] {
+  color: var(--color-gray-0);
+  background-color: var(--color-gray-5) !important;
 }
 
 /* forgot password */
