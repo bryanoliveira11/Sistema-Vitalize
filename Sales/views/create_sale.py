@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from Sales.forms import CreateSaleForm
+from Sales.models import SaleItem
 from utils.cashregister_utils import get_today_cashregister
 from utils.create_log import create_log
 
@@ -56,19 +57,36 @@ class CreateSaleClassView(View):
             products = form.cleaned_data.get('products')
             total_price = 0
 
-            if schedule:
-                total_price += schedule.total_price
-
-            if products is not None:
-                total_price += sum(product.price for product in products)
-
             sale.total_price = total_price
-
             sale.save()
 
             if products is not None:
+                sale_items = []
+                total_price = 0
                 sale.products.set(products)
 
+                for product in products:
+                    quantity = self.request.POST.get(
+                        f'quantities[{product.pk}]'
+                    )
+                    quantity = quantity or 1
+                    qty_price = product.price * int(quantity)
+                    sale_item = SaleItem(
+                        sale=sale,
+                        product=product,
+                        quantity=int(quantity),
+                        total_price=qty_price
+                    )
+                    sale_items.append(sale_item)
+                    total_price += qty_price
+
+            SaleItem.objects.bulk_create(sale_items)
+
+            if schedule:
+                total_price += schedule.total_price
+
+            sale.total_price = total_price
+            sale.save()
             cashregister = get_today_cashregister()
 
             if cashregister:

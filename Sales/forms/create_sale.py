@@ -2,7 +2,7 @@ from collections import defaultdict
 
 from crispy_forms.bootstrap import Field
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout
+from crispy_forms.layout import HTML, Layout
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -36,8 +36,14 @@ class SchedulesChoiceField(forms.ModelChoiceField):
 
 class ProductsCustomS2MultipleWidget(s2forms.ModelSelect2MultipleWidget):
     def label_from_instance(self, obj: Products):
-        return f'{obj.product_name} - \
-          {obj.product_category} - R${obj.price:.2f}'
+        return f'{obj.product_name}'
+
+    def result_from_instance(self, obj: Products, request):
+        return {
+            'id': obj.pk,
+            'text': self.label_from_instance(obj),
+            'price': obj.price,
+        }
 
 
 class CreateSaleForm(forms.ModelForm):
@@ -49,6 +55,22 @@ class CreateSaleForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field('schedule'),
             Field('products'),
+            HTML('''
+                <div class="table-responsive">
+                <table class="table table-bordered shadow-sm
+                select-products" id="selected-products-table">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Preço</th>
+                  </tr>
+                </thead>
+                  <tbody id="products-table-body"></tbody>
+                </table>
+                </div>
+            '''),
             Field('payment_type'),
         )
 
@@ -110,7 +132,7 @@ class CreateSaleForm(forms.ModelForm):
 
     def clean(self, *args, **kwargs):
         self.validate_sale()
-        print(self.data)
+
         if self._my_errors:
             raise ValidationError(dict(self._my_errors))
 

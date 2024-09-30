@@ -60,8 +60,16 @@ class AdminVitalizeSales(admin.ModelAdmin):
 
 @admin.register(SaleItem)
 class AdminVitalizeSaleItem(admin.ModelAdmin):
-    list_display = 'id', 'sale', 'product', 'quantity', 'created_at',
+    list_display = 'id', 'sale', 'product', 'quantity', \
+        'price_in_BRL', 'created_at',
     list_display_links = 'id',
     search_fields = 'sale', 'product',
+    list_filter = 'sale', 'product',
     ordering = '-id',
     list_per_page = 20
+
+    def price_in_BRL(self, obj):
+        return f'R$ {obj.total_price}' if obj.total_price \
+            is not None else f'R$ {0}'
+
+    price_in_BRL.short_description = 'Preço Total'

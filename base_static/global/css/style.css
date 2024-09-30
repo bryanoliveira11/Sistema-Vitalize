@@ -922,6 +922,32 @@ button.form-button:hover .submit {
 
 /* select 2 */
 
+#selected-products-table {
+  margin: 1rem 0 2rem 0;
+  border-radius: 0.375rem;
+}
+
+#selected-products-table #products-table-body {
+  height: 100%;
+  vertical-align: middle;
+}
+
+#selected-products-table td input.quantity-input {
+  outline: 0;
+  border: 0;
+  background: none;
+  margin: .2rem 0;
+  border-radius: .4rem;
+  width: 100%;
+}
+
+#selected-products-table td input.quantity-input:focus {
+  border: 1px solid var(--color-primary);
+  border-color: var(--color-accent);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem var(--color-accent-form-shadow);
+}
+
 .select2.select2-container.select2-container--default {
   max-width: 64rem;
   width: 100% !important;
@@ -947,9 +973,14 @@ button.form-button:hover .submit {
   border: 1px solid var(--color-accent) !important;
 }
 
+.select2-results__option.select2-results__option--highlighted,
+ .select2-container--default .select2-results__option:hover {
+  background: var(--color-accent) !important;
+}
+
 .select2-container--default .select2-results__option[aria-selected="true"] {
   color: var(--color-gray-0);
-  background-color: var(--color-gray-5) !important;
+  background-color: var(--color-accent) !important;
 }
 
 /* forgot password */

@@ -391,10 +391,8 @@ class UserSchedulesSearch {
 //   }
 // }
 
-class SalesShowTotalPrice {
+class CashoutUpdatePrices {
   constructor() {
-    this.productsSelect = document.getElementById('id_products');
-    this.scheduleSelect = document.getElementById('id_schedule');
     this.cashoutSelect = document.getElementById('id_cash_out');
     this.totalPriceElement = document.getElementById('total-price');
     this.subtotalElement = document.getElementById('subtotal');
@@ -408,24 +406,6 @@ class SalesShowTotalPrice {
   calculateTotalPrice() {
     let totalPrice = 0;
 
-    if (this.productsSelect) {
-      const selectedProducts = Array.from(this.productsSelect.selectedOptions);
-      selectedProducts.forEach((option) => {
-        const productPrice = parseFloat(option.getAttribute('data-price'));
-        totalPrice += isNaN(productPrice) ? 0 : productPrice;
-      });
-    }
-
-    if (this.scheduleSelect) {
-      const selectedSchedule = this.scheduleSelect.selectedOptions[0];
-      if (selectedSchedule) {
-        const schedulePrice = parseFloat(
-          selectedSchedule.getAttribute('data-price'),
-        );
-        totalPrice += isNaN(schedulePrice) ? 0 : schedulePrice;
-      }
-    }
-
     if (this.cashoutSelect) {
       const cashOutValue = parseFloat(this.cashoutSelect.value);
       totalPrice += isNaN(cashOutValue) ? 0 : cashOutValue;
@@ -435,6 +415,8 @@ class SalesShowTotalPrice {
     this.updateSubtotal(totalPrice);
   }
   updateSubtotal(totalPrice) {
+    if (!this.cashRegisterCashElement) return;
+
     const cashRegisterCash = parseFloat(
       this.cashRegisterCashElement.textContent
         .replace('R$ ', '')
@@ -445,20 +427,6 @@ class SalesShowTotalPrice {
     this.subtotalElement.textContent = 'R$ ' + subtotal.toFixed(2);
   }
   updateTotalPrice() {
-    if (this.productsSelect) {
-      this.productsSelect.addEventListener(
-        'change',
-        this.calculateTotalPrice.bind(this),
-      );
-    }
-
-    if (this.scheduleSelect) {
-      this.scheduleSelect.addEventListener(
-        'change',
-        this.calculateTotalPrice.bind(this),
-      );
-    }
-
     if (this.cashoutSelect) {
       this.cashoutSelect.addEventListener(
         'input',
@@ -486,6 +454,69 @@ class DigitalClock {
   }
 }
 
+class HandleSalesProducts {
+  constructor() {
+    this.selectedProducts = document.getElementById('id_products');
+    this.productsTable = document.getElementById('products-table-body');
+  }
+  init() {
+    if (!this.selectedProducts) return;
+    this.handleSelectedProducts();
+    this.handleUnselectedProducts();
+    this.handleClearProducts();
+    this.handleQuantityChange();
+  }
+  handleSelectedProducts() {
+    $(this.selectedProducts).on('select2:select', (e) => {
+      const data = e.params.data;
+      this.createRow(data);
+    });
+  }
+  handleUnselectedProducts() {
+    $(this.selectedProducts).on('select2:unselect', (e) => {
+      const data = e.params.data;
+      if (data.disabled === false) {
+        this.removeRow(data.id);
+      }
+    });
+  }
+  handleClearProducts() {
+    $(this.selectedProducts).on('select2:clear', () => {
+      this.clearAllRows();
+    });
+  }
+  createRow(data) {
+    const newRow = `
+      <tr id="product-${data.id}" data-unit-price="${data.price}">
+        <td><b></b></td>
+        <td>${data.text}</td>
+        <td><input type="number" class="quantity-input"
+        name="quantities[${data.id}]" value="1" min="1"></td>
+        <td class="product-price">R$ ${parseFloat(data.price).toFixed(2)}</td>
+      </tr>`;
+    $(this.productsTable).append(newRow);
+  }
+  removeRow(productId) {
+    $(`#product-${productId}`).remove();
+  }
+  clearAllRows() {
+    $(this.productsTable).empty();
+  }
+  handleQuantityChange() {
+    $(this.productsTable).on('input', '.quantity-input', (e) => {
+      const quantityInput = $(e.target);
+      const row = quantityInput.closest('tr');
+      const unitPrice = parseFloat(row.data('unit-price'));
+      const newQuantity = parseInt(quantityInput.val(), 10);
+
+      if (newQuantity > 0) {
+        const updatedPrice = unitPrice * newQuantity;
+        row.find('.product-price').text(`R$ ${updatedPrice.toFixed(2)}`);
+      }
+    });
+  }
+}
+
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
 new HandlePhoneNumberMask().init();
@@ -495,8 +526,7 @@ new BackToTopButton().init();
 new ProductMagnifierGlass().init();
 new NavBar().init();
 new PreventPaste().init();
-// new SelectInputCheckIcon(document.getElementById('div_id_products')).init();
-// new SalesProductSearch().init();
 new UserSchedulesSearch().init();
-new SalesShowTotalPrice().init();
+new CashoutUpdatePrices().init();
 new DigitalClock().init();
+new HandleSalesProducts().init();

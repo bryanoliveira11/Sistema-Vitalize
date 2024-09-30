@@ -59,7 +59,6 @@ class Sales(models.Model):
         if not self.total_price:
             self.total_price = 0
         super().save(*args, **kwargs)
-        self.update_total_price()
 
     def update_total_price(self):
         product_total = self.products.aggregate(
