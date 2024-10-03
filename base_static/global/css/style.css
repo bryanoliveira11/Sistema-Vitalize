@@ -710,8 +710,8 @@ a.quick-acess-link:hover {
   background: var(--color-success);
   background: linear-gradient(
     90deg,
-    rgba(84, 185, 108, 1) 32%,
-    rgba(68, 177, 94, 1) 100%
+    #5ece78 32%,
+    #41b65c 100%
   );
 }
 
@@ -959,7 +959,8 @@ button.form-button:hover .submit {
   font-weight: 600;
 }
 
-#selected-prices.cashout h2 {
+#selected-prices.cashout h2,
+#selected-prices.cashin h2 {
   font-size: 2rem;
 }
 

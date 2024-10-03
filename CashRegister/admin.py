@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from CashRegister.models import CashOut, CashRegister
+from CashRegister.models import CashIn, CashOut, CashRegister
 from utils.cashregister_utils import get_today_cashregister
 
 
@@ -49,9 +49,8 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
 
 @admin.register(CashOut)
 class AdminVitalizeCashOut(admin.ModelAdmin):
-    list_display = 'id', 'value', 'description', 'cashregister', 'created_at',
-    list_display_links = 'id',
-    search_fields = 'value', 'cashregister',
+    list_display = 'id', 'description', 'value', 'cashregister', 'created_at',
+    list_display_links = 'id', 'description',
     readonly_fields = 'created_at', 'value_in_BRL',
     ordering = '-id',
     list_per_page = 20
@@ -61,6 +60,28 @@ class AdminVitalizeCashOut(admin.ModelAdmin):
             is not None else f'R$ {0}'
 
     value_in_BRL.short_description = 'Valor da Sangria'
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "cashregister":
+            kwargs["queryset"] = CashRegister.objects.filter(
+                is_open=True,
+            ).order_by('-pk')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+@admin.register(CashIn)
+class AdminVitalizeCashIn(admin.ModelAdmin):
+    list_display = 'id', 'description', 'value', 'cashregister', 'created_at',
+    list_display_links = 'id', 'description',
+    readonly_fields = 'created_at', 'value_in_BRL',
+    ordering = '-id',
+    list_per_page = 20
+
+    def value_in_BRL(self, obj):
+        return f'R$ {obj.value}' if obj.value \
+            is not None else f'R$ {0}'
+
+    value_in_BRL.short_description = 'Valor da Entrada'
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "cashregister":

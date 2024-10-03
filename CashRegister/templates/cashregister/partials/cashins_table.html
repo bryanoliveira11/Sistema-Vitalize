@@ -1,0 +1,32 @@
+{% load humanize %}
+
+<div class="table-responsive mt-4">
+  <small>
+    Mostrando {{cashins|length}} entradas.
+  </small>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Entrada ID</th>
+        <th scope="col">Horário</th>
+        <th scope="col">Valor</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cashin in cashins  %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>
+          <a href="{% url 'admin:CashRegister_cashin_change' cashin.pk %}"
+          target="_blank" class="default-link" title="Visualizar Entrada">
+            Entrada Nº {{cashin.pk}}
+          </a>
+        </td>
+        <td>{{cashin.created_at|naturaltime}}</td>
+        <td>R$ {{cashin.value}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

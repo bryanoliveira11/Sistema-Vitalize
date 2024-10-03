@@ -47,6 +47,16 @@
           <small>Registre uma venda no caixa.</small>
         </div>
       </a>
+      <a href="{% url 'cashregister:cashin' %}" class="option-card shadow"
+      title="Adicionar Valor ao Caixa">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/cash_in.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Entrada de Caixa</h2>
+          <small>Adicione dinheiro ao caixa.</small>
+        </div>
+      </a>
       <a href="{% url 'cashregister:cashout' %}" class="option-card shadow"
       title="Sangria de Caixa">
         <div class="option-card-icon">

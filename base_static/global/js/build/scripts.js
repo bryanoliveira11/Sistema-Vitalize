@@ -391,9 +391,10 @@ class UserSchedulesSearch {
 //   }
 // }
 
-class CashoutUpdatePrices {
+class HandleCashRegisterPrices {
   constructor() {
     this.cashoutSelect = document.getElementById('id_cash_out');
+    this.cashinSelect = document.getElementById('id_cash_in');
     this.totalPriceElement = document.getElementById('total-price');
     this.subtotalElement = document.getElementById('subtotal');
     this.cashRegisterCashElement = document.getElementById('cashregister-cash');
@@ -411,6 +412,11 @@ class CashoutUpdatePrices {
       totalPrice += isNaN(cashOutValue) ? 0 : cashOutValue;
     }
 
+    if (this.cashinSelect) {
+      const cashInValue = parseFloat(this.cashinSelect.value);
+      totalPrice += isNaN(cashInValue) ? 0 : cashInValue;
+    }
+
     this.totalPriceElement.textContent = 'R$ ' + totalPrice.toFixed(2);
     this.updateSubtotal(totalPrice);
   }
@@ -423,12 +429,26 @@ class CashoutUpdatePrices {
         .replace(',', '.'),
     );
 
-    const subtotal = cashRegisterCash - totalPrice;
-    this.subtotalElement.textContent = 'R$ ' + subtotal.toFixed(2);
+    if (this.cashoutSelect) {
+      const subtotal = cashRegisterCash - totalPrice;
+      this.subtotalElement.textContent = 'R$ ' + subtotal.toFixed(2);
+    }
+
+    if (this.cashinSelect) {
+      const subtotal = cashRegisterCash + totalPrice;
+      this.subtotalElement.textContent = 'R$ ' + subtotal.toFixed(2);
+    }
   }
   updateTotalPrice() {
     if (this.cashoutSelect) {
       this.cashoutSelect.addEventListener(
+        'input',
+        this.calculateTotalPrice.bind(this),
+      );
+      return;
+    }
+    if (this.cashinSelect) {
+      this.cashinSelect.addEventListener(
         'input',
         this.calculateTotalPrice.bind(this),
       );
@@ -527,6 +547,6 @@ new ProductMagnifierGlass().init();
 new NavBar().init();
 new PreventPaste().init();
 new UserSchedulesSearch().init();
-new CashoutUpdatePrices().init();
+new HandleCashRegisterPrices().init();
 new DigitalClock().init();
 new HandleSalesProducts().init();

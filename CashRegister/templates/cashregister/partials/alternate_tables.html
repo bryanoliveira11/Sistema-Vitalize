@@ -1,10 +1,28 @@
 <div class="alternate-tables form-container">
-  {% if not show_cashouts %}
+  {% if not show_cashouts and not show_cashins %}
   <a href="{% url 'cashregister:cashregister' %}?show_cashouts=True"
   title="Alternar para Sangrias">
     <button type="button" class="form-button cash-register alternate-tables">
       <span>
         Alternar para Sangrias
+      </span>
+    </button>
+  </a>
+  {% elif show_cashouts %}
+  <a href="{% url 'cashregister:cashregister' %}?show_cashins=True"
+  title="Alternar para Entradas">
+    <button type="button" class="form-button cash-register alternate-tables">
+      <span>
+        Alternar para Entradas
+      </span>
+    </button>
+  </a>
+  {% elif show_cashins %}
+  <a href="{% url 'cashregister:cashregister' %}"
+  title="Alternar para Vendas">
+    <button type="button" class="form-button cash-register alternate-tables">
+      <span>
+        Alternar para Vendas
       </span>
     </button>
   </a>

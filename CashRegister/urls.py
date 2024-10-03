@@ -21,4 +21,9 @@ urlpatterns = [
         views.CashOutClassView.as_view(),
         name='cashout'
     ),
+    path(
+        'cashin/',
+        views.CashInClassView.as_view(),
+        name='cashin'
+    ),
 ]

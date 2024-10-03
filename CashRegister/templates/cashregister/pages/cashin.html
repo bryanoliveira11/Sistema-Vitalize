@@ -17,9 +17,9 @@
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        <a href="{% url 'cashregister:cashout' %}"
-        title="Sangria">
-          Sangria
+        <a href="{% url 'cashregister:cashin' %}"
+        title="Entrada">
+          Entrada
         </a>
       </li>
     </ol>
@@ -31,12 +31,12 @@
   {% include "global/partials/form_messages.html" %}
   <form method="POST" action="{{form_action}}" class="form-container">
     {% crispy form %}
-    <div id="selected-prices" class="cashout">
+    <div id="selected-prices" class="cashin">
         <h2>
           Valor do Caixa :
           <span id="cashregister-cash">R$ {{cashregister.cash}}</span>
         </h2>
-        <h2>Sangria de :
+        <h2>Entrada de :
           <span id="total-price">R$ 0.00</span>
         </h2>
         <hr>
@@ -45,8 +45,8 @@
           <span id="subtotal">R$ {{cashregister.cash}}</span>
         </h2>
     </div>
-    <button type="submit" class="form-button" title="Fazer Sangria">
-      <span>Fazer Sangria</span>
+    <button type="submit" class="form-button" title="Fazer Entrada">
+      <span>Fazer Entrada</span>
     </button>
   </form>
 </main>

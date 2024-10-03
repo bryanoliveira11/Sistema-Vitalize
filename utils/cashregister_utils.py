@@ -2,7 +2,7 @@ import pytz
 from django.db.models import Prefetch
 from django.utils import timezone
 
-from CashRegister.models import CashOut, CashRegister
+from CashRegister.models import CashIn, CashOut, CashRegister
 from Sales.models import Sales
 
 
@@ -21,20 +21,23 @@ def get_today_time_range():
     return time_start_utc, time_end_utc
 
 
-def close_last_cashregisters(time_start, time_end):
+def close_last_cashregisters():
+    time_start_utc, time_end_utc = get_today_time_range()
     cashregisters = CashRegister.objects.filter(
         is_open=True,
-    ).exclude(open_date__range=(time_start, time_end))
+    ).exclude(open_date__range=(time_start_utc, time_end_utc))
 
     for cashregister in cashregisters:
         cashregister.is_open = False
         cashregister.save()
 
 
+def get_last_cashregister():
+    return CashRegister.objects.order_by('-id').first()
+
+
 def get_today_cashregister():
     time_start_utc, time_end_utc = get_today_time_range()
-
-    close_last_cashregisters(time_start_utc, time_end_utc)
 
     cashregisters = CashRegister.objects.filter(
         is_open=True,
@@ -56,3 +59,14 @@ def get_today_cashouts(cashregister: CashRegister):
     ).select_related('cashregister').order_by('-pk')
 
     return cashouts
+
+
+def get_today_cashins(cashregister: CashRegister):
+    if not cashregister:
+        return
+
+    cashins = CashIn.objects.filter(
+        cashregister=cashregister.pk,
+    ).select_related('cashregister').order_by('-pk')
+
+    return cashins

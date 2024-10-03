@@ -73,7 +73,7 @@ class CashOut(models.Model):
     )
 
     def __str__(self):
-        return f'Sangria nº {self.pk} - {self.cashregister}'
+        return f'Sangria Nº {self.pk} - {self.cashregister}'
 
     def clean(self) -> None:
         cleaned_data = super().clean()
@@ -90,3 +90,43 @@ class CashOut(models.Model):
     class Meta:
         verbose_name = 'Sangria Vitalize'
         verbose_name_plural = 'Sangrias Vitalize'
+
+
+class CashIn(models.Model):
+    value = models.DecimalField(
+        max_digits=7, decimal_places=2, null=False,
+        blank=False, verbose_name='Valor (R$)'
+    )
+    description = models.CharField(
+        max_length=150, null=False,
+        blank=False, verbose_name='Descrição de Entrada',
+    )
+    cashregister = models.ForeignKey(
+      CashRegister, on_delete=models.PROTECT,
+      verbose_name='Caixa',
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name='Criado em'
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name='Alterado em',
+    )
+
+    def __str__(self):
+        return f'Entrada Nº {self.pk} - {self.cashregister}'
+
+    def clean(self) -> None:
+        cleaned_data = super().clean()
+        errors = {}
+
+        if self.value is None or float(self.value) <= 0:
+            errors['value'] = 'Digite um Número Positivo.'
+
+        if errors:
+            raise ValidationError(errors)
+
+        return cleaned_data
+
+    class Meta:
+        verbose_name = 'Entrada Vitalize'
+        verbose_name_plural = 'Entradas Vitalize'
