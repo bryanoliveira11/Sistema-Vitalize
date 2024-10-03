@@ -57,10 +57,14 @@ class CashOut(models.Model):
         max_digits=7, decimal_places=2, null=False,
         blank=False, verbose_name='Valor (R$)'
     )
+    description = models.CharField(
+        max_length=150, null=False,
+        blank=False, verbose_name='Descrição de Sangria',
+    )
     cashregister = models.ForeignKey(
       CashRegister, on_delete=models.PROTECT,
       verbose_name='Caixa',
-      )
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
     )

@@ -1,4 +1,5 @@
 {% load humanize %}
+{% load static %}
 
 <div class="form-container cash-register">
   {% include "cashregister/partials/alternate_tables.html" %}
@@ -11,33 +12,60 @@
 
   <div class="cashregister-widgets">
     <div class="cashregister-cash">
-      <i class="fa-solid fa-cash-register"></i>
+      <i class="fa-solid fa-money-bill-wave"></i>
       <span class="cash">R$ {{cashregister.cash}}</span>
     </div>
     <div class="clock-container">
       <i class="fa-regular fa-clock"></i>
       <span class="clock" id="clock"></span>
     </div>
+    <hr>
   </div>
 
-  <a href="{% url 'sales:create' %}" title="Nova Venda">
-    <button type="button" class="form-button cash-register bg-primary">
-      <span>Nova Venda <i class="fa-solid fa-plus"></i></span>
-    </button>
-  </a>
-
-  <a href="{% url 'cashregister:cashout' %}" title="Sangria de Caixa">
-    <button type="button" class="form-button cash-register bg-secondary">
-      <span>
-        Sangria de Caixa <i class="fa-solid fa-hand-holding-dollar"></i>
-      </span>
-    </button>
-  </a>
-
-  <button type="button" class="form-button cash-register bg-danger"
-  data-bs-toggle="modal" data-bs-target="#close-cashregister"
-  title="Fechar Caixa">
-    <span>Fechar Caixa <i class="fa-solid fa-ban"></i></span>
-  </button>
+  <div class="admin-options-container cash-register">
+    <div class="cards-flex">
+      <a href="{% url 'sales:create' %}" class="option-card"
+      title="Registrar uma Venda">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/new_sale.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Nova Venda</h2>
+          <small>Registre uma venda no caixa.</small>
+        </div>
+      </a>
+      <a href="{% url 'cashregister:cashout' %}" class="option-card"
+      title="Adicionar Valor ao Caixa">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/cash_in.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Adicionar Valor ao Caixa</h2>
+          <small>Adicione dinheiro ao caixa.</small>
+        </div>
+      </a>
+      <a href="{% url 'cashregister:cashout' %}" class="option-card"
+      title="Sangria de Caixa">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/cash_out.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Sangria de Caixa</h2>
+          <small>Retire dinheiro do caixa.</small>
+        </div>
+      </a>
+      <div type="button" data-bs-toggle="modal"
+      class="option-card close-cash-register"
+      data-bs-target="#close-cashregister" title="Fechar Caixa">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/close_icon.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Fechar o Caixa</h2>
+          <small>Faça o fechamento do caixa.</small>
+        </div>
+      </div>
+    </div>
+  </div>
   {% include "cashregister/partials/modals.html" %}
 </div>

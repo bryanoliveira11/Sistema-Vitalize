@@ -23,6 +23,7 @@ class CashRegisterClassView(View):
             raise Http404()
 
         cashregister = get_today_cashregister()
+        last_cashregister = CashRegister.objects.last()
         title = 'Caixa'
         subtitle = 'de Hoje'
         page_obj = None
@@ -49,6 +50,7 @@ class CashRegisterClassView(View):
                 'sales': page_obj,
                 'page_obj': page_obj,
                 'cashregister': cashregister,
+                'last_cashregister': last_cashregister,
                 'cashouts': cashouts,
                 'pagination_range': pagination_range,
                 'open_cashregister': reverse(
@@ -77,8 +79,11 @@ class CashRegisterOpenClassView(View):
         if not self.request.user.is_superuser:  # type: ignore
             raise Http404()
 
+        last_cashregister = CashRegister.objects.last()
         messages.success(self.request, 'Caixa Aberto com Sucesso.')
-        cashregister = CashRegister.objects.create()
+        cashregister = CashRegister.objects.create(
+            cash=last_cashregister.cash if last_cashregister else 0,
+        )
         create_log(
             self.request.user, f'Caixa ID : {cashregister.pk} foi Aberto.',
             table_affected='CashRegister',
@@ -166,6 +171,7 @@ class CashOutClassView(View):
 
         if form.is_valid() and cashregister is not None:
             cash_out = form.cleaned_data.get('cash_out')
+            description = form.cleaned_data.get('description')
 
             if not cashregister:
                 messages.error(self.request, 'Ocorreu um Erro.')
@@ -178,6 +184,7 @@ class CashOutClassView(View):
 
             cash_out = CashOut.objects.create(
                 value=cash_out,
+                description=description,
                 cashregister=cashregister
             )
 

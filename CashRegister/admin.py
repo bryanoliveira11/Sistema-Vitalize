@@ -49,7 +49,7 @@ class AdminVitalizeCashRegister(admin.ModelAdmin):
 
 @admin.register(CashOut)
 class AdminVitalizeCashOut(admin.ModelAdmin):
-    list_display = 'id', 'value', 'cashregister', 'created_at',
+    list_display = 'id', 'value', 'description', 'cashregister', 'created_at',
     list_display_links = 'id',
     search_fields = 'value', 'cashregister',
     readonly_fields = 'created_at', 'value_in_BRL',

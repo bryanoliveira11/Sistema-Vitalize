@@ -9,6 +9,9 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
       </div>
       <div class="modal-body">
         Confirme a Abertura do Caixa.
+        {% if last_cashregister %}
+        <p>O Caixa começará com a Quantia de R$ {{last_cashregister.cash}}</p>
+        {% endif %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -16,7 +19,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         </button>
         <form method="POST" action="{{open_cashregister}}">
           {% csrf_token %}
-          <button type="submit" class="btn btn-bg-primary">
+          <button type="submit" class="btn bg-success">
             Abrir Caixa
           </button>
         </form>

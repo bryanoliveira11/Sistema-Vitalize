@@ -16,10 +16,14 @@ class CashOutForm(forms.Form):
         super().__init__(*args, **kwargs)
         self._my_errors: defaultdict[str, list[str]] = defaultdict(list)
         add_placeholder(self.fields['cash_out'], 'Digite o Valor da Sangria')
+        add_placeholder(
+            self.fields['description'], 'Digite a Descrição da Sangria'
+        )
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Field('cash_out'),
+            Field('description'),
         )
         self.instance = instance
 
@@ -31,6 +35,11 @@ class CashOutForm(forms.Form):
           <p class="helptext-p">&#x2022; Valores Maiores que Zero</p>
             '''
         ),
+        required=True,
+    )
+
+    description = forms.CharField(
+        label='Descrição da Sangria',
         required=True,
     )
 

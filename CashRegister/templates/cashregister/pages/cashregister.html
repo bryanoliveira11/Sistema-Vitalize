@@ -1,4 +1,5 @@
 {% extends "global/base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -25,22 +26,32 @@
 
   {% if cashregister is None %}
   <div class="form-container">
-    <button type="submit" class="form-button cash-register"
-      data-bs-toggle="modal" data-bs-target="#open-cashregister"
-      title="Abrir Caixa">
-      <span>Abrir Caixa</span>
-      <i class="fa-solid fa-cash-register"></i>
-    </button>
-    <a href="{% url 'admin:CashRegister_cashregister_changelist' %}"
-    target="_blank">
-      <button type="submit" class="form-button cash-register bg-primary"
-      title="Ver Caixas">
-        <span>Ver Caixas</span>
-        <i class="fa-solid fa-eye"></i>
-      </button>
-    </a>
-    {% include "cashregister/partials/modals.html" %}
+    <div class="admin-options-container cash-register">
+      <div class="cards-flex">
+        <div type="button" data-bs-toggle="modal"
+      class="option-card open-cash-register"
+      data-bs-target="#open-cashregister" title="Abrir Caixa">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/open_icon.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Abrir o Caixa</h2>
+          <small>Faça a abertura do caixa.</small>
+        </div>
+      </div>
+      <a href="{% url 'admin:CashRegister_cashregister_changelist' %}"
+      target="_blank" class="option-card" title="Ver Caixas">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/eye_icon.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Ver Caixas</h2>
+          <small>Veja os caixas anteriores.</small>
+        </div>
+      </a>
+    </div>
   </div>
+  {% include "cashregister/partials/modals.html" %}
   {% else %}
   {% include "cashregister/partials/sales.html" %}
   {% endif %}

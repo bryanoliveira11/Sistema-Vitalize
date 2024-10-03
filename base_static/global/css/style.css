@@ -656,6 +656,19 @@ a.quick-acess-link:hover {
   transition: scale 150ms ease-in-out;
 }
 
+.admin-options-container.cash-register {
+  margin-top: 2rem;
+}
+
+.admin-options-container.cash-register .cards-flex {
+  gap: 1.5rem;
+}
+
+.admin-options-container.cash-register .option-card {
+  padding: 0.5rem;
+  border: 1px solid var(--color-gray-1);
+}
+
 .admin-options-container .option-card:hover {
   scale: 1.05;
 }
@@ -681,6 +694,25 @@ a.quick-acess-link:hover {
   font-size: 1.8rem;
   font-weight: 600;
   margin: 0;
+}
+
+.admin-options-container.cash-register .option-card-title h2 {
+  font-size: 1.6rem;
+}
+
+.admin-options-container.cash-register .option-card.close-cash-register {
+  background: #dc3545;
+  background: linear-gradient(90deg, #dc3545 22%, #9f2632 100%);
+  color: var(--color-gray-0);
+}
+
+.admin-options-container.cash-register .option-card.open-cash-register {
+  background: var(--color-success);
+  background: linear-gradient(
+    90deg,
+    rgba(84, 185, 108, 1) 32%,
+    rgba(68, 177, 94, 1) 100%
+  );
 }
 
 .admin-options-container .option-card .option-card-title small {
@@ -741,14 +773,29 @@ button.form-button {
 }
 
 button.form-button.cash-register {
+  font-size: 1.6rem;
   padding: 0.5rem 1rem;
+  margin-top: 0;
+}
+
+button.form-button.cash-register i {
+  margin-left: 0.4rem;
 }
 
 button.cash-register.alternate-tables {
-  width: 30%;
+  width: 40%;
   font-size: 1.4rem;
+  padding: 0.5rem 1rem;
   text-transform: capitalize;
   margin-top: 0;
+  background: var(--color-secondary);
+  color: var(--color-gray-0);
+  transition: filter 150ms ease-in-out;
+}
+
+button.cash-register.alternate-tables:hover {
+  filter: brightness(80%);
+  background: var(--color-secondary);
 }
 
 button.form-button:hover {
@@ -936,8 +983,8 @@ button.form-button:hover .submit {
   outline: 0;
   border: 0;
   background: none;
-  margin: .2rem 0;
-  border-radius: .4rem;
+  margin: 0.2rem 0;
+  border-radius: 0.4rem;
   width: 100%;
 }
 
@@ -969,16 +1016,17 @@ button.form-button:hover .submit {
   border: 1px solid #dee2e6 !important;
 }
 
-.select2-container--default.select2-container--focus .select2-selection--multiple {
+.select2-container--default.select2-container--focus
+  .select2-selection--multiple {
   border: 1px solid var(--color-accent) !important;
 }
 
 .select2-results__option.select2-results__option--highlighted,
- .select2-container--default .select2-results__option:hover {
+.select2-container--default .select2-results__option:hover {
   background: var(--color-accent) !important;
 }
 
-.select2-container--default .select2-results__option[aria-selected="true"] {
+.select2-container--default .select2-results__option[aria-selected='true'] {
   color: var(--color-gray-0);
   background-color: var(--color-accent) !important;
 }
@@ -1213,6 +1261,13 @@ button.google-callback-btn h2 {
 .cash-register .pagination-content .page-item {
   padding: 0.3rem 0.8rem;
   font-size: 1.6rem;
+}
+
+.cash-register-actions-flex {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 /* utils */
@@ -1463,11 +1518,19 @@ button.google-callback-btn h2 {
   .form-image {
     padding: 1rem 0 0 0;
   }
+
+  .cash-register-actions-flex {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 @media (max-width: 576px) {
   .nav-container {
     padding: 0 1.5rem;
+  }
+
+  button.cash-register.alternate-tables {
+    width: 60%;
   }
 }
 
@@ -1483,5 +1546,9 @@ button.google-callback-btn h2 {
 
   .products-container .products-filter .search-container {
     margin-top: 1rem;
+  }
+
+  button.cash-register.alternate-tables {
+    width: 100%;
   }
 }

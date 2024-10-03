@@ -57,7 +57,7 @@ class CreateSaleForm(forms.ModelForm):
             Field('products'),
             HTML('''
                 <div class="table-responsive">
-                <table class="table table-bordered shadow-sm
+                <table class="table table-bordered
                 select-products" id="selected-products-table">
                 <thead class="thead-light">
                   <tr>
