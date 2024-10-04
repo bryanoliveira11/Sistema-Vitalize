@@ -102,8 +102,8 @@ class CreateSaleForm(forms.ModelForm):
             max_results=10,
             attrs={
                 'data-placeholder': 'Buscar por E-mail, Data ou Preço',
-                'data-close-on-select': 'false',
                 'selectionCssClass': 'form-control',
+                'data-language': 'pt-BR',
             },
         )
     )
@@ -126,8 +126,8 @@ class CreateSaleForm(forms.ModelForm):
             max_results=10,
             attrs={
                 'data-placeholder': 'Buscar por Nome ou Categoria',
-                'data-close-on-select': 'false',
                 'selectionCssClass': 'form-control',
+                'data-language': 'pt-BR',
             },
         )
     )
