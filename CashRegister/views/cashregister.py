@@ -31,40 +31,46 @@ class CashRegisterClassView(View):
         pagination_range = None
         cashouts = None
         cashins = None
-
-        show_cashout_arg = self.request.GET.get('show_cashouts')
-        show_cashouts = True if show_cashout_arg else False
-        show_cashint_arg = self.request.GET.get('show_cashins')
-        show_cashins = True if show_cashint_arg else False
+        additional_url_query = ''
+        show_cashouts = 'show_cashouts' in self.request.GET
+        show_cashins = 'show_cashins' in self.request.GET
 
         if cashregister is None:
             messages.info(
                 self.request, 'Nenhum Caixa Aberto Encontrado.'
             )
         else:
-            page_obj, pagination_range = make_pagination(
-                self.request, cashregister.sales.all().order_by('-pk'), 10
-            )
             if show_cashouts:
                 cashouts = get_today_cashouts(cashregister)
-            if show_cashins:
+                page_obj, pagination_range = make_pagination(
+                    self.request, cashouts, 10
+                )
+                additional_url_query = '&show_cashouts=True'
+            elif show_cashins:
                 cashins = get_today_cashins(cashregister)
+                page_obj, pagination_range = make_pagination(
+                    self.request, cashins, 10
+                )
+                additional_url_query = '&show_cashins=True'
+            else:
+                page_obj, pagination_range = make_pagination(
+                    self.request, cashregister.sales.all().order_by('-pk'), 10
+                )
 
         return render(
             self.request,
             'cashregister/pages/cashregister.html',
             context={
+                'cashregister': cashregister,
                 'sales': page_obj,
                 'page_obj': page_obj,
-                'cashregister': cashregister,
+                'cashouts': page_obj,
+                'cashins': page_obj,
                 'last_cashregister': get_last_cashregister() if cashregister
                 is None else None,
-                'cashouts': cashouts,
-                'cashins': cashins,
                 'pagination_range': pagination_range,
-                'open_cashregister': reverse(
-                    'cashregister:cashregister_open'
-                ),
+                'additional_url_query': additional_url_query,
+                'open_cashregister': reverse('cashregister:cashregister_open'),
                 'close_cashregister': reverse(
                     'cashregister:cashregister_close'
                 ),
