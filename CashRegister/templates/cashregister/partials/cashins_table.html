@@ -16,7 +16,7 @@
     <tbody>
       {% for cashin in cashins  %}
       <tr>
-        <th scope="row">{{forloop.counter}}</th>
+        <th scope="row" class="table-counter">{{forloop.counter}}</th>
         <td>
           <a href="{% url 'admin:CashRegister_cashin_change' cashin.pk %}"
           target="_blank" class="default-link" title="Visualizar Entrada">

@@ -17,7 +17,7 @@
     <tbody>
       {% for sale in sales  %}
       <tr>
-        <th scope="row">{{forloop.counter}}</th>
+        <th scope="row" class="table-counter">{{forloop.counter}}</th>
         <td>
           <a href="{% url 'admin:Sales_sales_change' sale.pk %}" target="_blank"
           class="default-link" title="Visualizar Venda">

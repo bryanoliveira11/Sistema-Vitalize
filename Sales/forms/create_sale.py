@@ -15,23 +15,16 @@ from Schedules.models import Schedules
 User = get_user_model()
 
 
-class SchedulesCustomWidget(forms.Select):
-    def create_option(
-        self, name, value, label, selected, index, subindex=None, attrs=None
-    ):
-        option = super().create_option(
-            name, value, label, selected, index, subindex, attrs
-        )
-        if value:
-            option['attrs']['data-price'] = value.instance.total_price
-        return option
-
-
-class SchedulesChoiceField(forms.ModelChoiceField):
-    widget = SchedulesCustomWidget
-
+class ScheduleCustomS2ChoiceWidget(s2forms.ModelSelect2Widget):
     def label_from_instance(self, obj: Schedules):
-        return f'{obj} - R${obj.total_price:.2f}'
+        return f'Agendamento Nº{obj.pk} - {obj.user} - R$ {obj.total_price}'
+
+    def result_from_instance(self, obj: Schedules, request):
+        return {
+            'id': obj.pk,
+            'text': self.label_from_instance(obj),
+            'price': obj.total_price,
+        }
 
 
 class ProductsCustomS2MultipleWidget(s2forms.ModelSelect2MultipleWidget):
@@ -90,12 +83,29 @@ class CreateSaleForm(forms.ModelForm):
         model = Sales
         fields = ['schedule', 'products', 'payment_type']
 
-    schedule = SchedulesChoiceField(
+    schedule = forms.ModelChoiceField(
         queryset=Schedules.objects.filter(
             status=True).order_by('-pk').select_related('user'),
         label='Agendamento',
         help_text='Selecionar um Agendamento (Caso Necessário).',
         required=False,
+        widget=ScheduleCustomS2ChoiceWidget(
+            model=Schedules,
+            queryset=Schedules.objects.filter(
+              status=True).order_by('-pk').select_related('user'),
+            search_fields=[
+                'user__email__icontains',
+                'pk__icontains',
+                'total_price__icontains',
+                'schedule_date__icontains',
+            ],
+            max_results=10,
+            attrs={
+                'data-placeholder': 'Buscar por E-mail, Data ou Preço',
+                'data-close-on-select': 'false',
+                'selectionCssClass': 'form-control',
+            },
+        )
     )
 
     products = forms.ModelMultipleChoiceField(

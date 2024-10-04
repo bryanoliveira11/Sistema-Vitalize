@@ -289,45 +289,6 @@ class PreventPaste {
   }
 }
 
-class UserSchedulesSearch {
-  constructor() {
-    this.schedulesField = document.getElementById('id_schedule');
-  }
-  init() {
-    if (!this.schedulesField) return;
-    this.createSearchBar();
-    this.search();
-  }
-  createSearchBar() {
-    const searchInput = document.createElement('input');
-    searchInput.type = 'text';
-    searchInput.id = 'scheduleSearch';
-    searchInput.className = 'form-control mb-2';
-    searchInput.placeholder = 'Busque um E-mail ou ID...';
-    this.schedulesField.parentNode.insertBefore(
-      searchInput,
-      this.schedulesField,
-    );
-  }
-  search() {
-    document
-      .getElementById('scheduleSearch')
-      .addEventListener('input', function () {
-        let filter = this.value.toLowerCase();
-        let options = document.querySelectorAll('#id_schedule option');
-
-        options.forEach((option) => {
-          let text = option.textContent.toLowerCase();
-          if (text.includes(filter)) {
-            option.style.display = '';
-          } else {
-            option.style.display = 'none';
-          }
-        });
-      });
-  }
-}
-
 // class SalesProductSearch {
 //   constructor() {
 //     this.productField = document.getElementById('id_products');
@@ -361,33 +322,6 @@ class UserSchedulesSearch {
 //           }
 //         });
 //       });
-//   }
-// }
-
-// class SelectInputCheckIcon {
-//   constructor(field) {
-//     this.selectField = field;
-//   }
-//   init() {
-//     if (!this.selectField) return;
-//     this.addCheckIcon();
-//   }
-//   addCheckIcon() {
-//     const selectLabel = this.selectField.querySelector('label');
-//     const labelText = selectLabel.innerText;
-//     this.selectField.addEventListener('change', () => {
-//       const icon = '<i class="fa-solid fa-circle-check"></i>';
-//       let selectCount = 0;
-//       this.selectField.querySelectorAll('option').forEach((option) => {
-//         if (!option.selected) {
-//           option.innerHTML = option.text;
-//           return;
-//         }
-//         option.innerHTML = `${icon} ${option.text}`;
-//         selectCount++;
-//       });
-//       selectLabel.innerHTML = `${labelText} &#8594; ${selectCount} ${icon}`;
-//     });
 //   }
 // }
 
@@ -432,6 +366,7 @@ class HandleCashRegisterPrices {
     if (this.cashoutSelect) {
       const subtotal = cashRegisterCash - totalPrice;
       this.subtotalElement.textContent = 'R$ ' + subtotal.toFixed(2);
+      return;
     }
 
     if (this.cashinSelect) {
@@ -474,10 +409,14 @@ class DigitalClock {
   }
 }
 
-class HandleSalesProducts {
+class HandleSalesForm {
   constructor() {
+    this.schedulesField = document.getElementById('id_schedule');
     this.selectedProducts = document.getElementById('id_products');
     this.productsTable = document.getElementById('products-table-body');
+    this.totalPriceElement = document.getElementById('total-price');
+    this.schedulePrice = 0;
+    this.productsPrice = 0;
   }
   init() {
     if (!this.selectedProducts) return;
@@ -485,11 +424,29 @@ class HandleSalesProducts {
     this.handleUnselectedProducts();
     this.handleClearProducts();
     this.handleQuantityChange();
+    if (!this.totalPriceElement) return;
+    this.handleFormPrices();
+  }
+  handleFormPrices() {
+    if (this.schedulesField) {
+      $(this.schedulesField).on('select2:select', (e) => {
+        const scheduleData = e.params.data;
+        this.schedulePrice = parseFloat(scheduleData.price);
+        this.updateTotalPrice();
+      });
+
+      $(this.schedulesField).on('select2:unselect', () => {
+        this.schedulePrice = 0;
+        this.updateTotalPrice();
+      });
+    }
   }
   handleSelectedProducts() {
     $(this.selectedProducts).on('select2:select', (e) => {
       const data = e.params.data;
       this.createRow(data);
+      this.updateProductTotal();
+      this.updateTotalPrice();
     });
   }
   handleUnselectedProducts() {
@@ -497,12 +454,16 @@ class HandleSalesProducts {
       const data = e.params.data;
       if (data.disabled === false) {
         this.removeRow(data.id);
+        this.updateProductTotal();
+        this.updateTotalPrice();
       }
     });
   }
   handleClearProducts() {
     $(this.selectedProducts).on('select2:clear', () => {
       this.clearAllRows();
+      this.updateProductTotal();
+      this.updateTotalPrice();
     });
   }
   createRow(data) {
@@ -529,11 +490,33 @@ class HandleSalesProducts {
       const unitPrice = parseFloat(row.data('unit-price'));
       const newQuantity = parseInt(quantityInput.val(), 10);
 
-      if (newQuantity > 0) {
+      if (!isNaN(newQuantity) && newQuantity > 0) {
         const updatedPrice = unitPrice * newQuantity;
         row.find('.product-price').text(`R$ ${updatedPrice.toFixed(2)}`);
+        this.updateProductTotal();
+        this.updateTotalPrice();
+      } else if (isNaN(newQuantity) || newQuantity <= 0) {
+        row.find('.product-price').text(`R$ ${unitPrice.toFixed(2)}`);
       }
     });
+  }
+  updateProductTotal() {
+    let productTotal = 0;
+    $(this.productsTable)
+      .find('tr')
+      .each((index, row) => {
+        const $row = $(row);
+        const unitPrice = parseFloat($row.data('unit-price'));
+        const quantity = parseInt($row.find('.quantity-input').val(), 10);
+        if (!isNaN(quantity) && quantity > 0) {
+          productTotal += unitPrice * quantity;
+        }
+      });
+    this.productsPrice = productTotal;
+  }
+  updateTotalPrice() {
+    const totalPrice = this.schedulePrice + this.productsPrice;
+    this.totalPriceElement.textContent = 'R$ ' + totalPrice.toFixed(2);
   }
 }
 
@@ -546,7 +529,6 @@ new BackToTopButton().init();
 new ProductMagnifierGlass().init();
 new NavBar().init();
 new PreventPaste().init();
-new UserSchedulesSearch().init();
 new HandleCashRegisterPrices().init();
 new DigitalClock().init();
-new HandleSalesProducts().init();
+new HandleSalesForm().init();

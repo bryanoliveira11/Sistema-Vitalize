@@ -16,7 +16,7 @@
     <tbody>
       {% for cashout in cashouts  %}
       <tr>
-        <th scope="row">{{forloop.counter}}</th>
+        <th scope="row" class="table-counter">{{forloop.counter}}</th>
         <td>
           <a href="{% url 'admin:CashRegister_cashout_change' cashout.pk %}"
           target="_blank" class="default-link" title="Visualizar Sangria">
