@@ -11,3 +11,16 @@ class AdminVitalizeLog(admin.ModelAdmin):
     ordering = '-id',
     list_filter = 'table_affected',
     list_per_page = 20
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None:
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None:
+            return False
+        return super().has_delete_permission(request, obj)
+
+    def has_add_permission(self, request):
+        return False

@@ -8,10 +8,9 @@ User = get_user_model()
 
 @admin.register(Schedules)
 class AdminVitalizeSchedules(admin.ModelAdmin):
-    list_display = 'id', 'user', 'get_services', \
-        'total_price', 'schedule_date', 'status',
-    list_display_links = 'id',
-    search_fields = 'user',
+    list_display = 'id_text', 'user', 'get_services', \
+        'price_in_BRL', 'schedule_date', 'status',
+    list_display_links = 'id_text',
     ordering = '-id',
     list_filter = 'user', 'status', 'services',
     list_per_page = 20
@@ -26,6 +25,28 @@ class AdminVitalizeSchedules(admin.ModelAdmin):
             [service.service_name for service in services]
         ) or 'Nenhum Serviço Escolhido.'
     get_services.short_description = 'Serviço(s)'
+
+    def price_in_BRL(self, obj):
+        return f'R$ {obj.total_price}' if obj.total_price \
+            is not None else f'R$ {0}'
+    price_in_BRL.short_description = 'Preço Total'
+
+    def id_text(self, obj):
+        return f'Agendamento Nº {obj.pk}'
+    id_text.short_description = 'Agendamento'
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None:
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None:
+            return False
+        return super().has_delete_permission(request, obj)
+
+    def has_add_permission(self, request):
+        return False
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "services":
@@ -44,10 +65,21 @@ class AdminVitalizeSchedules(admin.ModelAdmin):
 
 @admin.register(Services)
 class AdminVitalizeServices(admin.ModelAdmin):
-    list_display = 'id', 'service_name', 'description', 'price', 'is_active',
+    list_display = 'id', 'service_name', 'description', \
+        'price_in_BRL', 'is_active',
     list_display_links = 'id', 'service_name',
-    list_editable = 'description', 'price', 'is_active',
+    list_editable = 'description', 'is_active',
     search_fields = 'service_name',
     ordering = '-id',
-    list_filter = 'service_name',
+    list_filter = 'service_name', 'is_active',
     list_per_page = 20
+
+    def price_in_BRL(self, obj):
+        return f'R$ {obj.price}' if obj.price \
+            is not None else f'R$ {0}'
+    price_in_BRL.short_description = 'Preço'
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None:
+            return False
+        return super().has_delete_permission(request, obj)
