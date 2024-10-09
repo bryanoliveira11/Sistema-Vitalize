@@ -45,6 +45,9 @@ class Sales(models.Model):
         max_digits=7, decimal_places=2, null=False,
         blank=False, verbose_name='Preço Total (R$)', editable=False,
     )
+    canceled = models.BooleanField(
+        default=False, verbose_name='Cancelada',
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
     )

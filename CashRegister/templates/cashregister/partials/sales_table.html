@@ -12,6 +12,7 @@
         <th scope="col">Pagamento</th>
         <th scope="col">Horário</th>
         <th scope="col">Valor Total</th>
+        <th scope="col">Ação</th>
       </tr>
     </thead>
     <tbody>
@@ -27,6 +28,12 @@
         <td>{{sale.payment_type.payment_name}}</td>
         <td>{{sale.created_at|naturaltime}}</td>
         <td>R$ {{sale.total_price}}</td>
+        <td><button class="plaintext-button link-danger" title="Cancelar Venda"
+        data-bs-toggle="modal" data-bs-target="#cancel-sale-{{sale.pk}}">
+          Cancelar <i class="fa-solid fa-ban"></i>
+        </button>
+        {% include "cashregister/partials/cancel_sale.html" %}
+        </td>
       </tr>
       {% endfor %}
     </tbody>

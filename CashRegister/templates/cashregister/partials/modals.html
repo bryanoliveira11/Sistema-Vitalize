@@ -10,7 +10,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-body">
         Confirme a Abertura do Caixa.
         {% if last_cashregister %}
-        <p>O Caixa começará com a Quantia de R$ {{last_cashregister.cash}}</p>
+        <p>O Caixa começará com a Quantia de <b>R$ {{last_cashregister.cash}}</b></p>
         {% endif %}
       </div>
       <div class="modal-footer">

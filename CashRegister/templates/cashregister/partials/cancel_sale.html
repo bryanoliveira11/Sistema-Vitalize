@@ -1,0 +1,28 @@
+<div class="modal fade cancel-sale" id="cancel-sale-{{sale.pk}}" data-bs-backdrop="static"
+data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="staticBackdropLabel">Cancelar Venda ?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Confirme o Cancelamento da Venda Nº {{sale.pk}}.
+        <p>Será Estornado o Valor de <b>R$ {{sale.total_price}}</b></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+        <form method="POST" action="{% url 'sales:cancel' sale.pk %}">
+          {% csrf_token %}
+          <input type="hidden" value="{{sale.pk}}">
+          <button type="submit" class="btn bg-danger">
+            Cancelar Venda
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

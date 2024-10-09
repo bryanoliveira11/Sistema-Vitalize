@@ -5,7 +5,7 @@ from CashRegister.models import CashIn, CashOut, CashRegister
 
 @admin.register(CashRegister)
 class AdminVitalizeCashRegister(admin.ModelAdmin):
-    list_display = 'id_text', 'get_sales', 'cash', 'is_open', \
+    list_display = 'id_text', 'get_sales', 'cash_in_BRL', 'is_open', \
         'open_date', 'close_date',
     list_display_links = 'id_text',
     ordering = '-id',

@@ -1294,7 +1294,8 @@ button.google-callback-btn h2 {
 }
 
 #open-cashregister .modal-footer button,
-#close-cashregister .modal-footer button {
+#close-cashregister .modal-footer button,
+.cancel-sale .modal-footer button{
   font-size: 1.6rem;
   color: var(--color-gray-0);
 }
@@ -1349,6 +1350,12 @@ button.google-callback-btn h2 {
 .plaintext-button.user-logout-link:hover {
   color: var(--color-primary);
   filter: brightness(85%);
+}
+
+.plaintext-button.link-danger {
+  background: none;
+  outline: none;
+  border: none;
 }
 
 .prevent-select {
