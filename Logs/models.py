@@ -8,6 +8,7 @@ class VitalizeLogs(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name='Usuário')
     log = models.TextField(max_length=250, verbose_name='Log')
+    object_id = models.IntegerField(null=True, blank=True)
     table_affected = models.CharField(
         max_length=150, verbose_name='Tabela Afetada')
     created_at = models.DateTimeField(

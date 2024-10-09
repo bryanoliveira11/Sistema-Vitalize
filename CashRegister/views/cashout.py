@@ -88,7 +88,8 @@ class CashOutClassView(View):
             create_log(
                 self.request.user,
                 'Sangria Registrada com Sucesso.',
-                'CashOut'
+                'CashOut',
+                cash_out.pk,
             )
 
             return redirect(

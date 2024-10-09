@@ -99,8 +99,9 @@ class CreateSaleClassView(View):
 
             create_log(
                 self.request.user,
-                f'Venda ID : {sale.pk} Registrada com Sucesso.',
-                'Sales'
+                'Venda Registrada com Sucesso.',
+                'Sales',
+                sale.pk
             )
 
             return redirect(reverse('cashregister:cashregister'))

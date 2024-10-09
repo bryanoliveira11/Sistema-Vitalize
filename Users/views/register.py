@@ -55,7 +55,10 @@ class RegisterClassView(View):
             )
 
             create_log(
-                user, 'Usuário foi cadastrado com sucesso.', 'VitalizeUser'
+                user,
+                'Usuário foi cadastrado com sucesso.',
+                'VitalizeUser',
+                user.pk,
             )
 
             token = self.generate_user_token(user=user)

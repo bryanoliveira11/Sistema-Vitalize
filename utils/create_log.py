@@ -6,7 +6,7 @@ from Users.models import VitalizeUser
 
 def create_log(
     user: VitalizeUser | AbstractBaseUser | AnonymousUser | None,
-    log: str, table_affected: str
+    log: str, table_affected: str, object_id: int,
 ) -> VitalizeLogs | None:
     if not user or not log or not table_affected:
         return
@@ -15,4 +15,5 @@ def create_log(
         user=user,
         log=log,
         table_affected=table_affected,
+        object_id=object_id,
     )

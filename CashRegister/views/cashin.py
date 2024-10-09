@@ -88,7 +88,8 @@ class CashInClassView(View):
             create_log(
                 self.request.user,
                 'Entrada Registrada com Sucesso.',
-                'CashIn'
+                'CashIn',
+                cash_in.pk,
             )
 
             return redirect(

@@ -102,8 +102,10 @@ class CashRegisterOpenClassView(View):
             cash=last_cashregister.cash if last_cashregister else 0,
         )
         create_log(
-            self.request.user, f'Caixa ID : {cashregister.pk} foi Aberto.',
-            table_affected='CashRegister',
+            self.request.user,
+            'Caixa foi Aberto.',
+            'CashRegister',
+            cashregister.pk,
         )
         return redirect(reverse('cashregister:cashregister'))
 
@@ -130,8 +132,10 @@ class CashRegisterCloseClassView(View):
         cashregister.save()
 
         create_log(
-            self.request.user, f'Caixa ID : {cashregister.pk} foi Fechado.',
-            table_affected='CashRegister',
+            self.request.user,
+            'Caixa foi Fechado.',
+            'CashRegister',
+            cashregister.pk,
         )
 
         return redirect(reverse('cashregister:cashregister'))
