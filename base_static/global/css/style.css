@@ -636,7 +636,7 @@ a.quick-acess-link:hover {
 .admin-options-container .page-title-container {
   max-width: 114rem;
   width: 100%;
-  margin: 4rem auto;
+  margin: 4rem auto 2rem auto;
 }
 
 .admin-options-container .cards-flex {

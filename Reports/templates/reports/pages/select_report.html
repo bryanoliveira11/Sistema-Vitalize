@@ -1,0 +1,40 @@
+{% extends "global/base.html" %}
+{% load static %}
+
+{% block content %}
+<main class="main-content-container">
+  <nav aria-label="breadcrumb" class="breadcrumb-container form cashregister">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'users:admin_options' %}" title="Opções de Admin">
+          Admin
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'reports:reports' %}"
+        title="Caixa de Hoje">
+          Relatórios
+        </a>
+      </li>
+    </ol>
+  </nav>
+  <div class="title-with-breadcrumb cashregister">
+    {% include "global/partials/page_title.html" %}
+  </div>
+  {% include "global/partials/messages.html" %}
+  <div class="admin-options-container cash-register">
+    <div class="cards-flex">
+      <a href="/admin" class="option-card shadow"
+      title="Relatório de Caixa">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/profit_report.png' %}" alt="">
+        </div>
+        <div class="option-card-title">
+          <h2>Relatório de Caixa</h2>
+          <small>Veja o fluxo de caixa.</small>
+        </div>
+      </a>
+    </div>
+  </div>
+</main>
+{% endblock content %}
