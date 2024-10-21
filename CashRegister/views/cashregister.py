@@ -32,8 +32,12 @@ class CashRegisterClassView(View):
         cashouts = None
         cashins = None
         additional_url_query = ''
+        sales_label = None
+        is_filtered = False
         show_cashouts = 'show_cashouts' in self.request.GET
         show_cashins = 'show_cashins' in self.request.GET
+        sales_canceled = 'sales_canceled' in self.request.GET
+        sales_finished = 'sales_finished' in self.request.GET
 
         if cashregister is None:
             messages.info(
@@ -53,8 +57,22 @@ class CashRegisterClassView(View):
                 )
                 additional_url_query = '&show_cashins=True'
             else:
+                qs = cashregister.sales.all().order_by('-pk')
+
+                if sales_canceled:
+                    qs = qs.filter(canceled=True)
+                    additional_url_query = '&sales_canceled=True'
+                    sales_label = 'Canceladas'
+                    is_filtered = True
+
+                if sales_finished:
+                    qs = qs.filter(canceled=False)
+                    additional_url_query = '&sales_finished=True'
+                    sales_label = 'Finalizadas'
+                    is_filtered = True
+
                 page_obj, pagination_range = make_pagination(
-                    self.request, cashregister.sales.all().order_by('-pk'), 10
+                    self.request, qs, 10
                 )
 
         return render(
@@ -76,6 +94,8 @@ class CashRegisterClassView(View):
                 ),
                 'show_cashouts': show_cashouts,
                 'show_cashins': show_cashins,
+                'sales_label': sales_label,
+                'is_filtered': is_filtered,
                 'site_title': f'{title} {subtitle}',
                 'page_title': title,
                 'page_subtitle': subtitle,

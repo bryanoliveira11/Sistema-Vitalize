@@ -3,8 +3,8 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<main class="main-content-container">
-  <nav aria-label="breadcrumb" class="breadcrumb-container form">
+<main class="main-content-container cashregister">
+  <nav aria-label="breadcrumb" class="breadcrumb-container form cashregister">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{% url 'users:admin_options' %}" title="Opções de Admin">
@@ -19,37 +19,35 @@
       </li>
     </ol>
   </nav>
-  <div class="title-with-breadcrumb">
+  <div class="title-with-breadcrumb cashregister">
     {% include "global/partials/page_title.html" %}
   </div>
   {% include "global/partials/messages.html" %}
 
   {% if cashregister is None %}
-  <div class="form-container">
-    <div class="admin-options-container cash-register">
-      <div class="cards-flex">
-        <div type="button" data-bs-toggle="modal"
-      class="option-card open-cash-register"
-      data-bs-target="#open-cashregister" title="Abrir Caixa">
-        <div class="option-card-icon">
-          <img src="{% static 'global/img/open_icon.png' %}" alt="">
-        </div>
-        <div class="option-card-title">
-          <h2>Abrir o Caixa</h2>
-          <small>Faça a abertura do caixa.</small>
-        </div>
+  <div class="admin-options-container cash-register">
+    <div class="cards-flex">
+      <div type="button" data-bs-toggle="modal"
+    class="option-card open-cash-register"
+    data-bs-target="#open-cashregister" title="Abrir Caixa">
+      <div class="option-card-icon">
+        <img src="{% static 'global/img/open_icon.png' %}" alt="">
       </div>
-      <a href="{% url 'admin:CashRegister_cashregister_changelist' %}"
-      target="_blank" class="option-card" title="Ver Caixas">
-        <div class="option-card-icon">
-          <img src="{% static 'global/img/eye_icon.png' %}" alt="">
-        </div>
-        <div class="option-card-title">
-          <h2>Ver Caixas</h2>
-          <small>Veja os caixas anteriores.</small>
-        </div>
-      </a>
+      <div class="option-card-title">
+        <h2>Abrir o Caixa</h2>
+        <small>Faça a abertura do caixa.</small>
+      </div>
     </div>
+    <a href="{% url 'admin:CashRegister_cashregister_changelist' %}"
+    target="_blank" class="option-card" title="Ver Caixas">
+      <div class="option-card-icon">
+        <img src="{% static 'global/img/eye_icon.png' %}" alt="">
+      </div>
+      <div class="option-card-title">
+        <h2>Ver Caixas</h2>
+        <small>Veja os caixas anteriores.</small>
+      </div>
+    </a>
   </div>
   {% include "cashregister/partials/modals.html" %}
   {% else %}

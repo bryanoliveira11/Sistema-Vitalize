@@ -661,6 +661,9 @@ a.quick-acess-link:hover {
 }
 
 .admin-options-container.cash-register .cards-flex {
+  max-width: 90rem;
+  width: 100%;
+  margin: 0 auto;
   gap: 1.5rem;
 }
 
@@ -1279,6 +1282,14 @@ button.google-callback-btn h2 {
 
 /* cash register */
 
+.form-container.cash-register,
+.breadcrumb-container.form.cashregister,
+.title-with-breadcrumb.cashregister .page-title-container,
+.main-content-container.cashregister .messages-container {
+  max-width: 90rem;
+  width: 100%;
+}
+
 .cashregister-widgets {
   margin-top: 1.5rem;
 }
@@ -1295,7 +1306,7 @@ button.google-callback-btn h2 {
 
 #open-cashregister .modal-footer button,
 #close-cashregister .modal-footer button,
-.cancel-sale .modal-footer button{
+.cancel-sale .modal-footer button {
   font-size: 1.6rem;
   color: var(--color-gray-0);
 }
@@ -1309,11 +1320,44 @@ button.google-callback-btn h2 {
   font-size: 1.6rem;
 }
 
+.cash-register .flex-content {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cash-register .flex-content .column-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: end;
+}
+
+.cash-register .sales-filter .dropdown a {
+  font-size: 1.5rem;
+}
+
+.sales-filter .dropdown-item:hover {
+  background: var(--color-gray-3);
+}
+
+.column-flex .clean-filters {
+  font-size: 1.3rem;
+}
+
 .cash-register-actions-flex {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-top: 2rem;
+}
+
+.btn.bg-danger.cancel {
+  font-size: 1.3rem;
+  color: var(--color-gray-0);
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 /* utils */
@@ -1331,11 +1375,25 @@ button.google-callback-btn h2 {
 .btn.bg-success {
   background: var(--color-success);
   background: linear-gradient(90deg, #5ece78 32%, #41b65c 100%);
+  transition: filter 150ms ease-in-out;
 }
 
 .btn.bg-danger {
   background: #dc3545;
   background: linear-gradient(90deg, #dc3545 22%, #9f2632 100%);
+  transition: filter 150ms ease-in-out;
+}
+
+.btn.bg-success:hover {
+  background: linear-gradient(90deg, #52b96a 32%, #3fb35a 100%);
+}
+
+.btn.bg-danger:hover {
+  background: linear-gradient(
+    90deg,
+    rgb(160, 46, 56) 32%,
+    rgb(114, 26, 33) 100%
+  );
 }
 
 .btn.btn-secondary {

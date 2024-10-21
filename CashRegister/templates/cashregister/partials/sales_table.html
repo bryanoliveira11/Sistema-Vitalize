@@ -1,9 +1,48 @@
 {% load humanize %}
 
-<div class="table-responsive">
-  <small>
-    Mostrando Vendas.
-  </small>
+<div class="table-responsive mt-4">
+  <div class="flex-content">
+    <div class="column-flex">
+      {% if is_filtered %}
+      <div class="clean-filters">
+        <a href="{% url 'cashregister:cashregister' %}" title="Limpar Filtros">
+          Limpar Filtros
+          <i class="fa-solid fa-circle-xmark"></i>
+        </a>
+      </div>
+      {% endif %}
+      <small>
+        Mostrando Vendas
+        {% if sales_label is not None %}
+        {{sales_label}}
+        {% endif %}
+      </small>
+    </div>
+    {% if sales %}
+    <div class="sales-filter">
+      <div class="dropdown">
+        <a class="btn dropdown-toggle" href="#" role="button"
+        id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          Filtrar Vendas
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li>
+            <a class="dropdown-item"
+            href="{% url 'cashregister:cashregister' %}?sales_finished=True">
+              Finalizadas
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item"
+            href="{% url 'cashregister:cashregister' %}?sales_canceled=True">
+              Canceladas
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  </div>
   <table class="table table-striped table-bordered">
     <thead>
       <tr>
@@ -11,7 +50,8 @@
         <th scope="col">Venda</th>
         <th scope="col">Pagamento</th>
         <th scope="col">Horário</th>
-        <th scope="col">Valor Total</th>
+        <th scope="col">Total</th>
+        <th scope="col">Status</th>
         <th scope="col">Ação</th>
       </tr>
     </thead>
@@ -28,11 +68,29 @@
         <td>{{sale.payment_type.payment_name}}</td>
         <td>{{sale.created_at|naturaltime}}</td>
         <td>R$ {{sale.total_price}}</td>
-        <td><button class="plaintext-button link-danger" title="Cancelar Venda"
-        data-bs-toggle="modal" data-bs-target="#cancel-sale-{{sale.pk}}">
-          Cancelar <i class="fa-solid fa-ban"></i>
-        </button>
-        {% include "cashregister/partials/cancel_sale.html" %}
+        <td>
+          {% if sale.canceled %}
+          <span class="text-danger">
+            <i class="fa-solid fa-circle-xmark"></i>
+            Cancelada
+          </span>
+          {% else %}
+          <span class="text-success">
+            <i class="fa-solid fa-circle-check"></i>
+            Finalizada
+          </span>
+          {% endif %}
+        </td>
+        <td>
+          {% if sale.canceled %}
+          Nenhuma
+          {% else %}
+          <button class="btn bg-danger cancel" title="Cancelar Venda"
+          data-bs-toggle="modal" data-bs-target="#cancel-sale-{{sale.pk}}">
+            Cancelar
+          </button>
+          {% include "cashregister/partials/cancel_sale.html" %}
+          {% endif %}
         </td>
       </tr>
       {% endfor %}

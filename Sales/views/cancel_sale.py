@@ -43,7 +43,10 @@ class CancelSaleClassView(View):
 
             sale_to_cancel.canceled = True
             sale_to_cancel.save()
-            cashregister.sales.remove(sale_to_cancel)
+            cashregister.update_total_price(
+                amount=sale_to_cancel.total_price,
+                operation='remove',
+            )
             cashregister.save()
             messages.success(self.request, 'Venda Cancelada com Sucesso.')
             create_log(

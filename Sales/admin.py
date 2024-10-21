@@ -24,7 +24,7 @@ class AdminVitalizeSales(admin.ModelAdmin):
     list_display = 'id_text', 'schedule', 'get_products', \
         'payment_type', 'price_in_BRL', 'canceled',
     list_display_links = 'id_text',
-    list_filter = 'payment_type', 'products',
+    list_filter = 'payment_type', 'products', 'canceled',
     readonly_fields = 'created_at', 'price_in_BRL',
     ordering = '-id',
     list_per_page = 20
