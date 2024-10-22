@@ -10,10 +10,16 @@
           Admin
         </a>
       </li>
-      <li class="breadcrumb-item active" aria-current="page">
+      <li class="breadcrumb-item" aria-current="page">
         <a href="{% url 'reports:reports' %}"
-        title="Caixa de Hoje">
+        title="Relatórios">
           Relatórios
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'reports:cashregister' %}"
+        title="Relatório de Caixa">
+          Relatório de Caixa
         </a>
       </li>
     </ol>
@@ -34,8 +40,10 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 <script>
   flatpickr('.datetime-input', {
+    locale: 'pt',
     dateFormat: 'd-m-Y',
 });
 </script>

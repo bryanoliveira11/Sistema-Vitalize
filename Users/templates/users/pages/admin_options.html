@@ -27,6 +27,7 @@
           <small>Visualize e baixe relatórios personalizados do site.</small>
         </div>
       </a>
+      {% if request.user.is_superuser %}
       <a href="{% url 'cashregister:cashregister' %}" class="option-card shadow"
       title="Ver Caixa de Hoje">
         <div class="option-card-icon">
@@ -67,6 +68,7 @@
           <small>Retire dinheiro do caixa.</small>
         </div>
       </a>
+      {% endif %}
     </div>
   </div>
 </main>

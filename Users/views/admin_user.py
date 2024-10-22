@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 
+from utils.user_utils import validate_user_acess
+
 
 @method_decorator(
     login_required(login_url='users:login', redirect_field_name='next'),
@@ -11,7 +13,7 @@ from django.views.generic import View
 )
 class AdminUserOptionsClassView(View):
     def get(self, *args, **kwargs):
-        if not self.request.user.is_superuser:  # type: ignore
+        if not validate_user_acess(self.request):  # type: ignore
             raise Http404()
 
         title = 'Opções'
