@@ -1,5 +1,5 @@
 {% extends "global/base.html" %}
-{% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <main class="main-content-container">
@@ -23,20 +23,20 @@
   </div>
   <div class="messages-custom-width">
     {% include "global/partials/messages.html" %}
+    {% include "global/partials/form_messages.html" %}
   </div>
-  <div class="admin-options-container cash-register">
-    <div class="cards-flex">
-      <a href="{% url 'reports:cashregister' %}" class="option-card shadow"
-      title="Relatório de Caixa">
-        <div class="option-card-icon">
-          <img src="{% static 'global/img/profit_report.png' %}" alt="">
-        </div>
-        <div class="option-card-title">
-          <h2>Relatório de Caixa</h2>
-          <small>Veja o fluxo de caixa.</small>
-        </div>
-      </a>
+  <form method="POST" action="{{form_action}}" class="form-container report-form">
+    <div class="report-form-flex">
+      {% crispy form %}
     </div>
-  </div>
+    <button class="btn report-form-btn" type="submit">Gerar Relatório</button>
+  </form>
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  flatpickr('.datetime-input', {
+    dateFormat: 'd-m-Y',
+});
+</script>
 {% endblock content %}

@@ -967,6 +967,39 @@ button.form-button:hover .submit {
   font-weight: 600;
 }
 
+.form-container.report-form {
+  max-width: 90rem;
+  width: 100%;
+}
+
+.form-container .report-form-flex {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.form-container .report-form-flex #div_id_date_initial,
+.form-container .report-form-flex #div_id_date_final {
+  width: 50%;
+}
+
+button.report-form-btn {
+  width: 50%;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--color-gray-0);
+  background: var(--color-primary);
+  margin-top: 1.5rem;
+  transition: all 150ms ease-in-out;
+}
+
+button.report-form-btn:hover {
+  color: var(--color-gray-0);
+  background: var(--color-primary);
+  filter: brightness(80%);
+}
+
 /* select 2 */
 
 table th.table-counter {
@@ -1285,7 +1318,9 @@ button.google-callback-btn h2 {
 .form-container.cash-register,
 .breadcrumb-container.form.cashregister,
 .title-with-breadcrumb.cashregister .page-title-container,
-.main-content-container.cashregister .messages-container {
+.main-content-container.cashregister .messages-container,
+.messages-custom-width .form-container,
+.messages-custom-width .messages-container{
   max-width: 90rem;
   width: 100%;
 }
@@ -1646,6 +1681,19 @@ button.google-callback-btn h2 {
 
   .cash-register-actions-flex {
     grid-template-columns: repeat(1, 1fr);
+  }
+
+  .form-container .report-form-flex {
+    display: block;
+  }
+
+  .form-container .report-form-flex #div_id_date_initial,
+  .form-container .report-form-flex #div_id_date_final {
+    width: 100%;
+  }
+
+  button.report-form-btn {
+    width: 100%;
   }
 }
 
