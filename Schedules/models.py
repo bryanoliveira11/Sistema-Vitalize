@@ -96,12 +96,6 @@ class Schedules(models.Model):
         if not self.total_price:
             self.total_price = 0
         super().save(*args, **kwargs)
-        self.update_total_price()
-
-    def update_total_price(self):
-        total = self.services.aggregate(total_price=models.Sum('price'))[
-            'total_price'] or 0
-        Schedules.objects.filter(pk=self.pk).update(total_price=total)
 
     class Meta:
         verbose_name = 'Agendamento Vitalize'
