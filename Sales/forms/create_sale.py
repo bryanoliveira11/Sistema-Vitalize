@@ -6,6 +6,7 @@ from crispy_forms.layout import HTML, Layout
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
 from django_select2 import forms as s2forms
 
 from Products.models import Products
@@ -29,13 +30,16 @@ class ScheduleCustomS2ChoiceWidget(s2forms.ModelSelect2Widget):
 
 class ProductsCustomS2MultipleWidget(s2forms.ModelSelect2MultipleWidget):
     def label_from_instance(self, obj: Products):
-        return f'{obj.product_name}'
+        return f'{obj.product_name} - R$ {obj.price}'
 
     def result_from_instance(self, obj: Products, request):
         return {
             'id': obj.pk,
             'text': self.label_from_instance(obj),
+            'text_no_price': obj.product_name,
             'price': obj.price,
+            'slug': obj.slug,
+            'image': obj.cover_path.url,
         }
 
 
@@ -54,7 +58,7 @@ class CreateSaleForm(forms.ModelForm):
                 select-products" id="selected-products-table">
                 <thead class="thead-light">
                   <tr>
-                    <th scope="col"></th>
+                    <th scope="col">Imagem</th>
                     <th scope="col">Produto</th>
                     <th scope="col">Quantidade</th>
                     <th scope="col">Preço</th>
@@ -136,8 +140,16 @@ class CreateSaleForm(forms.ModelForm):
         queryset=PaymentTypes.objects.filter(
             is_active=True,
         ).order_by('-pk'),
-        label='Tipos de Pagamento',
+        label='Tipo de Pagamento',
         required=True,
+        help_text=mark_safe(
+            '''
+          <a href="/admin/Sales/paymenttypes/add/" target="_blank"
+          class="add-icon" title="Adicionar Forma de Pagamento">
+          <i class="fa-solid fa-circle-plus"></i>
+          </a>
+            '''
+        ),
     )
 
     def clean(self, *args, **kwargs):

@@ -469,9 +469,13 @@ class HandleSalesForm {
   createRow(data) {
     const newRow = `
       <tr id="product-${data.id}" data-unit-price="${data.price}">
-        <td><b></b></td>
-        <td>${data.text}</td>
-        <td><input type="number" class="quantity-input"
+        <td>
+        <a href="/product/${data.slug}" target="_blank">
+        <img src="${data.image}" id="product-image">
+        </a>
+        </td>
+        <td>${data.text_no_price}</td>
+        <td id="product-quantity"><input type="number" class="quantity-input"
         name="quantities[${data.id}]" value="1" min="1"></td>
         <td class="product-price">R$ ${parseFloat(data.price).toFixed(2)}</td>
       </tr>`;
