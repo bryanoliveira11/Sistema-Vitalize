@@ -29,6 +29,7 @@ urlpatterns = [
     path('sales/', include('Sales.urls')),
     path('cashregister/', include('CashRegister.urls')),
     path('reports/', include('Reports.urls')),
+    path('notifications/', include('Notifications.urls')),
     path(
         'accounts/google/login/callback/',
         all_auth_views.oauth2_callback,
