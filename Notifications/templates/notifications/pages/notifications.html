@@ -10,16 +10,46 @@
             <div class="notifications-flex">
                 {% for notification in notifications  %}
                 <div class="notification">
-                    <div class="subject-flex">
-                        <h3>{{notification.subject}}</h3>
-                        <form ation="" method="POST" class="inline-form">
-                            <i class="fa-solid fa-circle-xmark text-danger"></i>
-                        </form>
-                    </div>
-                    <div class="text"><p>{{notification.text}}</p></div>
+                  <div class="subject-flex">
+                      <h3>{{notification.subject}}</h3>
+                      <form action="{% url 'notifications:notifications_remove_single' notification.pk %}"
+                      method="POST"
+                      class="inline-form" title="Remover Notificação">
+                        {% csrf_token %}
+                        <button type="submit" class="no-button">
+                          <i class="fa-solid fa-circle-xmark text-danger"></i>
+                        </button>
+                      </form>
+                  </div>
+                  <div class="text"><p>{{notification.text}}</p></div>
+                </div>
+                {% empty %}
+                <div class="main-content-error-page center">
+                  <div class="error-message-content">
+                    <img src="{% static 'global/img/no_notifications.png' %}" alt="">
+                    <h2>
+                      Nenhuma Notificação Encontrada.
+                    </h2>
+                  </div>
                 </div>
                 {% endfor %}
             </div>
+            {% if notifications %}
+            <div class="admin-options-container notifications">
+              {% include "notifications/partials/modals.html" %}
+              <div type="button" data-bs-toggle="modal" class="option-card"
+              data-bs-target="#remove-notifications" title="Remover Notificações">
+                <div class="option-card-icon notifications">
+                  <img src="{% static 'global/img/no_notifications_50.png' %}" alt="">
+                </div>
+                <div class="option-card-title">
+                  <h2>Remover Notificações</h2>
+                  <small>Remova todas as notificações.</small>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {% include "global/partials/pagination.html" %}
         </div>
     </div>
 </main>

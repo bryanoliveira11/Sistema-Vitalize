@@ -1,0 +1,27 @@
+<div class="modal fade" id="remove-notifications" data-bs-backdrop="static"
+data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="staticBackdropLabel">Remover Notificações ?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Isso Removerá <b>todas</b> as suas Notificações.</p>
+        <p>Essa Ação <b>não</b> pode ser Desfeita.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <form method="POST" action="{% url 'notifications:notifications_remove' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn bg-danger">
+            Remover Notificações
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -668,6 +668,21 @@ a.quick-acess-link:hover {
   margin-top: 2rem;
 }
 
+.admin-options-container.notifications {
+  margin: 0;
+  margin-top: 2rem;
+}
+
+.admin-options-container.notifications .option-card {
+  background: #cd3e4b;
+  background: linear-gradient(
+    90deg,
+    #cd3e4bec 0%,
+    #bd3d49 88%
+  );
+  color: var(--color-gray-0);
+}
+
 .admin-options-container.cash-register .cards-flex {
   max-width: 90rem;
   width: 100%;
@@ -1023,7 +1038,8 @@ table th.table-counter {
   padding: 0.3rem;
 }
 
-#selected-products-table, #selected-services-table {
+#selected-products-table,
+#selected-services-table {
   margin: 1rem 0 2rem 0;
   border-radius: 0.375rem;
 }
@@ -1410,6 +1426,7 @@ button.google-callback-btn h2 {
 
 #open-cashregister .modal-footer button,
 #close-cashregister .modal-footer button,
+#remove-notifications .modal-footer button,
 .cancel-sale .modal-footer button {
   font-size: 1.6rem;
   color: var(--color-gray-0);
@@ -1583,6 +1600,12 @@ button.google-callback-btn h2 {
 .add-icon:hover {
   color: var(--color-success);
   filter: brightness(80%);
+}
+
+.no-button {
+  background: none;
+  outline: none;
+  border: none;
 }
 
 /* keyframes */

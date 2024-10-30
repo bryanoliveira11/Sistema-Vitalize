@@ -23,13 +23,9 @@ def get_today_time_range():
 
 def close_last_cashregisters():
     time_start_utc, time_end_utc = get_today_time_range()
-    cashregisters = CashRegister.objects.filter(
-        is_open=True,
-    ).exclude(open_date__range=(time_start_utc, time_end_utc))
-
-    for cashregister in cashregisters:
-        cashregister.is_open = False
-        cashregister.save()
+    CashRegister.objects.filter(is_open=True,).exclude(
+        open_date__range=(time_start_utc, time_end_utc)
+    ).update(is_open=False)
 
 
 def get_last_cashregister():

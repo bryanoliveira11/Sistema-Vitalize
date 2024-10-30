@@ -8,7 +8,7 @@ class NotificationsMiddleware:
     def __call__(self, request):
         if request.user.is_authenticated:
             self.notifications = Notifications.objects.filter(
-                user=request.user,
+                user=request.user, is_active=True
             ).order_by('-id')
 
             request.notifications = self.notifications

@@ -2,6 +2,7 @@ from django.http import Http404
 from django.views.generic import DetailView
 
 from Products.models import Products
+from utils.user_utils import get_notifications
 
 
 class ProductDetailClassView(DetailView):
@@ -36,6 +37,8 @@ class ProductDetailClassView(DetailView):
                     pk=product.pk,
                 )
 
+        notifications, notifications_total = get_notifications(self.request)
+
         context.update({
             'product': product,
             'related_products': related_products,
@@ -43,6 +46,8 @@ class ProductDetailClassView(DetailView):
             'page_title': 'Veja',
             'page_subtitle': 'Também',
             'is_product_detail': True,
+            'notifications': notifications,
+            'notifications_total': notifications_total,
         })
 
         return context
