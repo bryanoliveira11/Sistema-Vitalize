@@ -5,6 +5,7 @@ INSTALLED_APPS = [
     'Schedules',
     'CashRegister',
     'Reports',
+    'Notifications',
     'Logs',
     'django_select2',
     # jazzmin
