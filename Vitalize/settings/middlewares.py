@@ -7,6 +7,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_currentuser.middleware.ThreadLocalUserMiddleware',
+    # my middlewares
+    'Notifications.middleware.NotificationsMiddleware',
     # cors headers middleware
     'corsheaders.middleware.CorsMiddleware',
     # all auth middleware

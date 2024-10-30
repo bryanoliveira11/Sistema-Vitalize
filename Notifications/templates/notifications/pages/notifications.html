@@ -11,11 +11,12 @@
                 {% for notification in notifications  %}
                 <div class="notification">
                     <div class="subject-flex"> 
-                        {{notification.subject}}
+                        <h3>{{notification.subject}}</h3>
                         <form ation="" method="POST" class="inline-form">
                             <i class="fa-solid fa-circle-xmark text-danger"></i>
                         </form>
                     </div>
+                    <div><p>{{notification.text}}</p></div>
                 </div>
                 {% endfor %}
             </div>

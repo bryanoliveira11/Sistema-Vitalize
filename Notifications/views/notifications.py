@@ -1,9 +1,8 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic import View
-from Notifications.models import Notifications
+from utils.user_utils import get_notifications
 
 
 @method_decorator(
@@ -14,10 +13,7 @@ class NotificationsClassView(View):
     def get(self, *args, **kwargs):
         title = 'Notificações'
         subtitle = 'de Usuário'
-        user = self.request.user
-        notifications = Notifications.objects.filter(
-            user=user
-        ).select_related('user')
+        notifications, notifications_total = get_notifications(self.request)
 
         return render(
             self.request,
@@ -27,5 +23,6 @@ class NotificationsClassView(View):
                 'page_title': title,
                 'page_subtitle': subtitle,
                 'notifications': notifications,
+                'notifications_total': notifications_total,
             }
         )
