@@ -1,0 +1,32 @@
+{% extends "global/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main class="main-content-container">
+  {% include "global/partials/page_title.html" %}
+  {% include "global/partials/messages.html" %}
+  {% include "global/partials/form_messages.html" %}
+  <form method="POST" action="{{form_action}}" class="form-container">
+    {% crispy form %}
+    <div class="form-container">
+      <div id="selected-prices">
+        <h2>Preço Total :
+          <span id="total-price">R$ 0.00</span>
+        </h2>
+      </div>
+      <button type="submit" class="form-button" title="Registrar">
+        <span>Registrar Agendamento</span>
+      </button>
+    </div>
+  </form>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+<script>
+  flatpickr('.datetime-input', {
+    locale: 'pt',
+    dateFormat: 'd-m-Y',
+});
+</script>
+{% endblock content %}

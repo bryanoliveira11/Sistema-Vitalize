@@ -11,14 +11,14 @@
 <link rel="stylesheet" href="{% static 'owlcarousel/css/owl.theme.default.min.css' %}" />
 {% endif %}
 
-{% if is_creating_sale %}
+{% if is_creating_sale or is_creating_schedule %}
 <script src="{% static 'global/js/build/jquery.min.js' %}" type="text/javascript"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/pt-BR.js"></script>
 {% endif %}
 
-{% if is_report_page %}
+{% if is_report_page or is_creating_schedule %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endif %}
 
