@@ -7,6 +7,7 @@ from django.views.generic import View
 
 from Schedules.forms import CreateScheduleForm
 from utils.create_log import create_log
+from utils.user_utils import get_notifications
 
 
 @method_decorator(
@@ -17,6 +18,7 @@ class CreateScheduleClassView(View):
     def render_form(self, form: CreateScheduleForm):
         title = 'Agendamento'
         subtitle = 'de Serviços'
+        notifications, notifications_total = get_notifications(self.request)
 
         return render(
             self.request,
@@ -27,6 +29,8 @@ class CreateScheduleClassView(View):
                 'page_title': title,
                 'page_subtitle': subtitle,
                 'is_creating_schedule': True,
+                'notifications': notifications,
+                'notifications_total': notifications_total,
             }
         )
 

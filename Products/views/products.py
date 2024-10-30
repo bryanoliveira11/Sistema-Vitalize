@@ -4,6 +4,7 @@ from django.views.generic import ListView
 
 from Products.models import Categories, Products
 from utils.pagination import make_pagination
+from utils.user_utils import get_notifications
 
 
 class ProductsClassView(ListView):
@@ -25,6 +26,7 @@ class ProductsClassView(ListView):
         context = super().get_context_data(*args, **kwargs)
         products = context.get('products')
         categories = Categories.objects.all().exclude(is_active=False)
+        notifications, notifications_total = get_notifications(self.request)
         page_obj = None
         pagination_range = None
 
@@ -39,6 +41,8 @@ class ProductsClassView(ListView):
             'categories': categories,
             'page_title': 'Vitrine',
             'page_subtitle': 'de Produtos',
+            'notifications': notifications,
+            'notifications_total': notifications_total,
         })
 
         return context
@@ -57,6 +61,7 @@ class CategoryFilterClassView(ProductsClassView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        notifications, notifications_total = get_notifications(self.request)
 
         try:
             category = context.get('products', None)[
@@ -73,6 +78,8 @@ class CategoryFilterClassView(ProductsClassView):
                 category_name if category else ''
             }',
             'is_filtered': True,
+            'notifications': notifications,
+            'notifications_total': notifications_total,
         })
 
         return context
@@ -98,11 +105,14 @@ class SearchClassView(ProductsClassView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        notifications, notifications_total = get_notifications(self.request)
 
         context.update({
             'page_title': 'Busca',
             'page_subtitle': f'por "{self.search_term}"',
             'additional_url_query': f'&q={self.search_term}',
             'is_filtered': True,
+            'notifications': notifications,
+            'notifications_total': notifications_total,
         })
         return context

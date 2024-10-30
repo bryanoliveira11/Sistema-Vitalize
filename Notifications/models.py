@@ -1,7 +1,8 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 
 User = get_user_model()
+
 
 class Notifications(models.Model):
     user = models.ForeignKey(
@@ -16,5 +17,5 @@ class Notifications(models.Model):
         return f'Notificação de {self.user}'
 
     class Meta:
-        verbose_name = f'Notificação'
+        verbose_name = 'Notificação'
         verbose_name_plural = 'Notificações'

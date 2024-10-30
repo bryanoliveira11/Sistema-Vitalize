@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from Users.forms import EditPasswordForm, ProfileForm
+from utils.user_utils import get_notifications
 
 
 @method_decorator(
@@ -29,6 +30,8 @@ class ProfileClassView(View):
         else:
             form_action = reverse('users:profile_password')
 
+        notifications, notifications_total = get_notifications(self.request)
+
         return render(
             self.request,
             'users/pages/profile.html',
@@ -40,6 +43,8 @@ class ProfileClassView(View):
                 'form_action': form_action,
                 'is_data_form': is_data_form,
                 'is_password_form': is_password_form,
+                'notifications': notifications,
+                'notifications_total': notifications_total,
             }
         )
 

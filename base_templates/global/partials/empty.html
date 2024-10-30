@@ -1,10 +1,13 @@
+{% load static %}
+
 <div class="main-content-error-page center">
   <div class="error-message-content">
-    😔
+    <img src="{% static 'global/img/no_products.png' %}" alt="">
     <h2>
       Nenhum Produto Encontrado.
       <p>
         <a href="{% url 'products:products' %}" title="Voltar para Vitrine.">
+          <i class="fa-solid fa-circle-left"></i>
           Voltar para Vitrine.
         </a>
       </p>
