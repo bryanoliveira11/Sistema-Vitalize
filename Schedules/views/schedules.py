@@ -1,13 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from Schedules.forms import CreateScheduleForm
-from utils.cashregister_utils import get_today_cashregister
 from utils.create_log import create_log
 
 
@@ -17,8 +15,8 @@ from utils.create_log import create_log
 )
 class CreateScheduleClassView(View):
     def render_form(self, form: CreateScheduleForm):
-        title = 'Agendar'
-        subtitle = 'Serviços'
+        title = 'Agendamento'
+        subtitle = 'de Serviços'
 
         return render(
             self.request,
@@ -33,10 +31,4 @@ class CreateScheduleClassView(View):
         )
 
     def get(self, *args, **kwargs):
-        if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
-
-        if get_today_cashregister() is None:
-            return redirect(reverse('cashregister:cashregister'))
-
         return self.render_form(form=CreateScheduleForm())

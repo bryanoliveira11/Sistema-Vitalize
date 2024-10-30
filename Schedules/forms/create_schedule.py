@@ -8,9 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django_select2 import forms as s2forms
 
-from Schedules.models import Services
-from Schedules.models import Schedules
-
+from Schedules.models import Schedules, Services
 from utils.django_forms import add_attr, add_placeholder
 
 User = get_user_model()
@@ -47,8 +45,7 @@ class CreateScheduleForm(forms.ModelForm):
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">Imagem</th>
-                    <th scope="col">Produto</th>
-                    <th scope="col">Quantidade</th>
+                    <th scope="col">Serviço</th>
                     <th scope="col">Preço</th>
                   </tr>
                 </thead>
@@ -67,21 +64,21 @@ class CreateScheduleForm(forms.ModelForm):
         queryset=Services.objects.filter(
             is_active=True).order_by('-pk'),
         label='Agendamento',
-        help_text='Selecionar um Agendamento (Caso Necessário).',
-        required=False,
+        help_text='Escolha os Serviços Desejados.',
+        required=True,
         widget=ServicesCustomS2MultipleWidget(
             model=Services,
             queryset=Services.objects.filter(
               is_active=True).order_by('-pk'),
             search_fields=[
-                'service_name__icontains'
+                'service_name__icontains',
             ],
             max_results=10,
             attrs={
                 'data-placeholder': 'Buscar por Nome do Serviço',
                 'selectionCssClass': 'form-control',
                 'data-language': 'pt-BR',
-                'data-minimum-input-length' : 0
+                'data-minimum-input-length': 0,
             },
         )
     )
@@ -90,13 +87,10 @@ class CreateScheduleForm(forms.ModelForm):
         input_formats=['%d-%m-%Y'],
         label='Data Agendamento',
         required=True,
-        help_text='Selecione a Data Agendamento do Agendamento',
+        help_text='Selecione a Data do Agendamento',
     )
 
-
     def clean(self, *args, **kwargs):
-        self.validate_sale()
-
         if self._my_errors:
             raise ValidationError(dict(self._my_errors))
 

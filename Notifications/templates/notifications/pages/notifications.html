@@ -5,18 +5,18 @@
 <main class="main-content-container">
     {% include "global/partials/page_title.html" %}
     {% include "global/partials/messages.html" %}
-    <div class="notifications-container"> 
-        <div class="form-container"> 
-            <div class="notifications-flex"> 
+    <div class="notifications-container">
+        <div class="form-container">
+            <div class="notifications-flex">
                 {% for notification in notifications  %}
                 <div class="notification">
-                    <div class="subject-flex"> 
+                    <div class="subject-flex">
                         <h3>{{notification.subject}}</h3>
                         <form ation="" method="POST" class="inline-form">
                             <i class="fa-solid fa-circle-xmark text-danger"></i>
                         </form>
                     </div>
-                    <div><p>{{notification.text}}</p></div>
+                    <div class="text"><p>{{notification.text}}</p></div>
                 </div>
                 {% endfor %}
             </div>

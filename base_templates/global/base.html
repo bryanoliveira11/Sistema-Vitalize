@@ -12,7 +12,9 @@
   {% block content %}{% endblock content %}
 </div>
 
+{% if notifications %}
 {% include "global/partials/notifications.html" %}
+{% endif %}
 {% include "global/partials/back_to_top.html" %}
 {% include "global/partials/footer.html" %}
 
