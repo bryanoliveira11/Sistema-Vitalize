@@ -118,28 +118,17 @@ class CreateSaleForm(forms.ModelForm):
         schedule = self.cleaned_data.get('schedule')
         products = self.cleaned_data.get('products')
         services = self.cleaned_data.get('services')
+        msg = 'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
 
         if not (schedule or products or services):
-            self._my_errors['schedule'].append(
-                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
-            )
-            self._my_errors['products'].append(
-                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
-            )
-            self._my_errors['services'].append(
-                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
-            )
+            self._my_errors['schedule'].append(msg)
+            self._my_errors['products'].append(msg)
+            self._my_errors['services'].append(msg)
 
         elif schedule and not (services or products):
-            self._my_errors['schedule'].append(
-                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
-            )
-            self._my_errors['services'].append(
-                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
-            )
-            self._my_errors['products'].append(
-                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
-            )
+            self._my_errors['schedule'].append(msg)
+            self._my_errors['services'].append(msg)
+            self._my_errors['products'].append(msg)
 
     schedule = forms.ModelChoiceField(
         queryset=Schedules.objects.filter(
