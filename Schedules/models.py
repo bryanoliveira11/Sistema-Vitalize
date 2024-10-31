@@ -76,7 +76,6 @@ class Schedules(models.Model):
     total_price = models.DecimalField(
         max_digits=7, decimal_places=2, null=False,
         blank=False, verbose_name='Preço Total (R$)',
-        editable=False,
     )
     status = models.BooleanField(
         default=True, verbose_name='Status',

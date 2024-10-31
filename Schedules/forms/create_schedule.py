@@ -60,7 +60,7 @@ class CreateScheduleForm(forms.ModelForm):
         model = Schedules
         fields = ['services', 'schedule_date']
 
-    services = forms.ModelChoiceField(
+    services = forms.ModelMultipleChoiceField(
         queryset=Services.objects.filter(
             is_active=True).order_by('-pk'),
         label='Agendamento',

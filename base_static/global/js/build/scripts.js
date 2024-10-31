@@ -414,96 +414,135 @@ class HandleSalesForm {
     this.schedulesField = document.getElementById('id_schedule');
     this.selectedProducts = document.getElementById('id_products');
     this.productsTable = document.getElementById('products-table-body');
+    this.selectedServices = document.getElementById('id_services');
+    this.servicesTable = document.getElementById('services-table-body');
     this.totalPriceElement = document.getElementById('total-price');
-    this.schedulePrice = 0;
     this.productsPrice = 0;
+    this.servicesPrice = 0;
   }
+
   init() {
     if (!this.selectedProducts) return;
-    this.handleSelectedProducts();
-    this.handleUnselectedProducts();
-    this.handleClearProducts();
-    this.handleQuantityChange();
+    this.handleProductEvents();
+    this.handleServiceEvents();
     if (!this.totalPriceElement) return;
     this.handleFormPrices();
   }
+
   handleFormPrices() {
     if (this.schedulesField) {
       $(this.schedulesField).on('select2:select', (e) => {
         const scheduleData = e.params.data;
-        this.schedulePrice = parseFloat(scheduleData.price);
+
+        this.clearAllServiceRows();
+        $(this.selectedServices).empty().trigger('change');
+
+        if (scheduleData.services) {
+          scheduleData.services.forEach((service) => {
+            this.createServiceRow(service);
+            const option = new Option(service.text, service.id, true, true);
+            $(this.selectedServices).append(option).trigger('change');
+          });
+          this.updateServiceTotal();
+        }
+
         this.updateTotalPrice();
       });
 
       $(this.schedulesField).on('select2:unselect', () => {
-        this.schedulePrice = 0;
+        this.clearAllServiceRows();
+        $(this.selectedServices).empty().trigger('change');
+        this.updateServiceTotal();
         this.updateTotalPrice();
       });
     }
   }
-  handleSelectedProducts() {
+
+  handleProductEvents() {
     $(this.selectedProducts).on('select2:select', (e) => {
       const data = e.params.data;
-      this.createRow(data);
+      this.createProductRow(data);
       this.updateProductTotal();
       this.updateTotalPrice();
     });
-  }
-  handleUnselectedProducts() {
+
     $(this.selectedProducts).on('select2:unselect', (e) => {
       const data = e.params.data;
       if (data.disabled === false) {
-        this.removeRow(data.id);
+        this.removeProductRow(data.id);
         this.updateProductTotal();
         this.updateTotalPrice();
       }
     });
-  }
-  handleClearProducts() {
+
     $(this.selectedProducts).on('select2:clear', () => {
-      this.clearAllRows();
+      this.clearAllProductRows();
       this.updateProductTotal();
       this.updateTotalPrice();
     });
-  }
-  createRow(data) {
-    const newRow = `
-      <tr id="product-${data.id}" data-unit-price="${data.price}">
-        <td>
-        <a href="/product/${data.slug}" target="_blank">
-        <img src="${data.image}" id="product-image">
-        </a>
-        </td>
-        <td>${data.text_no_price}</td>
-        <td id="product-quantity"><input type="number" class="quantity-input"
-        name="quantities[${data.id}]" value="1" min="1"></td>
-        <td class="product-price">R$ ${parseFloat(data.price).toFixed(2)}</td>
-      </tr>`;
-    $(this.productsTable).append(newRow);
-  }
-  removeRow(productId) {
-    $(`#product-${productId}`).remove();
-  }
-  clearAllRows() {
-    $(this.productsTable).empty();
-  }
-  handleQuantityChange() {
+
     $(this.productsTable).on('input', '.quantity-input', (e) => {
       const quantityInput = $(e.target);
       const row = quantityInput.closest('tr');
       const unitPrice = parseFloat(row.data('unit-price'));
-      const newQuantity = parseInt(quantityInput.val(), 10);
+      const newQuantity = parseInt(quantityInput.val(), 10) || 1;
 
-      if (!isNaN(newQuantity) && newQuantity > 0) {
-        const updatedPrice = unitPrice * newQuantity;
-        row.find('.product-price').text(`R$ ${updatedPrice.toFixed(2)}`);
-        this.updateProductTotal();
-        this.updateTotalPrice();
-      } else if (isNaN(newQuantity) || newQuantity <= 0) {
-        row.find('.product-price').text(`R$ ${unitPrice.toFixed(2)}`);
-      }
+      const updatedPrice = unitPrice * newQuantity;
+      row.find('.product-price').text(`R$ ${updatedPrice.toFixed(2)}`);
+      this.updateProductTotal();
+      this.updateTotalPrice();
     });
   }
+
+  handleServiceEvents() {
+    $(this.selectedServices).on('select2:select', (e) => {
+      const data = e.params.data;
+      this.createServiceRow(data);
+      this.updateServiceTotal();
+      this.updateTotalPrice();
+    });
+
+    $(this.selectedServices).on('select2:unselect', (e) => {
+      const data = e.params.data;
+      if (data.disabled === false) {
+        this.removeServiceRow(data.id);
+        this.updateServiceTotal();
+        this.updateTotalPrice();
+      }
+    });
+
+    $(this.selectedServices).on('select2:clear', () => {
+      this.clearAllServiceRows();
+      this.updateServiceTotal();
+      this.updateTotalPrice();
+    });
+  }
+
+  createProductRow(data) {
+    const newRow = `
+      <tr id="product-${data.id}" data-unit-price="${data.price}">
+        <td class="table-image">
+          <a href="/product/${data.slug}" target="_blank">
+            <img src="${data.image}" alt="Product Image">
+          </a>
+        </td>
+        <td>${data.text_no_price}</td>
+        <td id="product-quantity">
+        <input type="number" class="quantity-input" name="quantities[${data.id}]" value="1" min="1">
+        </td>
+        <td class="product-price">R$ ${parseFloat(data.price).toFixed(2)}</td>
+      </tr>`;
+    $(this.productsTable).append(newRow);
+  }
+
+  removeProductRow(productId) {
+    $(`#product-${productId}`).remove();
+  }
+
+  clearAllProductRows() {
+    $(this.productsTable).empty();
+  }
+
   updateProductTotal() {
     let productTotal = 0;
     $(this.productsTable)
@@ -511,16 +550,50 @@ class HandleSalesForm {
       .each((index, row) => {
         const $row = $(row);
         const unitPrice = parseFloat($row.data('unit-price'));
-        const quantity = parseInt($row.find('.quantity-input').val(), 10);
-        if (!isNaN(quantity) && quantity > 0) {
-          productTotal += unitPrice * quantity;
-        }
+        const quantity = parseInt($row.find('.quantity-input').val(), 10) || 1;
+        productTotal += unitPrice * quantity;
       });
     this.productsPrice = productTotal;
   }
+
+  createServiceRow(data) {
+    if ($(`#service-${data.id}`).length > 0) return;
+
+    const newRow = `
+      <tr id="service-${data.id}" data-unit-price="${data.price}">
+        <td class="table-image">
+          <img src="${data.image}" alt="Service Image">
+        </td>
+        <td>${data.text_no_price}</td>
+        <td class="service-description">${data.description}</td>
+        <td class="service-price">R$ ${parseFloat(data.price).toFixed(2)}</td>
+      </tr>`;
+    $(this.servicesTable).append(newRow);
+  }
+
+  removeServiceRow(serviceId) {
+    $(`#service-${serviceId}`).remove();
+  }
+
+  clearAllServiceRows() {
+    $(this.servicesTable).empty();
+  }
+
+  updateServiceTotal() {
+    let serviceTotal = 0;
+    $(this.servicesTable)
+      .find('tr')
+      .each((index, row) => {
+        const $row = $(row);
+        const unitPrice = parseFloat($row.data('unit-price'));
+        serviceTotal += unitPrice;
+      });
+    this.servicesPrice = serviceTotal;
+  }
+
   updateTotalPrice() {
-    const totalPrice = this.schedulePrice + this.productsPrice;
-    this.totalPriceElement.textContent = 'R$ ' + totalPrice.toFixed(2);
+    const totalPrice = this.productsPrice + this.servicesPrice;
+    this.totalPriceElement.textContent = `R$ ${totalPrice.toFixed(2)}`;
   }
 }
 

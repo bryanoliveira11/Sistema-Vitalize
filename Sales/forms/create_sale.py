@@ -11,7 +11,7 @@ from django_select2 import forms as s2forms
 
 from Products.models import Products
 from Sales.models import PaymentTypes, Sales
-from Schedules.models import Schedules
+from Schedules.models import Schedules, Services
 
 User = get_user_model()
 
@@ -24,7 +24,33 @@ class ScheduleCustomS2ChoiceWidget(s2forms.ModelSelect2Widget):
         return {
             'id': obj.pk,
             'text': self.label_from_instance(obj),
+            'services': [
+                {
+                    'id': service.pk,
+                    'text': service.service_name + f'- R$ {service.price}',
+                    'text_no_price': service.service_name,
+                    'description': service.description,
+                    'price': service.price,
+                    'image': service.cover_path.url,
+                }
+                for service in obj.services.all()
+            ],
             'price': obj.total_price,
+        }
+
+
+class ServicesCustomS2MultipleWidget(s2forms.ModelSelect2MultipleWidget):
+    def label_from_instance(self, obj: Services):
+        return f'{obj.service_name} - R$ {obj.price}'
+
+    def result_from_instance(self, obj: Services, request):
+        return {
+            'id': obj.pk,
+            'text': self.label_from_instance(obj),
+            'text_no_price': obj.service_name,
+            'description': obj.description,
+            'price': obj.price,
+            'image': obj.cover_path.url,
         }
 
 
@@ -51,6 +77,23 @@ class CreateSaleForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Field('schedule'),
+            Field('services'),
+            HTML('''
+                <div class="table-responsive">
+                <table class="table table-bordered
+                select-services" id="selected-services-table">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Imagem</th>
+                    <th scope="col">Serviço</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Preço</th>
+                  </tr>
+                </thead>
+                  <tbody id="services-table-body"></tbody>
+                </table>
+                </div>
+            '''),
             Field('products'),
             HTML('''
                 <div class="table-responsive">
@@ -74,18 +117,29 @@ class CreateSaleForm(forms.ModelForm):
     def validate_sale(self):
         schedule = self.cleaned_data.get('schedule')
         products = self.cleaned_data.get('products')
+        services = self.cleaned_data.get('services')
 
-        if schedule is None and not products:
+        if not (schedule or products or services):
             self._my_errors['schedule'].append(
-                'A Venda deve ter ao menos um Agendamento ou Produto.'
+                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
             )
             self._my_errors['products'].append(
-                'A Venda deve ter ao menos um Agendamento ou Produto.'
+                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
+            )
+            self._my_errors['services'].append(
+                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
             )
 
-    class Meta:
-        model = Sales
-        fields = ['schedule', 'products', 'payment_type']
+        elif schedule and not (services or products):
+            self._my_errors['schedule'].append(
+                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
+            )
+            self._my_errors['services'].append(
+                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
+            )
+            self._my_errors['products'].append(
+                'A Venda deve ter ao menos um Agendamento, Serviço ou Produto.'
+            )
 
     schedule = forms.ModelChoiceField(
         queryset=Schedules.objects.filter(
@@ -108,6 +162,29 @@ class CreateSaleForm(forms.ModelForm):
                 'data-placeholder': 'Buscar por E-mail, Data ou Preço',
                 'selectionCssClass': 'form-control',
                 'data-language': 'pt-BR',
+            },
+        )
+    )
+
+    services = forms.ModelMultipleChoiceField(
+        queryset=Services.objects.filter(
+            is_active=True).order_by('-pk'),
+        label='Serviços',
+        help_text='Adicione Serviços ao Agendamento ou a Venda.',
+        required=False,
+        widget=ServicesCustomS2MultipleWidget(
+            model=Services,
+            queryset=Services.objects.filter(
+              is_active=True).order_by('-pk'),
+            search_fields=[
+                'service_name__icontains',
+            ],
+            max_results=10,
+            attrs={
+                'data-placeholder': 'Buscar por Nome do Serviço',
+                'selectionCssClass': 'form-control',
+                'data-language': 'pt-BR',
+                'data-minimum-input-length': 0,
             },
         )
     )
@@ -151,6 +228,10 @@ class CreateSaleForm(forms.ModelForm):
             '''
         ),
     )
+
+    class Meta:
+        model = Sales
+        fields = ['schedule', 'services', 'products', 'payment_type']
 
     def clean(self, *args, **kwargs):
         self.validate_sale()

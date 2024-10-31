@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
@@ -7,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 
 from Sales.forms import CreateSaleForm
-from Sales.models import SaleItem
+from Sales.models import SaleItem, Schedules
 from utils.cashregister_utils import get_today_cashregister
 from utils.create_log import create_log
 
@@ -55,7 +57,10 @@ class CreateSaleClassView(View):
             sale = form.save(commit=False)
             schedule = form.cleaned_data.get('schedule')
             products = form.cleaned_data.get('products')
+            services = form.cleaned_data.get('services')
+
             total_price = 0
+            schedule_price = 0
 
             sale.total_price = total_price
             sale.save()
@@ -71,6 +76,7 @@ class CreateSaleClassView(View):
                     )
                     quantity = quantity or 1
                     qty_price = product.price * int(quantity)
+
                     sale_item = SaleItem(
                         sale=sale,
                         product=product,
@@ -80,13 +86,35 @@ class CreateSaleClassView(View):
                     sale_items.append(sale_item)
                     total_price += qty_price
 
-            SaleItem.objects.bulk_create(sale_items)
+                SaleItem.objects.bulk_create(sale_items)
 
             if schedule:
-                total_price += schedule.total_price
+                schedule.services.set(services)
+                schedule.save()
 
-            sale.total_price = total_price
+                if services:
+                    service_total = sum(service.price for service in services)
+                    schedule_price = service_total
+
+                schedule.total_price = schedule_price
+                schedule.save()
+            else:
+                if services:
+                    service_total = sum(service.price for service in services)
+                    schedule = Schedules.objects.create(
+                        user=self.request.user,
+                        schedule_date=datetime.now(),
+                        total_price=service_total,
+                    )
+                    schedule.services.set(services)
+                    schedule.save()
+                    sale.schedule = schedule
+                    schedule_price = service_total
+                    sale.save()
+
+            sale.total_price = total_price + schedule_price
             sale.save()
+
             cashregister = get_today_cashregister()
 
             if cashregister:
@@ -96,7 +124,6 @@ class CreateSaleClassView(View):
                 self.request,
                 'Venda Registrada com Sucesso.'
             )
-
             create_log(
                 self.request.user,
                 'Venda Registrada com Sucesso.',

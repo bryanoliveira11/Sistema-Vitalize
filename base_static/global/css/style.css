@@ -1029,10 +1029,13 @@ table th.table-counter {
   text-align: center;
 }
 
-#selected-products-table img#product-image,
-#selected-services-table img#service-image {
+table td.table-image {
+  width: 18rem;
+}
+
+table td.table-image img {
   width: 100%;
-  height: 8rem;
+  height: 15rem;
   object-fit: cover;
   border-radius: 0.5rem;
   padding: 0.3rem;
@@ -1048,6 +1051,10 @@ table th.table-counter {
 #selected-services-table #services-table-body {
   height: 100%;
   vertical-align: middle;
+}
+
+#selected-services-table #services-table-body .service-description {
+  max-width: 25rem;
 }
 
 #selected-products-table td#product-quantity {
