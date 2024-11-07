@@ -21,7 +21,7 @@ class CancelSaleClassView(View):
 
     def post(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         sale_to_cancel = Sales.objects.select_for_update().filter(
             id=self.kwargs.get('id'),

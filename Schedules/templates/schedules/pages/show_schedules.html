@@ -1,11 +1,29 @@
 {% extends "global/base.html" %}
+{% load static %}
 
 {% block content %}
 <main class="main-content-container">
   <div class="schedules-container">
     {% include "global/partials/page_title.html" %}
     {% include "global/partials/messages.html" %}
+    {% if schedules %}
     {% include "schedules/partials/schedules_table.html" %}
+    {% else %}
+    <div class="main-content-error-page center">
+      <div class="error-message-content">
+        <img src="{% static 'global/img/no_schedules.png' %}" alt="">
+        <h2>
+          Nenhum Agendamento Encontrado
+          <p>
+            <a href="{% url 'schedules:create' %}" title="Novo Agendamento">
+              <i class="fa-regular fa-calendar-plus"></i>
+              Novo Agendamento
+            </a>
+          </p>
+        </h2>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </main>
 {% endblock content %}

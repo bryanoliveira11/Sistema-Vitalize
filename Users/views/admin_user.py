@@ -1,6 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 
@@ -14,7 +15,7 @@ from utils.user_utils import validate_user_acess
 class AdminUserOptionsClassView(View):
     def get(self, *args, **kwargs):
         if not validate_user_acess(self.request):  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         title = 'Opções'
         subtitle = 'de Administrador'

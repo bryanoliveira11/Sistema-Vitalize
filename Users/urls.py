@@ -26,4 +26,9 @@ urlpatterns = [
         views.EditPasswordClassView.as_view(),
         name='profile_password'
     ),
+    path(
+        'no-permission/',
+        views.NoPermissionClassView.as_view(),
+        name='no-permission'
+    ),
 ]

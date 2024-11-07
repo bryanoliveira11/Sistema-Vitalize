@@ -40,7 +40,7 @@ class CashOutClassView(View):
 
     def get(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         cashregister = get_today_cashregister()
 
@@ -51,7 +51,7 @@ class CashOutClassView(View):
 
     def post(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         cashregister = get_today_cashregister()
 

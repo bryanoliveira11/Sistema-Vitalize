@@ -37,7 +37,7 @@ class CreateSaleClassView(View):
 
     def get(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         if get_today_cashregister() is None:
             return redirect(reverse('cashregister:cashregister'))
@@ -46,7 +46,7 @@ class CreateSaleClassView(View):
 
     def post(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         form = CreateSaleForm(
             data=self.request.POST or None,

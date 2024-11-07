@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -40,7 +39,7 @@ class CashInClassView(View):
 
     def get(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         cashregister = get_today_cashregister()
 
@@ -51,7 +50,7 @@ class CashInClassView(View):
 
     def post(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         cashregister = get_today_cashregister()
 

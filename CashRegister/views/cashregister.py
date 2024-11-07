@@ -22,7 +22,7 @@ from utils.pagination import make_pagination
 class CashRegisterClassView(View):
     def get(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         cashregister = get_today_cashregister()
         title = 'Caixa'
@@ -113,7 +113,7 @@ class CashRegisterOpenClassView(View):
 
     def post(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         close_last_cashregisters()
         last_cashregister = get_last_cashregister()
@@ -140,7 +140,7 @@ class CashRegisterCloseClassView(View):
 
     def post(self, *args, **kwargs):
         if not self.request.user.is_superuser:  # type: ignore
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         messages.success(self.request, 'Caixa Fechado com Sucesso.')
         cashregister = get_today_cashregister()

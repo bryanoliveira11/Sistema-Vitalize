@@ -3,7 +3,8 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.timezone import make_aware
 from django.views.generic import View
@@ -21,7 +22,7 @@ from utils.user_utils import validate_user_acess
 class SelectReportClassView(View):
     def get(self, *args, **kwargs):
         if not validate_user_acess(self.request):
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         title = 'Selecionar'
         subtitle = 'Relatório'
@@ -60,13 +61,13 @@ class CashRegisterReport(View):
 
     def get(self, *args, **kwargs):
         if not validate_user_acess(self.request):
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         return self.render_page(CashRegisterReportForm())
 
     def post(self, *args, **kwargs):
         if not validate_user_acess(self.request):
-            raise Http404()
+            return redirect(reverse('users:no-permission'))
 
         form = CashRegisterReportForm(
             data=self.request.POST or None,

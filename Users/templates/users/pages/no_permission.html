@@ -1,0 +1,22 @@
+{% extends "global/base.html" %}
+{% load static %}
+
+{% block content %}
+<main class="main-content-container">
+  {% include "global/partials/page_title.html" %}
+  <div class="main-content-error-page center">
+    <div class="error-message-content">
+      <img src="{% static 'global/img/no_permission.png' %}" alt="">
+      <h2>
+        Permissões Insuficientes de Acesso.
+        <p>
+          <a href="{% url 'products:products' %}" title="Voltar ao Início.">
+            <i class="fa-solid fa-circle-left"></i>
+            Voltar ao Início
+          </a>
+        </p>
+      </h2>
+    </div>
+  </div>
+</main>
+{% endblock content %}
