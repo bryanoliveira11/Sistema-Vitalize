@@ -1,0 +1,63 @@
+<div class="table-responsive">
+  <a href="{% url 'schedules:create' %}" class="btn btn-bg-primary new-schedule"
+  title="Novo Agendamento">
+    <i class="fa-regular fa-calendar-plus"></i>
+    Novo Agendamento
+  </a>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Agendamento ID</th>
+        <th scope="col">Serviços</th>
+        <th scope="col">Data</th>
+        <th scope="col">Status</th>
+        <th scope="col">Preço Total</th>
+        <th scope="col">Detalhes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for schedule in schedules  %}
+      <tr>
+        <td>Nº {{schedule.pk}}</td>
+        <td>
+          {{schedule.services.all|length}}
+          {% if schedule.services.all|length == 1 %}
+          Serviço
+          {% else %}
+          Serviços
+          {% endif %}
+        </td>
+        <td>
+          {% if schedule.schedule_date %}
+          {{schedule.schedule_date}}
+          {% else %}
+          -
+          {% endif %}
+        </td>
+        <td>
+          {% if schedule.status %}
+          <span class="text-success">
+            <i class="fa-solid fa-circle-check"></i>
+            Marcado
+          </span>
+          {% else %}
+          <span class="text-danger">
+            <i class="fa-solid fa-circle-xmark"></i>
+            Desmarcado
+          </span>
+          {% endif %}
+        </td>
+        <td>R$ {{schedule.total_price}}</td>
+        <td>
+          <button class="btn bg-secondary show-schedule" title="Ver Agendamento"
+          data-bs-toggle="modal" data-bs-target="#show-schedule-{{schedule.pk}}">
+            Detalhes <i class="fa-solid fa-magnifying-glass-plus"></i>
+          </button>
+          {% include "schedules/partials/show_schedule.html" %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include "global/partials/pagination.html" %}

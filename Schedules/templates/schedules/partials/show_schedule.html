@@ -1,0 +1,37 @@
+<div class="modal fade cancel-sale" id="show-schedule-{{schedule.pk}}"
+data-bs-keyboard="true" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="staticBackdropLabel">
+          Agendamento Nº {{schedule.pk}}
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h2>Serviços Agendados :</h2>
+        <div class="services-grid mt-4">
+        {% for service in schedule.services.all %}
+          <div class="card">
+            <img src="{{service.cover_path.url}}" class="card-img-top" alt="Imagem do Serviço">
+            <div class="card-body">
+              <h2 class="card-title">{{service.service_name}}</h2>
+              <p class="card-text">{{service.description}}</p>
+              <h3 class="card-text">R$ {{service.price}}</h3>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+        <div class="schedule-modal-price mt-4">
+          <h2>Total : R$ {{schedule.total_price}}</h2>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -70,8 +70,8 @@ class Schedules(models.Model):
         User, verbose_name='Usuario', null=True, on_delete=models.PROTECT
     )
     services = models.ManyToManyField(Services, verbose_name="Serviço")
-    schedule_date = models.DateTimeField(
-        null=False, blank=False, verbose_name='Data e Hora'
+    schedule_date = models.DateField(
+        null=False, blank=False, verbose_name='Data Agendada'
     )
     total_price = models.DecimalField(
         max_digits=7, decimal_places=2, null=False,

@@ -675,11 +675,7 @@ a.quick-acess-link:hover {
 
 .admin-options-container.notifications .option-card {
   background: #cd3e4b;
-  background: linear-gradient(
-    90deg,
-    #cd3e4bec 0%,
-    #bd3d49 88%
-  );
+  background: linear-gradient(90deg, #cd3e4bec 0%, #bd3d49 88%);
   color: var(--color-gray-0);
 }
 
@@ -1481,11 +1477,47 @@ button.google-callback-btn h2 {
   margin-top: 2rem;
 }
 
-.btn.bg-danger.cancel {
+.btn.bg-danger.cancel,
+.btn.show-schedule,
+.btn.new-schedule {
   font-size: 1.3rem;
   color: var(--color-gray-0);
   text-transform: uppercase;
   font-weight: 700;
+}
+
+/* schedules */
+
+.schedules-container,
+.schedules-container .page-title-container {
+  max-width: 90rem;
+  width: 100%;
+  margin: 4rem auto 1.5rem auto;
+}
+
+.btn.new-schedule {
+  margin-bottom: 1.5rem;
+}
+
+.schedules-container .pagination-content {
+  margin-top: 1rem;
+}
+
+.btn.btn-bg-primary.show-schedule {
+  color: var(--color-dark-text);
+}
+
+.modal-body .services-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.services-grid .card {
+  width: 22rem;
 }
 
 /* utils */
@@ -1817,6 +1849,17 @@ button.google-callback-btn h2 {
 
   button.cash-register.alternate-tables {
     width: 60%;
+  }
+}
+
+@media (max-width: 486px) {
+  .modal-body {
+    text-align: center;
+  }
+
+  .modal-body .services-grid {
+    align-items: center;
+    justify-content: center;
   }
 }
 

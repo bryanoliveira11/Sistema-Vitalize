@@ -12,7 +12,7 @@ class AdminVitalizeSchedules(admin.ModelAdmin):
         'price_in_BRL', 'schedule_date', 'status',
     list_display_links = 'id_text',
     ordering = '-id',
-    list_filter = 'user', 'status', 'services',
+    list_filter = 'user', 'status', 'services', 'schedule_date',
     list_per_page = 20
 
     def get_queryset(self, request):
