@@ -12,8 +12,14 @@ from django_select2 import forms as s2forms
 from Products.models import Products
 from Sales.models import PaymentTypes, Sales
 from Schedules.models import Schedules, Services
+from Users.models import VitalizeUser
 
 User = get_user_model()
+
+
+class UserCustomS2ChoiceWidget(s2forms.ModelSelect2Widget):
+    def label_from_instance(self, obj):
+        return obj.email
 
 
 class ScheduleCustomS2ChoiceWidget(s2forms.ModelSelect2Widget):
@@ -76,6 +82,7 @@ class CreateSaleForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
+            Field('user'),
             Field('schedule'),
             Field('services'),
             HTML('''
@@ -114,6 +121,16 @@ class CreateSaleForm(forms.ModelForm):
             Field('payment_type'),
         )
 
+    def validate_user(self):
+        user = self.cleaned_data.get('user')
+        schedule = self.cleaned_data.get('schedule')
+        msg = 'O Usuário Cliente deve ser o mesmo Usuário do Agendamento.'
+
+        if schedule and user:
+            if user != schedule.user:
+                self._my_errors['user'].append(msg)
+                self._my_errors['schedule'].append(msg)
+
     def validate_sale(self):
         schedule = self.cleaned_data.get('schedule')
         products = self.cleaned_data.get('products')
@@ -129,6 +146,29 @@ class CreateSaleForm(forms.ModelForm):
             self._my_errors['schedule'].append(msg)
             self._my_errors['services'].append(msg)
             self._my_errors['products'].append(msg)
+
+    user = forms.ModelChoiceField(
+        queryset=User.objects.filter(
+            is_active=True).order_by('-pk'),
+        label='Cliente',
+        help_text='Selecione um Cliente Cadastrado',
+        required=True,
+        widget=UserCustomS2ChoiceWidget(
+            model=VitalizeUser,
+            queryset=User.objects.filter(
+              is_active=True).order_by('-pk'),
+            search_fields=[
+                'email__icontains',
+            ],
+            max_results=10,
+            attrs={
+                'data-placeholder': 'Buscar por E-mail',
+                'selectionCssClass': 'form-control',
+                'data-language': 'pt-BR',
+                'data-minimum-input-length': 0,
+            },
+        )
+    )
 
     schedule = forms.ModelChoiceField(
         queryset=Schedules.objects.filter(
@@ -220,9 +260,10 @@ class CreateSaleForm(forms.ModelForm):
 
     class Meta:
         model = Sales
-        fields = ['schedule', 'services', 'products', 'payment_type']
+        fields = ['user', 'schedule', 'services', 'products', 'payment_type']
 
     def clean(self, *args, **kwargs):
+        self.validate_user()
         self.validate_sale()
 
         if self._my_errors:

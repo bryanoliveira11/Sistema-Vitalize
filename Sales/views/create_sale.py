@@ -2,7 +2,6 @@ from datetime import datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -55,6 +54,7 @@ class CreateSaleClassView(View):
 
         if form.is_valid():
             sale = form.save(commit=False)
+            user = form.cleaned_data.get('user')
             schedule = form.cleaned_data.get('schedule')
             products = form.cleaned_data.get('products')
             services = form.cleaned_data.get('services')
@@ -90,6 +90,10 @@ class CreateSaleClassView(View):
 
             if schedule:
                 schedule.services.set(services)
+
+                if not schedule.schedule_date:
+                    schedule.schedule_date = datetime.now()
+
                 schedule.save()
 
                 if services:
@@ -102,7 +106,7 @@ class CreateSaleClassView(View):
                 if services:
                     service_total = sum(service.price for service in services)
                     schedule = Schedules.objects.create(
-                        user=self.request.user,
+                        user=user,
                         schedule_date=datetime.now(),
                         total_price=service_total,
                     )
@@ -113,6 +117,7 @@ class CreateSaleClassView(View):
                     sale.save()
 
             sale.total_price = total_price + schedule_price
+            sale.user = user
             sale.save()
 
             cashregister = get_today_cashregister()

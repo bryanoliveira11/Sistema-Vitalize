@@ -21,7 +21,7 @@ class AdminVitalizePaymentTypes(admin.ModelAdmin):
 
 @admin.register(Sales)
 class AdminVitalizeSales(admin.ModelAdmin):
-    list_display = 'id_text', 'schedule', 'get_products', \
+    list_display = 'id_text', 'schedule', 'user', 'get_products', \
         'payment_type', 'price_in_BRL', 'canceled',
     list_display_links = 'id_text',
     list_filter = 'payment_type', 'products', 'canceled',

@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from Products.models import Products
@@ -35,6 +36,10 @@ class Sales(models.Model):
     )
     products = models.ManyToManyField(
         Products, verbose_name='Produto(s)', blank=True
+    )
+    user = models.ForeignKey(
+        get_user_model(), verbose_name='Cliente',
+        on_delete=models.PROTECT,
     )
     payment_type = models.ForeignKey(
         PaymentTypes,

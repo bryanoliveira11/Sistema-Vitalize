@@ -12,7 +12,8 @@ class AdminVitalizeUser(admin.ModelAdmin):
     ordering = '-id',
     list_filter = 'is_staff', 'is_superuser'
     readonly_fields = 'email', 'first_name', 'last_name', \
-        'phone_number', 'last_login', 'password',
+        'phone_number', 'last_login',
+    exclude = ('password',)
     list_per_page = 20
 
     def has_delete_permission(self, request, obj=None):
