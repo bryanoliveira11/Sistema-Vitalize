@@ -422,276 +422,232 @@ class HandleSalesForm {
   }
 
   init() {
-    if (!this.selectedProducts) return;
+    if (!this.selectedProducts || !this.totalPriceElement) return;
     this.loadFromLocalStorage();
-    this.handleProductEvents();
-    this.handleServiceEvents();
-    if (!this.totalPriceElement) return;
-    this.handleFormPrices();
+    this.setupEventListeners();
+    this.updateAllTotals();
   }
 
   loadFromLocalStorage() {
-    const savedProducts =
-      JSON.parse(localStorage.getItem('selectedProducts')) || [];
-    const savedServices =
-      JSON.parse(localStorage.getItem('selectedServices')) || [];
+    try {
+      const savedProducts =
+        JSON.parse(localStorage.getItem('selectedProducts')) || [];
+      const savedServices =
+        JSON.parse(localStorage.getItem('selectedServices')) || [];
 
-    savedProducts.forEach((product) => {
-      this.createProductRow(product);
+      savedProducts.forEach((product) => this.addProductToDOM(product));
+      savedServices.forEach((service) => this.addServiceToDOM(service));
 
-      if (
-        !$(this.selectedProducts).find(`option[value="${product.id}"]`).length
-      ) {
-        const option = new Option(product.text, product.id, true, true);
-        $(this.selectedProducts).append(option).trigger('change');
-      }
-    });
-
-    savedServices.forEach((service) => {
-      this.createServiceRow(service);
-
-      if (
-        !$(this.selectedServices).find(`option[value="${service.id}"]`).length
-      ) {
-        const option = new Option(service.text, service.id, true, true);
-        $(this.selectedServices).append(option).trigger('change');
-      }
-    });
-
-    this.updateProductTotal();
-    this.updateServiceTotal();
-    this.updateTotalPrice();
+      this.updateAllTotals();
+    } catch (error) {
+      console.error('Error loading data from local storage');
+    }
   }
 
   saveToLocalStorage() {
-    const selectedProducts = [];
-    const selectedServices = [];
-
-    $(this.productsTable)
-      .find('tr')
-      .each((index, row) => {
-        const $row = $(row);
-        const productId = $row.attr('id').split('-')[1];
-        const quantity = parseInt($row.find('.quantity-input').val(), 10) || 1;
-        const unitPrice = parseFloat($row.data('unit-price'));
-        const totalPrice = unitPrice * quantity;
-        const imageSrc = $row.find('.table-image img').attr('src');
-        const productData = {
-          id: productId,
-          image: imageSrc,
-          text: $row.find('.table-text').val(),
-          text_no_price: $row.find('td').eq(1).text(),
-          price: unitPrice,
-          totalPrice: totalPrice,
-          quantity: quantity,
-          slug: $row.data('slug'),
-        };
-        selectedProducts.push(productData);
-      });
-
-    $(this.servicesTable)
-      .find('tr')
-      .each((index, row) => {
-        const $row = $(row);
-        const serviceId = $row.attr('id').split('-')[1];
-        const imageSrc = $row.find('.table-image img').attr('src');
-        const serviceData = {
-          id: serviceId,
-          image: imageSrc,
-          text: $row.find('.table-text').val(),
-          text_no_price: $row.find('td').eq(1).text(),
-          description: $row.find('.service-description').text(),
-          price: parseFloat($row.data('unit-price')),
-        };
-        selectedServices.push(serviceData);
-      });
+    const selectedProducts = this.getTableData(this.productsTable, true);
+    const selectedServices = this.getTableData(this.servicesTable, false);
 
     localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
     localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
   }
 
-  handleFormPrices() {
+  setupEventListeners() {
     if (this.schedulesField) {
-      $(this.schedulesField).on('select2:select', (e) => {
-        const scheduleData = e.params.data;
+      $(this.schedulesField).on('select2:select', (e) =>
+        this.handleScheduleSelect(e),
+      );
+      $(this.schedulesField).on('select2:unselect', () => this.clearServices());
+    }
 
-        this.clearAllServiceRows();
-        $(this.selectedServices).empty().trigger('change');
+    $(this.selectedProducts).on('select2:select', (e) =>
+      this.handleProductSelect(e),
+    );
+    $(this.selectedProducts).on('select2:unselect', (e) =>
+      this.handleProductUnselect(e),
+    );
+    $(this.selectedProducts).on('select2:clear', () => this.clearAllProducts());
 
-        if (scheduleData.services) {
-          scheduleData.services.forEach((service) => {
-            this.createServiceRow(service);
-            const option = new Option(service.text, service.id, true, true);
-            $(this.selectedServices).append(option).trigger('change');
-          });
-          this.updateServiceTotal();
-        }
+    $(this.selectedServices).on('select2:select', (e) =>
+      this.handleServiceSelect(e),
+    );
+    $(this.selectedServices).on('select2:unselect', (e) =>
+      this.handleServiceUnselect(e),
+    );
+    $(this.selectedServices).on('select2:clear', () => this.clearAllServices());
 
-        this.updateTotalPrice();
-        this.saveToLocalStorage();
+    $(this.productsTable).on('input', '.quantity-input', (e) =>
+      this.handleQuantityChange(e),
+    );
+  }
+
+  handleScheduleSelect(e) {
+    const scheduleData = e.params.data;
+    this.clearServices();
+
+    if (scheduleData.services) {
+      scheduleData.services.forEach((service) => {
+        this.addServiceToDOM(service);
+        this.addSelectOption(this.selectedServices, service);
       });
+    }
 
-      $(this.schedulesField).on('select2:unselect', () => {
-        this.clearAllServiceRows();
-        $(this.selectedServices).empty().trigger('change');
-        this.updateServiceTotal();
-        this.updateTotalPrice();
-        this.saveToLocalStorage();
-      });
+    this.updateAllTotals();
+    this.saveToLocalStorage();
+  }
+
+  handleProductSelect(e) {
+    this.addProductToDOM(e.params.data);
+    this.updateAllTotals();
+    this.saveToLocalStorage();
+  }
+
+  handleProductUnselect(e) {
+    if (e.params.data.disabled === false) {
+      this.removeItemFromDOM(this.productsTable, e.params.data.id);
+      this.updateAllTotals();
+      this.saveToLocalStorage();
     }
   }
 
-  handleProductEvents() {
-    $(this.selectedProducts).on('select2:select', (e) => {
-      const data = e.params.data;
-      this.createProductRow(data);
-      this.updateProductTotal();
-      this.updateTotalPrice();
+  handleServiceSelect(e) {
+    this.addServiceToDOM(e.params.data);
+    this.updateAllTotals();
+    this.saveToLocalStorage();
+  }
+
+  handleServiceUnselect(e) {
+    if (e.params.data.disabled === false) {
+      this.removeItemFromDOM(this.servicesTable, e.params.data.id);
+      this.updateAllTotals();
       this.saveToLocalStorage();
-    });
-
-    $(this.selectedProducts).on('select2:unselect', (e) => {
-      const data = e.params.data;
-      if (data.disabled === false) {
-        this.removeProductRow(data.id);
-        this.updateProductTotal();
-        this.updateTotalPrice();
-        this.saveToLocalStorage();
-      }
-    });
-
-    $(this.selectedProducts).on('select2:clear', () => {
-      this.clearAllProductRows();
-      this.updateProductTotal();
-      this.updateTotalPrice();
-      this.saveToLocalStorage();
-    });
-
-    $(this.productsTable).on('input', '.quantity-input', (e) => {
-      const quantityInput = $(e.target);
-      const row = quantityInput.closest('tr');
-      const unitPrice = parseFloat(row.data('unit-price'));
-      const newQuantity = parseInt(quantityInput.val(), 10) || 1;
-
-      const updatedPrice = unitPrice * newQuantity;
-      row.find('.product-price').text(`R$ ${updatedPrice.toFixed(2)}`);
-      this.updateProductTotal();
-      this.updateTotalPrice();
-      this.saveToLocalStorage();
-    });
+    }
   }
 
-  handleServiceEvents() {
-    $(this.selectedServices).on('select2:select', (e) => {
-      const data = e.params.data;
-      this.createServiceRow(data);
-      this.updateServiceTotal();
-      this.updateTotalPrice();
-      this.saveToLocalStorage();
-    });
+  handleQuantityChange(e) {
+    const quantityInput = e.target;
+    const row = quantityInput.closest('tr');
+    const unitPrice = parseFloat(row.dataset.unitPrice);
+    const newQuantity = parseInt(quantityInput.value, 10) || 1;
 
-    $(this.selectedServices).on('select2:unselect', (e) => {
-      const data = e.params.data;
-      if (data.disabled === false) {
-        this.removeServiceRow(data.id);
-        this.updateServiceTotal();
-        this.updateTotalPrice();
-        this.saveToLocalStorage();
-      }
-    });
-
-    $(this.selectedServices).on('select2:clear', () => {
-      this.clearAllServiceRows();
-      this.updateServiceTotal();
-      this.updateTotalPrice();
-      this.saveToLocalStorage();
-    });
+    row.querySelector('.product-price').textContent =
+      `R$ ${(unitPrice * newQuantity).toFixed(2)}`;
+    this.updateAllTotals();
+    this.saveToLocalStorage();
   }
 
-  createProductRow(data) {
-    if (!data.quantity) data.quantity = 1;
-    if (!data.totalPrice) data.totalPrice = data.price;
-
-    const newRow = `
-      <tr id="product-${data.id}" data-unit-price="${data.price}"
-      data-slug=${data.slug}>
-        <input type="hidden" value="${data.text}" class="table-text">
-        <td class="table-image">
-          <a href="/product/${data.slug}" target="_blank">
-            <img src="${data.image}" alt="Product Image">
-          </a>
-        </td>
-        <td>${data.text_no_price}</td>
-        <td>R$ ${parseFloat(data.price).toFixed(2)}</td>
-        <td id="product-quantity">
-        <input type="number" class="quantity-input"
-        name="quantities[${data.id}]" value="${data.quantity}" min="1">
-        </td>
-        <td class="product-price">R$ ${parseFloat(data.totalPrice).toFixed(2)}</td>
-      </tr>`;
-    $(this.productsTable).append(newRow);
-  }
-
-  removeProductRow(productId) {
-    $(`#product-${productId}`).remove();
-  }
-
-  clearAllProductRows() {
-    $(this.productsTable).empty();
-  }
-
-  updateProductTotal() {
-    let productTotal = 0;
-    $(this.productsTable)
-      .find('tr')
-      .each((index, row) => {
-        const $row = $(row);
-        const unitPrice = parseFloat($row.data('unit-price'));
-        const quantity = parseInt($row.find('.quantity-input').val(), 10) || 1;
-        productTotal += unitPrice * quantity;
-      });
-    this.productsPrice = productTotal;
-  }
-
-  createServiceRow(data) {
-    if ($(`#service-${data.id}`).length > 0) return;
-
-    const newRow = `
-      <tr id="service-${data.id}" data-unit-price="${data.price}">
-        <input type="hidden" value="${data.text}" class="table-text">
-        <td class="table-image">
-          <img src="${data.image}" alt="Service Image">
-        </td>
-        <td>${data.text_no_price}</td>
-        <td class="service-description">${data.description}</td>
-        <td class="service-price">R$ ${parseFloat(data.price).toFixed(2)}</td>
-      </tr>`;
-    $(this.servicesTable).append(newRow);
-  }
-
-  removeServiceRow(serviceId) {
-    $(`#service-${serviceId}`).remove();
-  }
-
-  clearAllServiceRows() {
-    $(this.servicesTable).empty();
-  }
-
-  updateServiceTotal() {
-    let serviceTotal = 0;
-    $(this.servicesTable)
-      .find('tr')
-      .each((index, row) => {
-        const $row = $(row);
-        const unitPrice = parseFloat($row.data('unit-price'));
-        serviceTotal += unitPrice;
-      });
-    this.servicesPrice = serviceTotal;
-  }
-
-  updateTotalPrice() {
+  updateAllTotals() {
+    this.productsPrice = this.calculateTotal(this.productsTable);
+    this.servicesPrice = this.calculateTotal(this.servicesTable);
     const totalPrice = this.productsPrice + this.servicesPrice;
     this.totalPriceElement.textContent = `R$ ${totalPrice.toFixed(2)}`;
+  }
+
+  calculateTotal(table) {
+    let total = 0;
+    Array.from(table.querySelectorAll('tr')).forEach((row) => {
+      const unitPrice = parseFloat(row.dataset.unitPrice);
+      const quantity = parseInt(
+        row.querySelector('.quantity-input')?.value || '1',
+        10,
+      );
+      total += unitPrice * quantity;
+    });
+    return total;
+  }
+
+  addProductToDOM(product) {
+    if (document.getElementById(`product-${product.id}`)) return;
+
+    const quantity = product.quantity || 1;
+    const totalPrice = parseFloat(product.price) * quantity;
+
+    const newRow = document.createElement('tr');
+    newRow.id = `product-${product.id}`;
+    newRow.dataset.unitPrice = product.price;
+    newRow.dataset.slug = product.slug;
+    newRow.innerHTML = `
+      <input type="hidden" value="${product.text}" class="table-text">
+      <td class="table-image">
+        <a href="/product/${product.slug}" target="_blank">
+          <img src="${product.image}" alt="Product Image">
+        </a>
+      </td>
+      <td>${product.text_no_price}</td>
+      <td>R$ ${parseFloat(product.price).toFixed(2)}</td>
+      <td id="product-quantity"><input type="number" class="quantity-input"
+      name="quantities[${product.id}]" value="${quantity}" min="1"></td>
+      <td class="product-price">R$ ${totalPrice.toFixed(2)}</td>
+    `;
+    this.productsTable.appendChild(newRow);
+    this.addSelectOption(this.selectedProducts, product);
+  }
+
+  addServiceToDOM(service) {
+    if (document.getElementById(`service-${service.id}`)) return;
+
+    const newRow = document.createElement('tr');
+    newRow.id = `service-${service.id}`;
+    newRow.dataset.unitPrice = service.price;
+    newRow.innerHTML = `
+      <input type="hidden" value="${service.text}" class="table-text">
+      <td class="table-image"><img src="${service.image}" alt="Service Image"></td>
+      <td>${service.text_no_price}</td>
+      <td class="service-description">${service.description || ''}</td>
+      <td class="service-price">R$ ${parseFloat(service.price).toFixed(2)}</td>
+    `;
+    this.servicesTable.appendChild(newRow);
+    this.addSelectOption(this.selectedServices, service);
+  }
+
+  removeItemFromDOM(table, itemId) {
+    const row = table.querySelector(
+      `#${table.id.includes('product') ? 'product' : 'service'}-${itemId}`,
+    );
+    if (row) row.remove();
+  }
+
+  clearAllProducts() {
+    this.productsTable.innerHTML = '';
+    this.updateAllTotals();
+    this.saveToLocalStorage();
+  }
+
+  clearAllServices() {
+    this.servicesTable.innerHTML = '';
+    this.updateAllTotals();
+    this.saveToLocalStorage();
+  }
+
+  clearServices() {
+    this.clearAllServices();
+    $(this.selectedServices).empty().trigger('change');
+  }
+
+  getTableData(table, hasQuantity) {
+    return Array.from(table.querySelectorAll('tr')).map((row) => {
+      return {
+        id: row.id.split('-')[1],
+        image: row.querySelector('.table-image img').src,
+        text: row.querySelector('.table-text').value,
+        text_no_price: row.cells[1].textContent,
+        price: parseFloat(row.dataset.unitPrice),
+        ...(hasQuantity && {
+          quantity:
+            parseInt(row.querySelector('.quantity-input').value, 10) || 1,
+        }),
+        ...(row.cells[2].classList.contains('service-description') && {
+          description: row.cells[2].textContent,
+        }),
+      };
+    });
+  }
+
+  addSelectOption(selectElement, item) {
+    if (!$(selectElement).find(`option[value="${item.id}"]`).length) {
+      const option = new Option(item.text, item.id, true, true);
+      $(selectElement).append(option).trigger('change');
+    }
   }
 }
 
