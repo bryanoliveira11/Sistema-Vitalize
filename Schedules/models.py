@@ -100,11 +100,11 @@ class Schedules(models.Model):
     )
     services = models.ManyToManyField(Services, verbose_name="Serviço")
     schedule_date = models.DateField(
-        null=False, blank=False, verbose_name='Data Agendada'
+        null=False, blank=False, verbose_name='Data Agendada',
     )
     schedule_time = models.ForeignKey(
         ScheduleTime, on_delete=models.PROTECT,
-        null=False, blank=False, verbose_name='Horário Agendado'
+        null=True, blank=True, verbose_name='Horário Agendado',
     )
     total_price = models.DecimalField(
         max_digits=7, decimal_places=2, null=False,

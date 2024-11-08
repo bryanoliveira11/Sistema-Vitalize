@@ -110,8 +110,9 @@ class CreateSaleForm(forms.ModelForm):
                   <tr>
                     <th scope="col">Imagem</th>
                     <th scope="col">Produto</th>
+                    <th scope="col">Preço Unit</th>
                     <th scope="col">Quantidade</th>
-                    <th scope="col">Preço</th>
+                    <th scope="col">Preço Total</th>
                   </tr>
                 </thead>
                   <tbody id="products-table-body"></tbody>
@@ -155,8 +156,6 @@ class CreateSaleForm(forms.ModelForm):
         required=True,
         widget=UserCustomS2ChoiceWidget(
             model=VitalizeUser,
-            queryset=User.objects.filter(
-              is_active=True).order_by('-pk'),
             search_fields=[
                 'email__icontains',
             ],
@@ -178,8 +177,6 @@ class CreateSaleForm(forms.ModelForm):
         required=False,
         widget=ScheduleCustomS2ChoiceWidget(
             model=Schedules,
-            queryset=Schedules.objects.filter(
-              status=True).order_by('-pk').select_related('user'),
             search_fields=[
                 'user__email__icontains',
                 'pk__icontains',
@@ -204,8 +201,6 @@ class CreateSaleForm(forms.ModelForm):
         required=False,
         widget=ServicesCustomS2MultipleWidget(
             model=Services,
-            queryset=Services.objects.filter(
-              is_active=True).order_by('-pk'),
             search_fields=[
                 'service_name__icontains',
             ],
@@ -227,9 +222,6 @@ class CreateSaleForm(forms.ModelForm):
         required=False,
         widget=ProductsCustomS2MultipleWidget(
             model=Products,
-            queryset=Products.objects.filter(is_active=True).select_related(
-                'product_category'
-            ).order_by('-pk'),
             search_fields=[
                 'product_name__icontains',
                 'product_category__category_name__icontains',

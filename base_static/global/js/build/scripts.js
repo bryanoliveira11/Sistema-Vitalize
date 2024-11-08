@@ -423,10 +423,91 @@ class HandleSalesForm {
 
   init() {
     if (!this.selectedProducts) return;
+    this.loadFromLocalStorage();
     this.handleProductEvents();
     this.handleServiceEvents();
     if (!this.totalPriceElement) return;
     this.handleFormPrices();
+  }
+
+  loadFromLocalStorage() {
+    const savedProducts =
+      JSON.parse(localStorage.getItem('selectedProducts')) || [];
+    const savedServices =
+      JSON.parse(localStorage.getItem('selectedServices')) || [];
+
+    savedProducts.forEach((product) => {
+      this.createProductRow(product);
+
+      if (
+        !$(this.selectedProducts).find(`option[value="${product.id}"]`).length
+      ) {
+        const option = new Option(product.text, product.id, true, true);
+        $(this.selectedProducts).append(option).trigger('change');
+      }
+    });
+
+    savedServices.forEach((service) => {
+      this.createServiceRow(service);
+
+      if (
+        !$(this.selectedServices).find(`option[value="${service.id}"]`).length
+      ) {
+        const option = new Option(service.text, service.id, true, true);
+        $(this.selectedServices).append(option).trigger('change');
+      }
+    });
+
+    this.updateProductTotal();
+    this.updateServiceTotal();
+    this.updateTotalPrice();
+  }
+
+  saveToLocalStorage() {
+    const selectedProducts = [];
+    const selectedServices = [];
+
+    $(this.productsTable)
+      .find('tr')
+      .each((index, row) => {
+        const $row = $(row);
+        const productId = $row.attr('id').split('-')[1];
+        const quantity = parseInt($row.find('.quantity-input').val(), 10) || 1;
+        const unitPrice = parseFloat($row.data('unit-price'));
+        const totalPrice = unitPrice * quantity;
+        const imageSrc = $row.find('.table-image img').attr('src');
+        const productData = {
+          id: productId,
+          image: imageSrc,
+          text: $row.find('.table-text').val(),
+          text_no_price: $row.find('td').eq(1).text(),
+          price: unitPrice,
+          totalPrice: totalPrice,
+          quantity: quantity,
+          slug: $row.data('slug'),
+        };
+        selectedProducts.push(productData);
+      });
+
+    $(this.servicesTable)
+      .find('tr')
+      .each((index, row) => {
+        const $row = $(row);
+        const serviceId = $row.attr('id').split('-')[1];
+        const imageSrc = $row.find('.table-image img').attr('src');
+        const serviceData = {
+          id: serviceId,
+          image: imageSrc,
+          text: $row.find('.table-text').val(),
+          text_no_price: $row.find('td').eq(1).text(),
+          description: $row.find('.service-description').text(),
+          price: parseFloat($row.data('unit-price')),
+        };
+        selectedServices.push(serviceData);
+      });
+
+    localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
+    localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
   }
 
   handleFormPrices() {
@@ -447,6 +528,7 @@ class HandleSalesForm {
         }
 
         this.updateTotalPrice();
+        this.saveToLocalStorage();
       });
 
       $(this.schedulesField).on('select2:unselect', () => {
@@ -454,6 +536,7 @@ class HandleSalesForm {
         $(this.selectedServices).empty().trigger('change');
         this.updateServiceTotal();
         this.updateTotalPrice();
+        this.saveToLocalStorage();
       });
     }
   }
@@ -464,6 +547,7 @@ class HandleSalesForm {
       this.createProductRow(data);
       this.updateProductTotal();
       this.updateTotalPrice();
+      this.saveToLocalStorage();
     });
 
     $(this.selectedProducts).on('select2:unselect', (e) => {
@@ -472,6 +556,7 @@ class HandleSalesForm {
         this.removeProductRow(data.id);
         this.updateProductTotal();
         this.updateTotalPrice();
+        this.saveToLocalStorage();
       }
     });
 
@@ -479,6 +564,7 @@ class HandleSalesForm {
       this.clearAllProductRows();
       this.updateProductTotal();
       this.updateTotalPrice();
+      this.saveToLocalStorage();
     });
 
     $(this.productsTable).on('input', '.quantity-input', (e) => {
@@ -491,6 +577,7 @@ class HandleSalesForm {
       row.find('.product-price').text(`R$ ${updatedPrice.toFixed(2)}`);
       this.updateProductTotal();
       this.updateTotalPrice();
+      this.saveToLocalStorage();
     });
   }
 
@@ -500,6 +587,7 @@ class HandleSalesForm {
       this.createServiceRow(data);
       this.updateServiceTotal();
       this.updateTotalPrice();
+      this.saveToLocalStorage();
     });
 
     $(this.selectedServices).on('select2:unselect', (e) => {
@@ -508,6 +596,7 @@ class HandleSalesForm {
         this.removeServiceRow(data.id);
         this.updateServiceTotal();
         this.updateTotalPrice();
+        this.saveToLocalStorage();
       }
     });
 
@@ -515,22 +604,30 @@ class HandleSalesForm {
       this.clearAllServiceRows();
       this.updateServiceTotal();
       this.updateTotalPrice();
+      this.saveToLocalStorage();
     });
   }
 
   createProductRow(data) {
+    if (!data.quantity) data.quantity = 1;
+    if (!data.totalPrice) data.totalPrice = data.price;
+
     const newRow = `
-      <tr id="product-${data.id}" data-unit-price="${data.price}">
+      <tr id="product-${data.id}" data-unit-price="${data.price}"
+      data-slug=${data.slug}>
+        <input type="hidden" value="${data.text}" class="table-text">
         <td class="table-image">
           <a href="/product/${data.slug}" target="_blank">
             <img src="${data.image}" alt="Product Image">
           </a>
         </td>
         <td>${data.text_no_price}</td>
+        <td>R$ ${parseFloat(data.price).toFixed(2)}</td>
         <td id="product-quantity">
-        <input type="number" class="quantity-input" name="quantities[${data.id}]" value="1" min="1">
+        <input type="number" class="quantity-input"
+        name="quantities[${data.id}]" value="${data.quantity}" min="1">
         </td>
-        <td class="product-price">R$ ${parseFloat(data.price).toFixed(2)}</td>
+        <td class="product-price">R$ ${parseFloat(data.totalPrice).toFixed(2)}</td>
       </tr>`;
     $(this.productsTable).append(newRow);
   }
@@ -561,6 +658,7 @@ class HandleSalesForm {
 
     const newRow = `
       <tr id="service-${data.id}" data-unit-price="${data.price}">
+        <input type="hidden" value="${data.text}" class="table-text">
         <td class="table-image">
           <img src="${data.image}" alt="Service Image">
         </td>
@@ -596,6 +694,12 @@ class HandleSalesForm {
     this.totalPriceElement.textContent = `R$ ${totalPrice.toFixed(2)}`;
   }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.location.pathname === '/cashregister/') {
+    localStorage.clear();
+  }
+});
 
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();

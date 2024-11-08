@@ -30,7 +30,8 @@
   </div>
   {% include "global/partials/messages.html" %}
   {% include "global/partials/form_messages.html" %}
-  <form method="POST" action="{{form_action}}" class="form-container">
+  <form method="POST" action="{{form_action}}" class="form-container"
+  id="sale-form">
     {% crispy form %}
     <div class="form-container">
       <div id="selected-prices">

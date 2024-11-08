@@ -25,8 +25,12 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         </div>
         <div class="schedule-modal-price mt-4">
           <h3 class="mt-2 mb-2">
+          {% if schedule.schedule_time.time %}
           Agendado para {{schedule.schedule_date}}
           às {{schedule.schedule_time.time}}
+          {% else %}
+          Feito em {{schedule.created_at}}
+          {% endif %}
           </h3>
           <h2>Total : <b>R$ {{schedule.total_price}}</b></h2>
         </div>

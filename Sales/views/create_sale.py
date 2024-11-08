@@ -129,6 +129,7 @@ class CreateSaleClassView(View):
                 self.request,
                 'Venda Registrada com Sucesso.'
             )
+
             create_log(
                 self.request.user,
                 'Venda Registrada com Sucesso.',

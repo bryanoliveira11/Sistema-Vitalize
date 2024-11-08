@@ -36,7 +36,11 @@
           {% endif %}
         </td>
         <td>
+          {% if schedule.schedule_time.time %}
           {{schedule.schedule_time.time}}
+          {% else %}
+          {{schedule.created_at|date:"H:i"}}
+          {% endif %}
         </td>
         <td>
           {% if schedule.status %}
