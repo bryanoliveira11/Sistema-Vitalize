@@ -42,8 +42,15 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 <script>
   flatpickr('.datetime-input', {
-    locale: 'pt',
-    dateFormat: 'd-m-Y',
+    locale: "pt",
+    minDate: "today",
+    maxDate: new Date().fp_incr(6),
+    disable: [
+        function(date) {
+            return date.getDay() === 0;
+        }
+    ],
+    dateFormat: "d-m-Y",
 });
 </script>
 {% endblock content %}

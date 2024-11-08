@@ -5,7 +5,9 @@
 <main class="main-content-container">
   <div class="schedules-container">
     {% include "global/partials/page_title.html" %}
-    {% include "global/partials/messages.html" %}
+    <div class="messages-custom-width">
+      {% include "global/partials/messages.html" %}
+    </div>
     {% if schedules %}
     {% include "schedules/partials/schedules_table.html" %}
     {% else %}

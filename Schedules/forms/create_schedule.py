@@ -69,14 +69,13 @@ class CreateScheduleForm(forms.ModelForm):
 
     services = forms.ModelMultipleChoiceField(
         queryset=Services.objects.filter(
-            is_active=True).order_by('-pk'),
+            is_active=True,
+        ).order_by('-pk'),
         label='Agendamento',
         help_text='Escolha os Serviços Desejados.',
         required=True,
         widget=ServicesCustomS2MultipleWidget(
             model=Services,
-            queryset=Services.objects.filter(
-              is_active=True).order_by('-pk'),
             search_fields=[
                 'service_name__icontains',
             ],
@@ -90,7 +89,7 @@ class CreateScheduleForm(forms.ModelForm):
         )
     )
 
-    schedule_date = forms.DateTimeField(
+    schedule_date = forms.DateField(
         input_formats=['%d-%m-%Y'],
         label='Data do Agendamento',
         required=True,
@@ -99,16 +98,13 @@ class CreateScheduleForm(forms.ModelForm):
 
     schedule_time = forms.ModelChoiceField(
         queryset=ScheduleTime.objects.filter(
-            is_active=True
-        ),
+            is_active=True, is_picked=False,
+        ).order_by('time'),
         label='Horário do Agendamento',
         help_text='Selecione o Horário do Agendamento',
         required=True,
         widget=ScheduleTimeCustomS2ChoiceWidget(
             model=ScheduleTime,
-            queryset=ScheduleTime.objects.filter(
-                is_active=True
-            ),
             search_fields=[
                 'time__icontains',
             ],
@@ -122,7 +118,18 @@ class CreateScheduleForm(forms.ModelForm):
         )
     )
 
+    def validate_schedule_date_time(self):
+        schedule_time = self.cleaned_data.get('schedule_time')
+
+        if schedule_time:
+            if schedule_time.is_picked:
+                self._my_errors['schedule_time'].append(
+                    'Esse Horário já foi Escolhido.'
+                )
+
     def clean(self, *args, **kwargs):
+        self.validate_schedule_date_time()
+
         if self._my_errors:
             raise ValidationError(dict(self._my_errors))
 

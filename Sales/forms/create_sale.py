@@ -191,6 +191,7 @@ class CreateSaleForm(forms.ModelForm):
                 'data-placeholder': 'Buscar por E-mail, Data ou Preço',
                 'selectionCssClass': 'form-control',
                 'data-language': 'pt-BR',
+                'data-minimum-input-length': 0,
             },
         )
     )
@@ -238,6 +239,7 @@ class CreateSaleForm(forms.ModelForm):
                 'data-placeholder': 'Buscar por Nome ou Categoria',
                 'selectionCssClass': 'form-control',
                 'data-language': 'pt-BR',
+                'data-minimum-input-length': 2,
             },
         )
     )

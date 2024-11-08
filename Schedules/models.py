@@ -66,7 +66,14 @@ class Services(models.Model):
 
 
 class ScheduleTime(models.Model):
-    time = models.TimeField(verbose_name='Horário de Agendamento', unique=True)
+    time = models.TimeField(
+        verbose_name='Horário de Agendamento', unique=True,
+        help_text='Utilize o Formato HH:MM, EX.: 12:30',
+    )
+    is_picked = models.BooleanField(
+        default=False, verbose_name='Selecionado',
+        help_text='Indica se este Horário já foi Escolhido por alguém.'
+    )
     is_active = models.BooleanField(
         default=True, verbose_name='Ativo/Inativo',
         help_text='Marque Essa Caixa para Ativar esse Horário. '
@@ -80,7 +87,7 @@ class ScheduleTime(models.Model):
     )
 
     def __str__(self):
-        return f'Horário Nº {self.pk}'
+        return f'Horário Nº {self.pk} - {self.time}'
 
     class Meta:
         verbose_name = 'Horário Vitalize'

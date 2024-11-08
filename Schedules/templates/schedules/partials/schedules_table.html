@@ -8,8 +8,9 @@
     <thead>
       <tr>
         <th scope="col">Agendamento ID</th>
-        <th scope="col">Serviços</th>
+        <th scope="col">Nº Serviços</th>
         <th scope="col">Data</th>
+        <th scope="col">Horário</th>
         <th scope="col">Status</th>
         <th scope="col">Preço Total</th>
         <th scope="col">Detalhes</th>
@@ -33,6 +34,9 @@
           {% else %}
           -
           {% endif %}
+        </td>
+        <td>
+          {{schedule.schedule_time.time}}
         </td>
         <td>
           {% if schedule.status %}

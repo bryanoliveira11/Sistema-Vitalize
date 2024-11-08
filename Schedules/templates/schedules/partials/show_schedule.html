@@ -10,7 +10,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <h2>Serviços Agendados :</h2>
+        <h2>Serviços Agendados</h2>
         <div class="services-grid mt-4">
         {% for service in schedule.services.all %}
           <div class="card">
@@ -24,7 +24,11 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         {% endfor %}
         </div>
         <div class="schedule-modal-price mt-4">
-          <h2>Total : R$ {{schedule.total_price}}</h2>
+          <h3 class="mt-2 mb-2">
+          Agendado para {{schedule.schedule_date}}
+          às {{schedule.schedule_time.time}}
+          </h3>
+          <h2>Total : <b>R$ {{schedule.total_price}}</b></h2>
         </div>
       </div>
       <div class="modal-footer">

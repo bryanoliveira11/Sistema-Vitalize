@@ -11,7 +11,7 @@
                 {% for notification in notifications  %}
                 <div class="notification">
                   <div class="subject-flex">
-                      <h3>{{notification.subject}}</h3>
+                      <h3>{{notification.subject|safe}}</h3>
                       <form action="{% url 'notifications:notifications_remove_single' notification.pk %}"
                       method="POST"
                       class="inline-form" title="Remover Notificação">
@@ -21,7 +21,7 @@
                         </button>
                       </form>
                   </div>
-                  <div class="text"><p>{{notification.text}}</p></div>
+                  <div class="text"><p>{{notification.text|safe}}</p></div>
                 </div>
                 {% empty %}
                 <div class="main-content-error-page center">

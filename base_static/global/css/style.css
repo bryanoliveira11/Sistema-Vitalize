@@ -1215,6 +1215,10 @@ table td.table-image img {
   margin: 0 1rem 0 0;
 }
 
+.notification .text {
+  margin-top: 0.5rem;
+}
+
 .notification .text p {
   text-wrap: wrap;
 }

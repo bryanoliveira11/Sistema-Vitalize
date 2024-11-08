@@ -87,11 +87,12 @@ class AdminVitalizeServices(admin.ModelAdmin):
 
 @admin.register(ScheduleTime)
 class AdminVitalizeScheduleTimes(admin.ModelAdmin):
-    list_display = 'id', 'time', 'is_active',
+    list_display = 'id', 'time', 'is_picked', 'is_active',
     list_display_links = 'id', 'time',
     list_editable = 'is_active',
     ordering = '-id',
-    list_filter = 'is_active',
+    list_filter = 'is_active', 'is_picked',
+    readonly_fields = 'is_picked',
     list_per_page = 20
 
     def has_delete_permission(self, request, obj=None):
