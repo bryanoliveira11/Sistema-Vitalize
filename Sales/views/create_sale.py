@@ -94,13 +94,12 @@ class CreateSaleClassView(View):
                 if not schedule.schedule_date:
                     schedule.schedule_date = datetime.now()
 
-                schedule.save()
-
                 if services:
                     service_total = sum(service.price for service in services)
                     schedule_price = service_total
 
                 schedule.total_price = schedule_price
+                schedule.status = False
                 schedule.save()
             else:
                 if services:
@@ -111,6 +110,7 @@ class CreateSaleClassView(View):
                         total_price=service_total,
                     )
                     schedule.services.set(services)
+                    schedule.status = False
                     schedule.save()
                     sale.schedule = schedule
                     schedule_price = service_total

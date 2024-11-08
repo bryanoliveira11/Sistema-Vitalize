@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django_select2 import forms as s2forms
 
-from Schedules.models import Schedules, Services
+from Schedules.models import Schedules, ScheduleTime, Services
 from utils.django_forms import add_attr, add_placeholder
 
 User = get_user_model()
@@ -26,6 +26,11 @@ class ServicesCustomS2MultipleWidget(s2forms.ModelSelect2MultipleWidget):
             'price': obj.price,
             'image': obj.cover_path.url,
         }
+
+
+class ScheduleTimeCustomS2ChoiceWidget(s2forms.ModelSelect2Widget):
+    def label_from_instance(self, obj: ScheduleTime):
+        return obj.time
 
 
 class CreateScheduleForm(forms.ModelForm):
@@ -46,6 +51,7 @@ class CreateScheduleForm(forms.ModelForm):
                   <tr>
                     <th scope="col">Imagem</th>
                     <th scope="col">Serviço</th>
+                    <th scope="col">Descrição</th>
                     <th scope="col">Preço</th>
                   </tr>
                 </thead>
@@ -53,12 +59,13 @@ class CreateScheduleForm(forms.ModelForm):
                 </table>
                 </div>
             '''),
-            Field('schedule_date')
+            Field('schedule_date'),
+            Field('schedule_time'),
         )
 
     class Meta:
         model = Schedules
-        fields = ['services', 'schedule_date']
+        fields = ['services', 'schedule_date', 'schedule_time']
 
     services = forms.ModelMultipleChoiceField(
         queryset=Services.objects.filter(
@@ -85,9 +92,34 @@ class CreateScheduleForm(forms.ModelForm):
 
     schedule_date = forms.DateTimeField(
         input_formats=['%d-%m-%Y'],
-        label='Data Agendamento',
+        label='Data do Agendamento',
         required=True,
         help_text='Selecione a Data do Agendamento',
+    )
+
+    schedule_time = forms.ModelChoiceField(
+        queryset=ScheduleTime.objects.filter(
+            is_active=True
+        ),
+        label='Horário do Agendamento',
+        help_text='Selecione o Horário do Agendamento',
+        required=True,
+        widget=ScheduleTimeCustomS2ChoiceWidget(
+            model=ScheduleTime,
+            queryset=ScheduleTime.objects.filter(
+                is_active=True
+            ),
+            search_fields=[
+                'time__icontains',
+            ],
+            max_results=10,
+            attrs={
+                'data-placeholder': 'Buscar por Horário',
+                'selectionCssClass': 'form-control',
+                'data-language': 'pt-BR',
+                'data-minimum-input-length': 0,
+            },
+        )
     )
 
     def clean(self, *args, **kwargs):

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-from Schedules.models import Schedules, Services
+from Schedules.models import Schedules, ScheduleTime, Services
 
 User = get_user_model()
 
@@ -78,6 +78,21 @@ class AdminVitalizeServices(admin.ModelAdmin):
         return f'R$ {obj.price}' if obj.price \
             is not None else f'R$ {0}'
     price_in_BRL.short_description = 'Preço'
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None:
+            return False
+        return super().has_delete_permission(request, obj)
+
+
+@admin.register(ScheduleTime)
+class AdminVitalizeScheduleTimes(admin.ModelAdmin):
+    list_display = 'id', 'time', 'is_active',
+    list_display_links = 'id', 'time',
+    list_editable = 'is_active',
+    ordering = '-id',
+    list_filter = 'is_active',
+    list_per_page = 20
 
     def has_delete_permission(self, request, obj=None):
         if obj is not None:

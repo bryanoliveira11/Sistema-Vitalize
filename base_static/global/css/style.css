@@ -1116,6 +1116,9 @@ table td.table-image img {
   .select2-search__field,
 #div_id_user
   .select2-container.select2-container--default.select2-container--open
+  .select2-search__field,
+#div_id_schedule_time
+  .select2-container.select2-container--default.select2-container--open
   .select2-search__field {
   border: 1px solid var(--color-secondary) !important;
 }
@@ -1127,12 +1130,17 @@ table td.table-image img {
 #div_id_user
   .select2-container--default
   .select2-selection--single
+  .select2-selection__placeholder,
+#div_id_schedule_time
+  .select2-container--default
+  .select2-selection--single
   .select2-selection__placeholder {
   color: #686868 !important;
 }
 
 #div_id_schedule .select2-container .select2-selection--single,
-#div_id_user .select2-container .select2-selection--single {
+#div_id_user .select2-container .select2-selection--single,
+#div_id_schedule_time .select2-container .select2-selection--single {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -1142,6 +1150,8 @@ table td.table-image img {
 #div_id_schedule
   .select2-container.select2-container--default.select2-container--open,
 #div_id_user
+  .select2-container.select2-container--default.select2-container--open,
+#div_id_schedule_time
   .select2-container.select2-container--default.select2-container--open {
   border: 1px solid var(--color-accent) !important;
   outline: 0 !important;
@@ -1150,7 +1160,8 @@ table td.table-image img {
 }
 
 #div_id_schedule .select2-selection__arrow,
-#div_id_user .select2-selection__arrow {
+#div_id_user .select2-selection__arrow,
+#div_id_schedule_time .select2-selection__arrow {
   height: 100% !important;
 }
 

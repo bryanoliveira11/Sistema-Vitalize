@@ -65,6 +65,28 @@ class Services(models.Model):
         verbose_name_plural = 'Serviços Vitalize'
 
 
+class ScheduleTime(models.Model):
+    time = models.TimeField(verbose_name='Horário de Agendamento', unique=True)
+    is_active = models.BooleanField(
+        default=True, verbose_name='Ativo/Inativo',
+        help_text='Marque Essa Caixa para Ativar esse Horário. '
+        'Desmarque para Inativar.',
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name='Criado em'
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name='Alterado em'
+    )
+
+    def __str__(self):
+        return f'Horário Nº {self.pk}'
+
+    class Meta:
+        verbose_name = 'Horário Vitalize'
+        verbose_name_plural = 'Horários Vitalize'
+
+
 class Schedules(models.Model):
     user = models.ForeignKey(
         User, verbose_name='Usuario', null=True, on_delete=models.PROTECT
@@ -73,13 +95,17 @@ class Schedules(models.Model):
     schedule_date = models.DateField(
         null=False, blank=False, verbose_name='Data Agendada'
     )
+    schedule_time = models.ForeignKey(
+        ScheduleTime, on_delete=models.PROTECT,
+        null=False, blank=False, verbose_name='Horário Agendado'
+    )
     total_price = models.DecimalField(
         max_digits=7, decimal_places=2, null=False,
         blank=False, verbose_name='Preço Total (R$)',
     )
     status = models.BooleanField(
         default=True, verbose_name='Status',
-        help_text='Marcado/Desmarcado',
+        help_text='Agendado/Finalizado',
     )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
