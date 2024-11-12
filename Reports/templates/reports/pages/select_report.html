@@ -3,7 +3,7 @@
 
 {% block content %}
 <main class="main-content-container">
-  <nav aria-label="breadcrumb" class="breadcrumb-container form cashregister">
+  <nav aria-label="breadcrumb" class="breadcrumb-container form report">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{% url 'users:admin_options' %}" title="Opções de Admin">
@@ -36,16 +36,18 @@
       </a>
       <a href="{% url 'reports:sales' %}" class="option-card shadow" title="Relatório de Vendas">
         <div class="option-card-icon">
-          <img src="{% static 'global/img/profit_report.png' %}" alt="Relatório de Vendas">
+          <img src="{% static 'global/img/sales_report.png' %}" alt="Relatório de Vendas">
         </div>
         <div class="option-card-title">
           <h2>Relatório de Vendas</h2>
           <small>Acompanhe as vendas realizadas.</small>
         </div>
       </a>
-      <a href="{% url 'reports:products' %}" class="option-card shadow" title="Relatório de Produtos">
+      <a href="{% url 'reports:products' %}" class="option-card shadow span-2"
+      title="Relatório de Produtos">
         <div class="option-card-icon">
-          <img src="{% static 'global/img/profit_report.png' %}" alt="Relatório de Produtos">
+          <img src="{% static 'global/img/products_report.png' %}"
+          alt="Relatório de Produtos">
         </div>
         <div class="option-card-title">
           <h2>Relatório de Produtos</h2>

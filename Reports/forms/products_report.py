@@ -7,17 +7,17 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 
-from utils.django_forms import add_attr, add_placeholder
+from utils.django_forms import add_attr
 
 
 class ProductsReportForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._my_errors: defaultdict[str, list[str]] = defaultdict(list)
-        
+
         add_attr(self.fields['is_active'], 'class', 'select-input')
         add_attr(self.fields['show_in_showcase'], 'class', 'select-input')
-        
+
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(

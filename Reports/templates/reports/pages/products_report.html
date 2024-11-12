@@ -3,7 +3,7 @@
 
 {% block content %}
 <main class="main-content-container">
-  <nav aria-label="breadcrumb" class="breadcrumb-container form products">
+  <nav aria-label="breadcrumb" class="breadcrumb-container form report">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{% url 'users:admin_options' %}" title="Opções de Admin">
@@ -24,7 +24,7 @@
       </li>
     </ol>
   </nav>
-  <div class="title-with-breadcrumb products">
+  <div class="title-with-breadcrumb report">
     {% include "global/partials/page_title.html" %}
   </div>
   <div class="messages-custom-width">
@@ -35,7 +35,10 @@
     <div class="report-form-flex">
       {% crispy form %}
     </div>
-    <button class="btn report-form-btn" type="submit">Gerar Relatório</button>
+    <button class="btn report-form-btn" type="submit">
+      Gerar Relatório
+      <i class="fa-solid fa-file-csv"></i>
+    </button>
   </form>
 </main>
 

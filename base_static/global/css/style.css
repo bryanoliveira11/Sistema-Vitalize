@@ -1003,7 +1003,9 @@ button.form-button:hover .submit {
 }
 
 .form-container .report-form-flex #div_id_date_initial,
-.form-container .report-form-flex #div_id_date_final {
+.form-container .report-form-flex #div_id_date_final,
+.form-container .report-form-flex #div_id_is_active,
+.form-container .report-form-flex #div_id_show_in_showcase {
   width: 50%;
 }
 
@@ -1420,7 +1422,9 @@ button.google-callback-btn h2 {
 
 .form-container.cash-register,
 .breadcrumb-container.form.cashregister,
+.breadcrumb-container.form.report,
 .title-with-breadcrumb.cashregister .page-title-container,
+.title-with-breadcrumb.report .page-title-container,
 .main-content-container.cashregister .messages-container,
 .messages-custom-width .form-container,
 .messages-custom-width .messages-container {
@@ -1598,13 +1602,13 @@ div.schedule-appointment-progress {
   background: var(--color-gray-4);
   border-radius: 50%;
   margin: 0 auto 1rem auto;
-  padding: .2rem;
+  padding: 0.2rem;
 }
 
 #schedule-appointment-progressbar li:after {
   content: '';
   width: 100%;
-  height: .2rem;
+  height: 0.2rem;
   background: var(--color-gray-2);
   position: absolute;
   left: 0;
@@ -1930,7 +1934,9 @@ div.schedule-appointment-progress {
   }
 
   .form-container .report-form-flex #div_id_date_initial,
-  .form-container .report-form-flex #div_id_date_final {
+  .form-container .report-form-flex #div_id_date_final,
+  .form-container .report-form-flex #div_id_is_active,
+  .form-container .report-form-flex #div_id_show_in_showcase {
     width: 100%;
   }
 
