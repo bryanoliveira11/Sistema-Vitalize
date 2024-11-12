@@ -131,6 +131,7 @@ class ScheduleSelectTimeForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(Field('schedule_time'))
+        self.selected_date = selected_date
         selected_times = ScheduleDateTime.objects.filter(
             date=selected_date
         )
@@ -163,7 +164,21 @@ class ScheduleSelectTimeForm(forms.ModelForm):
         )
     )
 
+    def validate_time(self):
+        schedule_time = self.cleaned_data.get('schedule_time')
+
+        if schedule_time and self.selected_date:
+            time_picked = ScheduleDateTime.objects.filter(
+                date=self.selected_date, time=schedule_time
+            ).exists()
+
+            if time_picked:
+                self._my_errors['schedule_time'].append(
+                    'Horário Indisponível'
+                )
+
     def clean(self, *args, **kwargs):
+        self.validate_time()
 
         if self._my_errors:
             raise ValidationError(dict(self._my_errors))

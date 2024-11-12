@@ -9,10 +9,12 @@ User = get_user_model()
 @admin.register(Schedules)
 class AdminVitalizeSchedules(admin.ModelAdmin):
     list_display = 'id_text', 'user', 'get_services', \
-        'price_in_BRL', 'schedule_date', 'status',
+        'price_in_BRL', 'schedule_date', 'status', 'canceled',
     list_display_links = 'id_text',
     ordering = '-id',
     list_filter = 'user', 'status', 'services', 'schedule_date',
+    readonly_fields = 'id_text', 'user', 'services', 'total_price', \
+        'schedule_date', 'schedule_time', 'status',
     list_per_page = 20
 
     def get_queryset(self, request):
@@ -34,11 +36,6 @@ class AdminVitalizeSchedules(admin.ModelAdmin):
     def id_text(self, obj):
         return f'Agendamento Nº {obj.pk}'
     id_text.short_description = 'Agendamento'
-
-    def has_change_permission(self, request, obj=None):
-        if obj is not None:
-            return False
-        return super().has_change_permission(request, obj)
 
     def has_delete_permission(self, request, obj=None):
         if obj is not None:

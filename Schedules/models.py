@@ -131,7 +131,11 @@ class Schedules(models.Model):
     )
     status = models.BooleanField(
         default=True, verbose_name='Status',
-        help_text='Agendado/Finalizado',
+        help_text='Agendado/Finalizado.',
+    )
+    canceled = models.BooleanField(
+        default=False, verbose_name='Cancelado',
+        help_text='Marque para Cancelar o Agendamento.'
     )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='Criado em'
@@ -146,6 +150,15 @@ class Schedules(models.Model):
     def save(self, *args, **kwargs):
         if not self.total_price:
             self.total_price = 0
+
+        if self.canceled:
+            schedule_date_time = ScheduleDateTime.objects.filter(
+                time=self.schedule_time, date=self.schedule_date
+            ).first()
+
+            if schedule_date_time:
+                schedule_date_time.delete()
+
         super().save(*args, **kwargs)
 
     class Meta:

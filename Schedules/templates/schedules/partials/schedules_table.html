@@ -1,9 +1,16 @@
 <div class="table-responsive">
-  <a href="{% url 'schedules:create' %}" class="btn btn-bg-primary new-schedule"
+  <a href="{% url 'schedules:create' %}"
+  class="btn btn-bg-primary schedule-btn"
   title="Novo Agendamento">
     <i class="fa-regular fa-calendar-plus"></i>
     Novo Agendamento
   </a>
+  <button class="btn btn bg-danger schedule-btn" title="Cancelar Agendamento"
+    data-bs-toggle="modal" data-bs-target="#cancel-schedule">
+    <i class="fa-regular fa-calendar-xmark"></i>
+    Cancelar Agendamento
+  </button>
+  {% include "schedules/partials/cancel_schedule.html" %}
   <table class="table table-striped table-bordered">
     <thead>
       <tr>
@@ -43,6 +50,12 @@
           {% endif %}
         </td>
         <td>
+          {% if schedule.canceled %}
+          <span class="text-danger">
+            <i class="fa-regular fa-calendar-xmark"></i>
+            <b>Cancelado</b>
+          </span>
+          {% else %}
           {% if schedule.status %}
           <span class="text-primary">
             <i class="fa-regular fa-calendar"></i>
@@ -50,9 +63,10 @@
           </span>
           {% else %}
           <span class="text-success">
-            <i class="fa-solid fa-circle-check"></i>
+            <i class="fa-solid fa-calendar-check"></i>
             <b>Finalizado</b>
           </span>
+          {% endif %}
           {% endif %}
         </td>
         <td>R$ {{schedule.total_price}}</td>

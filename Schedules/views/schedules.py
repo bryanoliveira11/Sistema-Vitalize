@@ -35,7 +35,7 @@ class ShowSchedulesClassView(View):
         ).order_by('-pk')
 
         page_obj, pagination_range = make_pagination(
-            self.request, user_schedules, 10
+            self.request, user_schedules, 15
         )
 
         notifications, notifications_total = get_notifications(self.request)
@@ -193,7 +193,7 @@ class ScheduleSelectDateClassView(ScheduleBaseClassView):
             return redirect(reverse('schedules:create_select-time'))
 
         return self.render_form(
-            form=ScheduleSelectDateForm(),
+            form=form,
             title='Seleção', subtitle='de Data', pageAttr='select-date',
             button_html='Avançar <i class="fa-regular fa-circle-right"></i>'
         )
@@ -240,13 +240,23 @@ class ScheduleSelectTimeClassView(ScheduleBaseClassView):
         )
 
     def post(self, *args, **kwargs):
-        form = ScheduleSelectTimeForm(
-            data=self.request.POST or None,
-            files=self.request.FILES or None
-        )
-
         if not self.validate_session_data():
             return redirect(reverse('schedules:create'))
+
+        selected_date = self.request.session['schedule_data']['date']
+
+        if not selected_date:
+            messages.error(
+                self.request,
+                'Erro ao Realizar Agendamento, Tente Novamente.'
+            )
+            return redirect(reverse('schedules:create'))
+
+        form = ScheduleSelectTimeForm(
+            data=self.request.POST or None,
+            files=self.request.FILES or None,
+            selected_date=selected_date
+        )
 
         if form.is_valid():
             schedule = form.save(commit=False)
@@ -314,7 +324,7 @@ class ScheduleSelectTimeClassView(ScheduleBaseClassView):
             return redirect(reverse('schedules:schedules'))
 
         return self.render_form(
-            form=ScheduleSelectDateForm(),
+            form=form,
             title='Seleção', subtitle='de Data', pageAttr='select-time',
             button_html='Agendar <i class="fa-regular fa-calendar-check"></i>'
         )
