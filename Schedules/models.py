@@ -70,10 +70,6 @@ class ScheduleTime(models.Model):
         verbose_name='Horário de Agendamento', unique=True,
         help_text='Utilize o Formato HH:MM, EX.: 12:30',
     )
-    is_picked = models.BooleanField(
-        default=False, verbose_name='Selecionado',
-        help_text='Indica se este Horário já foi Escolhido por alguém.'
-    )
     is_active = models.BooleanField(
         default=True, verbose_name='Ativo/Inativo',
         help_text='Marque Essa Caixa para Ativar esse Horário. '
@@ -92,6 +88,29 @@ class ScheduleTime(models.Model):
     class Meta:
         verbose_name = 'Horário Vitalize'
         verbose_name_plural = 'Horários Vitalize'
+
+
+class ScheduleDateTime(models.Model):
+    time = models.ForeignKey(
+        ScheduleTime, on_delete=models.PROTECT,
+        null=True, blank=True, verbose_name='Horário Agendado',
+    )
+    date = models.DateField(
+        null=False, blank=False, verbose_name='Data Agendada',
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name='Criado em'
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name='Alterado em'
+    )
+
+    def __str__(self):
+        return f'Data e Hora Nº {self.pk}'
+
+    class Meta:
+        verbose_name = 'Data e Hora Vitalize'
+        verbose_name_plural = 'Data e Hora Vitalize'
 
 
 class Schedules(models.Model):

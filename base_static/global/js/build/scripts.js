@@ -289,42 +289,6 @@ class PreventPaste {
   }
 }
 
-// class SalesProductSearch {
-//   constructor() {
-//     this.productField = document.getElementById('id_products');
-//   }
-//   init() {
-//     if (!this.productField) return;
-//     this.createSearchBar();
-//     this.search();
-//   }
-//   createSearchBar() {
-//     const searchInput = document.createElement('input');
-//     searchInput.type = 'text';
-//     searchInput.id = 'productSearch';
-//     searchInput.className = 'form-control mb-2';
-//     searchInput.placeholder = 'Buscar Produtos...';
-//     this.productField.parentNode.insertBefore(searchInput, this.productField);
-//   }
-//   search() {
-//     document
-//       .getElementById('productSearch')
-//       .addEventListener('input', function () {
-//         let filter = this.value.toLowerCase();
-//         let options = document.querySelectorAll('#id_products option');
-
-//         options.forEach((option) => {
-//           let text = option.textContent.toLowerCase();
-//           if (text.includes(filter)) {
-//             option.style.display = '';
-//           } else {
-//             option.style.display = 'none';
-//           }
-//         });
-//       });
-//   }
-// }
-
 class HandleCashRegisterPrices {
   constructor() {
     this.cashoutSelect = document.getElementById('id_cash_out');
@@ -409,16 +373,89 @@ class DigitalClock {
   }
 }
 
-class HandleSalesForm {
+class BaseFormHandler {
   constructor() {
-    this.schedulesField = document.getElementById('id_schedule');
-    this.selectedProducts = document.getElementById('id_products');
-    this.productsTable = document.getElementById('products-table-body');
-    this.selectedServices = document.getElementById('id_services');
-    this.servicesTable = document.getElementById('services-table-body');
     this.totalPriceElement = document.getElementById('total-price');
+    this.productsTable = document.getElementById('products-table-body');
+    this.servicesTable = document.getElementById('services-table-body');
     this.productsPrice = 0;
     this.servicesPrice = 0;
+  }
+
+  addSelectOption(selectElement, item) {
+    if (!$(selectElement).find(`option[value="${item.id}"]`).length) {
+      const option = new Option(item.text, item.id, true, true);
+      $(selectElement).append(option).trigger('change');
+    }
+  }
+
+  calculateTotal(table) {
+    let total = 0;
+    Array.from(table.querySelectorAll('tr')).forEach((row) => {
+      const unitPrice = parseFloat(row.dataset.unitPrice);
+      const quantity = parseInt(
+        row.querySelector('.quantity-input')?.value || '1',
+        10,
+      );
+      total += unitPrice * quantity;
+    });
+    return total;
+  }
+
+  updateAllTotals() {
+    if (this.productsTable) {
+      this.productsPrice = this.calculateTotal(this.productsTable);
+    }
+    if (this.servicesTable) {
+      this.servicesPrice = this.calculateTotal(this.servicesTable);
+    }
+    const totalPrice = this.productsPrice + this.servicesPrice;
+    this.totalPriceElement.textContent = `R$ ${totalPrice.toFixed(2)}`;
+  }
+
+  removeItemFromDOM(table, itemId) {
+    const row = table.querySelector(
+      `#${table.id.includes('product') ? 'product' : 'service'}-${itemId}`,
+    );
+    if (row) row.remove();
+  }
+
+  saveToLocalStorage() {
+    const selectedProducts = this.getTableData(this.productsTable, true);
+    const selectedServices = this.getTableData(this.servicesTable, false);
+
+    localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
+    localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+  }
+
+  getTableData(table, hasQuantity) {
+    if (!table) return;
+
+    return Array.from(table.querySelectorAll('tr')).map((row) => {
+      return {
+        id: row.id.split('-')[1],
+        image: row.querySelector('.table-image img').src,
+        text: row.querySelector('.table-text').value,
+        text_no_price: row.cells[1].textContent,
+        price: parseFloat(row.dataset.unitPrice),
+        ...(hasQuantity && {
+          quantity:
+            parseInt(row.querySelector('.quantity-input').value, 10) || 1,
+        }),
+        ...(row.cells[2].classList.contains('service-description') && {
+          description: row.cells[2].textContent,
+        }),
+      };
+    });
+  }
+}
+
+class HandleSalesForm extends BaseFormHandler {
+  constructor() {
+    super();
+    this.schedulesField = document.getElementById('id_schedule');
+    this.selectedProducts = document.getElementById('id_products');
+    this.selectedServices = document.getElementById('id_services');
   }
 
   init() {
@@ -442,14 +479,6 @@ class HandleSalesForm {
     } catch (error) {
       console.error('Error loading data from local storage');
     }
-  }
-
-  saveToLocalStorage() {
-    const selectedProducts = this.getTableData(this.productsTable, true);
-    const selectedServices = this.getTableData(this.servicesTable, false);
-
-    localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
-    localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
   }
 
   setupEventListeners() {
@@ -536,26 +565,6 @@ class HandleSalesForm {
     this.saveToLocalStorage();
   }
 
-  updateAllTotals() {
-    this.productsPrice = this.calculateTotal(this.productsTable);
-    this.servicesPrice = this.calculateTotal(this.servicesTable);
-    const totalPrice = this.productsPrice + this.servicesPrice;
-    this.totalPriceElement.textContent = `R$ ${totalPrice.toFixed(2)}`;
-  }
-
-  calculateTotal(table) {
-    let total = 0;
-    Array.from(table.querySelectorAll('tr')).forEach((row) => {
-      const unitPrice = parseFloat(row.dataset.unitPrice);
-      const quantity = parseInt(
-        row.querySelector('.quantity-input')?.value || '1',
-        10,
-      );
-      total += unitPrice * quantity;
-    });
-    return total;
-  }
-
   addProductToDOM(product) {
     if (document.getElementById(`product-${product.id}`)) return;
 
@@ -600,13 +609,6 @@ class HandleSalesForm {
     this.addSelectOption(this.selectedServices, service);
   }
 
-  removeItemFromDOM(table, itemId) {
-    const row = table.querySelector(
-      `#${table.id.includes('product') ? 'product' : 'service'}-${itemId}`,
-    );
-    if (row) row.remove();
-  }
-
   clearAllProducts() {
     this.productsTable.innerHTML = '';
     this.updateAllTotals();
@@ -623,31 +625,63 @@ class HandleSalesForm {
     this.clearAllServices();
     $(this.selectedServices).empty().trigger('change');
   }
+}
 
-  getTableData(table, hasQuantity) {
-    return Array.from(table.querySelectorAll('tr')).map((row) => {
-      return {
-        id: row.id.split('-')[1],
-        image: row.querySelector('.table-image img').src,
-        text: row.querySelector('.table-text').value,
-        text_no_price: row.cells[1].textContent,
-        price: parseFloat(row.dataset.unitPrice),
-        ...(hasQuantity && {
-          quantity:
-            parseInt(row.querySelector('.quantity-input').value, 10) || 1,
-        }),
-        ...(row.cells[2].classList.contains('service-description') && {
-          description: row.cells[2].textContent,
-        }),
-      };
-    });
+class HandleScheduleForm extends BaseFormHandler {
+  constructor() {
+    super();
+    this.selectedServices = document.getElementById('id_services');
   }
 
-  addSelectOption(selectElement, item) {
-    if (!$(selectElement).find(`option[value="${item.id}"]`).length) {
-      const option = new Option(item.text, item.id, true, true);
-      $(selectElement).append(option).trigger('change');
+  init() {
+    if (!this.selectedServices || !this.totalPriceElement) return;
+    this.setupEventListeners();
+    this.updateAllTotals();
+  }
+
+  setupEventListeners() {
+    $(this.selectedServices).on('select2:select', (e) =>
+      this.handleServiceSelect(e),
+    );
+    $(this.selectedServices).on('select2:unselect', (e) =>
+      this.handleServiceUnselect(e),
+    );
+    $(this.selectedServices).on('select2:clear', () => this.clearAllServices());
+  }
+
+  handleServiceSelect(e) {
+    this.addServiceToDOM(e.params.data);
+    this.updateAllTotals();
+  }
+
+  handleServiceUnselect(e) {
+    if (e.params.data.disabled === false) {
+      this.removeItemFromDOM(this.servicesTable, e.params.data.id);
+      this.updateAllTotals();
     }
+  }
+
+  addServiceToDOM(service) {
+    if (document.getElementById(`service-${service.id}`)) return;
+
+    const newRow = document.createElement('tr');
+    newRow.id = `service-${service.id}`;
+    newRow.dataset.unitPrice = service.price;
+    newRow.innerHTML = `
+      <input type="hidden" value="${service.text}" class="table-text">
+      <td class="table-image"><img src="${service.image}" alt="Service Image"></td>
+      <td>${service.text_no_price}</td>
+      <td class="service-description">${service.description || ''}</td>
+      <td class="service-price">R$ ${parseFloat(service.price).toFixed(2)}</td>
+    `;
+    this.servicesTable.appendChild(newRow);
+    this.addSelectOption(this.selectedServices, service);
+  }
+
+  clearAllServices() {
+    this.servicesTable.innerHTML = '';
+    this.updateAllTotals();
+    this.saveToLocalStorage();
   }
 }
 
@@ -656,6 +690,25 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.clear();
   }
 });
+
+function handleSchedulePages(pageAttr) {
+  const selectServices = document.querySelector('#select-services');
+  const selectDate = document.querySelector('#select-date');
+  const selectTime = document.querySelector('#select-time');
+
+  if (!selectServices || !selectDate || !selectTime || !pageAttr) return;
+
+  if (pageAttr === 'select-date') {
+    selectDate.classList.add('active');
+    return;
+  }
+
+  if (pageAttr === 'select-time') {
+    selectDate.classList.add('active');
+    selectTime.classList.add('active');
+    return;
+  }
+}
 
 new DismissFlashMessages().init();
 new HandlePasswordTipsStyles().init();
@@ -669,3 +722,4 @@ new PreventPaste().init();
 new HandleCashRegisterPrices().init();
 new DigitalClock().init();
 new HandleSalesForm().init();
+new HandleScheduleForm().init();

@@ -1,24 +1,18 @@
 {% extends "global/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load humanize %}
 
 {% block content %}
 <main class="main-content-container">
-  <nav aria-label="breadcrumb" class="breadcrumb-container form">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="{% url 'schedules:schedules' %}" title="Agendamentos">
-          Agendamentos
-        </a>
-      </li>
-      <li class="breadcrumb-item active" aria-current="page">
-        <a href="{% url 'schedules:create' %}"
-        title="Realizar Agendamento">
-          Realizar Agendamento
-        </a>
-      </li>
-    </ol>
-  </nav>
+  <div class="schedule-appointment-progress">
+    <ul id="schedule-appointment-progressbar">
+      <li class="active" id="select-services"><strong>Serviços</strong></li>
+      <li id="select-date"><strong>Data</strong></li>
+      <li id="select-time"><strong>Horário</strong></li>
+    </ul>
+  </div>
+  {% include "schedules/partials/breadcrumb.html" %}
   <div class="title-with-breadcrumb">
     {% include "global/partials/page_title.html" %}
   </div>
@@ -27,13 +21,29 @@
   <form method="POST" action="{{form_action}}" class="form-container">
     {% crispy form %}
     <div class="form-container">
+      {% if is_services_form %}
       <div id="selected-prices">
         <h2>Preço Total :
           <span id="total-price">R$ 0.00</span>
         </h2>
       </div>
+      {% else %}
+      <hr>
+      <div id="schedule-summary">
+        {% if request.session.schedule_data.total_price %}
+        <p>
+          Preço Total: R$ {{ request.session.schedule_data.total_price }}
+        </p>
+        {% endif %}
+        {% if request.session.schedule_data.formatted_date %}
+        <p>
+          Data Agendada: {{ request.session.schedule_data.formatted_date }}
+        </p>
+        {% endif %}
+      </div>
+      {% endif %}
       <button type="submit" class="form-button" title="Agendar">
-        <span>Agendar <i class="fa-regular fa-calendar-check ml-05"></i></span>
+        <span>{{button_html|safe}}</span>
       </button>
     </div>
   </form>
@@ -51,6 +61,11 @@
         }
     ],
     dateFormat: "d-m-Y",
-});
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const pageAttr = '{{pageAttr}}';
+    handleSchedulePages(pageAttr);
+  });
 </script>
 {% endblock content %}

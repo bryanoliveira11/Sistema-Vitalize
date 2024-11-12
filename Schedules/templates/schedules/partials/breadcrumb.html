@@ -1,0 +1,30 @@
+<nav aria-label="breadcrumb" class="breadcrumb-container form">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{% url 'schedules:schedules' %}" title="Agendamentos">Agendamentos</a>
+    </li>
+
+    {% if pageAttr == 'select-services' %}
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'schedules:create' %}" title="Serviços">Serviços</a>
+      </li>
+    {% elif pageAttr == 'select-date' %}
+      <li class="breadcrumb-item">
+        <a href="{% url 'schedules:create' %}" title="Serviços">Serviços</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'schedules:create_select-date' %}" title="Data">Data</a>
+      </li>
+    {% elif pageAttr == 'select-time' %}
+      <li class="breadcrumb-item">
+        <a href="{% url 'schedules:create' %}" title="Serviços">Serviços</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'schedules:create_select-date' %}" title="Data">Data</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'schedules:create_select-time' %}" title="Horário">Horário</a>
+      </li>
+    {% endif %}
+  </ol>
+</nav>

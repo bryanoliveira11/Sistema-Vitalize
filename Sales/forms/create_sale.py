@@ -231,7 +231,7 @@ class CreateSaleForm(forms.ModelForm):
                 'data-placeholder': 'Buscar por Nome ou Categoria',
                 'selectionCssClass': 'form-control',
                 'data-language': 'pt-BR',
-                'data-minimum-input-length': 2,
+                'data-minimum-input-length': 0,
             },
         )
     )

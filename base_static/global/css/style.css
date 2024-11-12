@@ -973,6 +973,10 @@ button.form-button:hover .submit {
   font-size: 2.4rem;
 }
 
+#schedule-summary p {
+  font-size: 2rem;
+}
+
 #selected-prices #total-price span {
   font-weight: 600;
 }
@@ -1529,6 +1533,88 @@ button.google-callback-btn h2 {
 
 .services-grid .card {
   width: 22rem;
+}
+
+div.schedule-appointment-progress {
+  max-width: 64rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#schedule-appointment-progressbar {
+  margin: 3rem 0 3rem 0;
+  overflow: hidden;
+  color: var(--color-gray-2);
+  padding: 0;
+}
+
+#schedule-appointment-progressbar .active {
+  color: var(--color-primary);
+}
+
+#schedule-appointment-progressbar li {
+  list-style-type: none;
+  font-size: 1.5rem;
+  width: 33%;
+  float: left;
+  position: relative;
+  font-weight: 400;
+  color: var(--color-dark-text);
+}
+
+#schedule-appointment-progressbar #select-services,
+#schedule-appointment-progressbar #select-date,
+#schedule-appointment-progressbar #select-time {
+  text-align: center;
+}
+
+#schedule-appointment-progressbar #select-services:before,
+#schedule-appointment-progressbar #select-date:before,
+#schedule-appointment-progressbar #select-time:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-style: normal;
+}
+
+#schedule-appointment-progressbar #select-services:before {
+  content: '\f54e';
+}
+
+#schedule-appointment-progressbar #select-date:before {
+  content: '\f073';
+}
+
+#schedule-appointment-progressbar #select-time:before {
+  content: '\f017';
+}
+
+#schedule-appointment-progressbar li:before {
+  width: 5rem;
+  height: 5rem;
+  line-height: 4.5rem;
+  display: block;
+  font-size: 2rem;
+  color: var(--color-gray-0);
+  background: var(--color-gray-4);
+  border-radius: 50%;
+  margin: 0 auto 1rem auto;
+  padding: .2rem;
+}
+
+#schedule-appointment-progressbar li:after {
+  content: '';
+  width: 100%;
+  height: .2rem;
+  background: var(--color-gray-2);
+  position: absolute;
+  left: 0;
+  top: 2.5rem;
+  z-index: -1;
+}
+
+#schedule-appointment-progressbar li.active:before,
+#schedule-appointment-progressbar li.active:after {
+  background: var(--color-primary);
 }
 
 /* utils */

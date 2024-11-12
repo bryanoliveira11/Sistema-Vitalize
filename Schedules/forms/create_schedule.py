@@ -8,7 +8,8 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django_select2 import forms as s2forms
 
-from Schedules.models import Schedules, ScheduleTime, Services
+from Schedules.models import (ScheduleDateTime, Schedules, ScheduleTime,
+                              Services)
 from utils.django_forms import add_attr, add_placeholder
 
 User = get_user_model()
@@ -23,6 +24,7 @@ class ServicesCustomS2MultipleWidget(s2forms.ModelSelect2MultipleWidget):
             'id': obj.pk,
             'text': self.label_from_instance(obj),
             'text_no_price': obj.service_name,
+            'description': obj.description,
             'price': obj.price,
             'image': obj.cover_path.url,
         }
@@ -33,11 +35,9 @@ class ScheduleTimeCustomS2ChoiceWidget(s2forms.ModelSelect2Widget):
         return obj.time
 
 
-class CreateScheduleForm(forms.ModelForm):
+class ScheduleSelectServicesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        add_attr(self.fields['schedule_date'], 'class', 'datetime-input')
-        add_placeholder(self.fields['schedule_date'], 'dd-mm-YYYY')
         self._my_errors: defaultdict[str, list[str]] = defaultdict(list)
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -59,19 +59,17 @@ class CreateScheduleForm(forms.ModelForm):
                 </table>
                 </div>
             '''),
-            Field('schedule_date'),
-            Field('schedule_time'),
         )
 
     class Meta:
         model = Schedules
-        fields = ['services', 'schedule_date', 'schedule_time']
+        fields = ['services']
 
     services = forms.ModelMultipleChoiceField(
         queryset=Services.objects.filter(
             is_active=True,
         ).order_by('-pk'),
-        label='Agendamento',
+        label='Serviços',
         help_text='Escolha os Serviços Desejados.',
         required=True,
         widget=ServicesCustomS2MultipleWidget(
@@ -89,6 +87,28 @@ class CreateScheduleForm(forms.ModelForm):
         )
     )
 
+    def clean(self, *args, **kwargs):
+
+        if self._my_errors:
+            raise ValidationError(dict(self._my_errors))
+
+        return super().clean(*args, **kwargs)
+
+
+class ScheduleSelectDateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        add_attr(self.fields['schedule_date'], 'class', 'datetime-input')
+        add_placeholder(self.fields['schedule_date'], 'dd-mm-YYYY')
+        self._my_errors: defaultdict[str, list[str]] = defaultdict(list)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(Field('schedule_date'))
+
+    class Meta:
+        model = Schedules
+        fields = ['schedule_date']
+
     schedule_date = forms.DateField(
         input_formats=['%d-%m-%Y'],
         label='Data do Agendamento',
@@ -96,10 +116,35 @@ class CreateScheduleForm(forms.ModelForm):
         help_text='Selecione a Data do Agendamento',
     )
 
+    def clean(self, *args, **kwargs):
+
+        if self._my_errors:
+            raise ValidationError(dict(self._my_errors))
+
+        return super().clean(*args, **kwargs)
+
+
+class ScheduleSelectTimeForm(forms.ModelForm):
+    def __init__(self, selected_date=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._my_errors: defaultdict[str, list[str]] = defaultdict(list)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(Field('schedule_time'))
+        selected_times = ScheduleDateTime.objects.filter(
+            date=selected_date
+        )
+        selected_time_ids = selected_times.values_list('time', flat=True)
+        self.fields['schedule_time'].queryset = ScheduleTime.objects.filter(
+            is_active=True
+        ).exclude(id__in=selected_time_ids).order_by('time')
+
+    class Meta:
+        model = Schedules
+        fields = ['schedule_time']
+
     schedule_time = forms.ModelChoiceField(
-        queryset=ScheduleTime.objects.filter(
-            is_active=True, is_picked=False,
-        ).order_by('time'),
+        queryset=ScheduleTime.objects.none(),
         label='Horário do Agendamento',
         help_text='Selecione o Horário do Agendamento',
         required=True,
@@ -118,17 +163,7 @@ class CreateScheduleForm(forms.ModelForm):
         )
     )
 
-    def validate_schedule_date_time(self):
-        schedule_time = self.cleaned_data.get('schedule_time')
-
-        if schedule_time:
-            if schedule_time.is_picked:
-                self._my_errors['schedule_time'].append(
-                    'Esse Horário já foi Escolhido.'
-                )
-
     def clean(self, *args, **kwargs):
-        self.validate_schedule_date_time()
 
         if self._my_errors:
             raise ValidationError(dict(self._my_errors))
