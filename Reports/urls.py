@@ -11,4 +11,14 @@ urlpatterns = [
         views.CashRegisterReport.as_view(),
         name='cashregister',
     ),
+    path(
+        'sales/',
+        views.SalesReport.as_view(),
+        name='sales',
+    ),
+    path(
+        'prooducts/',
+        views.ProductsReport.as_view(),
+        name='products',
+    )
 ]
