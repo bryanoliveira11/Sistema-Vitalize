@@ -1,0 +1,50 @@
+{% extends "global/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main class="main-content-container">
+  <nav aria-label="breadcrumb" class="breadcrumb-container form sales">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'users:admin_options' %}" title="Opções de Admin">
+          Admin
+        </a>
+      </li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a href="{% url 'reports:reports' %}"
+        title="Relatórios">
+          Relatórios
+        </a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'reports:sales' %}"
+        title="Relatório de Vendas">
+          Relatório de Vendas
+        </a>
+      </li>
+    </ol>
+  </nav>
+  <div class="title-with-breadcrumb sales">
+    {% include "global/partials/page_title.html" %}
+  </div>
+  <div class="messages-custom-width">
+    {% include "global/partials/messages.html" %}
+    {% include "global/partials/form_messages.html" %}
+  </div>
+  <form method="POST" action="{{form_action}}" class="form-container report-form">
+    <div class="report-form-flex">
+      {% crispy form %}
+    </div>
+    <button class="btn report-form-btn" type="submit">Gerar Relatório</button>
+  </form>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+<script>
+  flatpickr('.datetime-input', {
+    locale: 'pt',
+    dateFormat: 'd-m-Y',
+});
+</script>
+{% endblock content %}

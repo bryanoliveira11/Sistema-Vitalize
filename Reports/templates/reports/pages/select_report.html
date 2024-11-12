@@ -11,8 +11,7 @@
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
-        <a href="{% url 'reports:reports' %}"
-        title="Relatórios">
+        <a href="{% url 'reports:reports' %}" title="Relatórios">
           Relatórios
         </a>
       </li>
@@ -26,14 +25,31 @@
   </div>
   <div class="admin-options-container cash-register">
     <div class="cards-flex">
-      <a href="{% url 'reports:cashregister' %}" class="option-card shadow"
-      title="Relatório de Caixa">
+      <a href="{% url 'reports:cashregister' %}" class="option-card shadow" title="Relatório de Caixa">
         <div class="option-card-icon">
-          <img src="{% static 'global/img/profit_report.png' %}" alt="">
+          <img src="{% static 'global/img/profit_report.png' %}" alt="Relatório de Caixa">
         </div>
         <div class="option-card-title">
           <h2>Relatório de Caixa</h2>
           <small>Veja o fluxo de caixa.</small>
+        </div>
+      </a>
+      <a href="{% url 'reports:sales' %}" class="option-card shadow" title="Relatório de Vendas">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/profit_report.png' %}" alt="Relatório de Vendas">
+        </div>
+        <div class="option-card-title">
+          <h2>Relatório de Vendas</h2>
+          <small>Acompanhe as vendas realizadas.</small>
+        </div>
+      </a>
+      <a href="{% url 'reports:products' %}" class="option-card shadow" title="Relatório de Produtos">
+        <div class="option-card-icon">
+          <img src="{% static 'global/img/profit_report.png' %}" alt="Relatório de Produtos">
+        </div>
+        <div class="option-card-title">
+          <h2>Relatório de Produtos</h2>
+          <small>Acompanhe os Produtos disponiveis.</small>
         </div>
       </a>
     </div>
