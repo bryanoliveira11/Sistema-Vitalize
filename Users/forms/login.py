@@ -32,15 +32,15 @@ class LoginForm(forms.Form):
     )
     password = forms.CharField(
         label='Senha',
-        help_text=mark_safe(
-            '''
-          <div class="forgot-password-content">
-          <a href=""
-          id="forgot-password" title="Esqueceu sua Senha">
-          Esqueceu sua Senha ?
-          </a>
-          </div>
-            '''
-        ),
+        # help_text=mark_safe(
+        #     '''
+        #   <div class="forgot-password-content">
+        #   <a href=""
+        #   id="forgot-password" title="Esqueceu sua Senha">
+        #   Esqueceu sua Senha ?
+        #   </a>
+        #   </div>
+        #     '''
+        # ),
         widget=forms.PasswordInput()
     )
