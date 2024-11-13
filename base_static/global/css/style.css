@@ -2012,3 +2012,9 @@ div.schedule-appointment-progress {
     width: 100%;
   }
 }
+
+@media (max-width: 418px) {
+  .btn.schedule-btn {
+    width: 100%;
+  }
+}
